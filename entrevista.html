@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#F5F1E8">
+<meta name="description" content="Debug English: simulador gratuito de entrevista, prática guiada e code review em inglês para profissionais de TI. Sem cadastro e sem IA.">
+<title>Simulador de Entrevistas | Debug English</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/bold/style.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/duotone/style.css">
+<style>
+:root {
+  color-scheme: light;
+  --bg: #F5F1E8;
+  --panel: #FFFFFF;
+  --panel2: #EAE3D2;
+  --line: #CFC7B4;
+  --text: #181A17;
+  --muted: #52564E;
+  --cobalt: #15469E;
+  --cobalt-tint: #E7EEF9;
+  --vermilion: #D44B1E;
+  --vermilion-tint: #FBECE6;
+  --forest: #1B6B46;
+  --forest-tint: #E5F3EC;
+  --code-bg: #1D201D;
+  --display: 'Space Grotesk', system-ui, sans-serif;
+  --sans: 'IBM Plex Sans', system-ui, -apple-system, sans-serif;
+  --mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  --ease: cubic-bezier(.22, 1, .36, 1);
+  --shadow-hard: 3px 3px 0 var(--text);
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0; min-height: 100vh;
+  color: var(--text); background: var(--bg);
+  font: 400 16px/1.55 var(--sans);
+  -webkit-font-smoothing: antialiased;
+}
+[hidden] { display: none !important; }
+button, textarea { font: inherit; }
+button { cursor: pointer; }
+button:disabled { opacity: .42; cursor: not-allowed; }
+a { color: var(--cobalt); }
+a:hover { text-decoration: none; }
+:focus-visible { outline: 3px solid var(--cobalt); outline-offset: 3px; }
+h1, h2, h3, p { margin-top: 0; }
+.wrap { width: min(1110px, calc(100% - 44px)); margin: 0 auto; }
+
+/* Barra superior */
+.top {
+  background: rgba(245, 241, 232, .94);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--line);
+  position: sticky; top: 0; z-index: 10;
+}
+.top-inner { min-height: 64px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.brand {
+  text-decoration: none; color: var(--text);
+  font: 700 1.02rem var(--mono); letter-spacing: -.04em;
+  display: inline-flex; align-items: center; gap: 4px;
+}
+.brand b { color: var(--vermilion); }
+.top-side { display: flex; align-items: center; gap: 12px; }
+.top-note {
+  font: 600 .74rem var(--mono); color: var(--muted);
+  background: var(--panel2); border: 1px solid var(--line);
+  padding: 5px 10px; border-radius: 6px;
+}
+.back {
+  display: inline-flex; align-items: center; gap: 6px;
+  text-decoration: none; border: 1.5px solid var(--text);
+  background: var(--panel); border-radius: 8px;
+  color: var(--text); padding: 7px 12px; font-size: .84rem; font-weight: 600;
+  white-space: nowrap; transition: background .18s, transform .18s;
+}
+.back:hover { background: var(--panel2); transform: translateY(-1px); }
+
+main { padding: 36px 0 72px; }
+footer {
+  border-top: 1px solid var(--line); padding: 24px 0;
+  color: var(--muted); text-align: center; font: 400 .8rem var(--mono);
+}
+
+/* Tipografia & Utilitários */
+.eyebrow {
+  display: inline-flex; align-items: center; gap: 7px;
+  font: 700 .74rem var(--mono); text-transform: uppercase; letter-spacing: .07em;
+  color: var(--vermilion); background: var(--vermilion-tint);
+  border: 1px solid #E7B7A6; padding: 4px 10px; border-radius: 6px;
+}
+h1 {
+  font-family: var(--display); font-size: clamp(2.05rem, 4.8vw, 3.35rem);
+  font-weight: 700; line-height: 1.08; letter-spacing: -.03em;
+}
+h1 em {
+  color: var(--cobalt); font-style: normal;
+  text-decoration: underline; text-decoration-color: var(--vermilion);
+  text-decoration-thickness: 3px; text-underline-offset: 6px;
+}
+.lead { color: var(--muted); max-width: 56ch; font-size: 1.03rem; line-height: 1.65; }
+.mini { font: 600 .74rem var(--mono); color: var(--muted); letter-spacing: .03em; }
+.strong { color: var(--text); font-weight: 700; }
+.card {
+  background: var(--panel); border: 1.5px solid var(--text);
+  border-radius: 12px; box-shadow: var(--shadow-hard);
+}
+.small-heading { font-family: var(--display); font-size: 1.2rem; margin: 0 0 6px; letter-spacing: -.015em; }
+.section-sub { font-size: .88rem; color: var(--muted); margin: 0 0 16px; }
+.divider { height: 1px; background: var(--line); margin: 22px 0; }
+
+/* Botões */
+.primary, .secondary {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  border-radius: 8px; padding: 11px 17px; font-weight: 600; font-size: .92rem;
+  transition: transform .18s var(--ease), box-shadow .18s var(--ease), background .18s;
+}
+.primary {
+  border: 1.5px solid var(--text); background: var(--vermilion); color: #FFFFFF;
+  box-shadow: 3px 3px 0 var(--text);
+}
+.primary:hover:not(:disabled) { background: #BF3F15; transform: translate(-1px, -1px); box-shadow: 4px 4px 0 var(--text); }
+.primary:active:not(:disabled) { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--text); }
+.secondary {
+  border: 1.5px solid var(--line); background: var(--panel); color: var(--text);
+}
+.secondary:hover:not(:disabled) { border-color: var(--text); background: var(--panel2); }
+.primary.wide, .secondary.wide { width: 100%; margin-top: 14px; }
+
+/* Hero do Simulador */
+.hero {
+  display: grid; grid-template-columns: minmax(0, 1.18fr) minmax(280px, .82fr);
+  gap: 26px; align-items: center; padding: 8px 0 28px;
+}
+.hero h1 { margin: 14px 0 14px; max-width: 14ch; }
+.hero-features { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
+.hero-features span {
+  display: inline-flex; align-items: center; gap: 6px;
+  font: 600 .76rem var(--mono); border: 1px solid var(--line);
+  border-radius: 6px; background: var(--panel); padding: 6px 10px; color: var(--text);
+}
+.hero-features span i { color: var(--cobalt); font-size: .95rem; }
+
+.preview-art {
+  position: relative; min-height: 256px;
+  background: var(--panel); border: 1.5px solid var(--text);
+  border-radius: 12px; box-shadow: var(--shadow-hard);
+  display: grid; grid-template-columns: 1.05fr .95fr;
+  align-items: center; padding: 22px 18px 12px; overflow: hidden;
+}
+.art-copy { position: relative; z-index: 1; align-self: center; }
+.art-copy .mini { display: block; color: var(--cobalt); margin-bottom: 8px; }
+.art-copy strong {
+  font-family: var(--display); display: block;
+  font-size: clamp(1.18rem, 2.5vw, 1.48rem); line-height: 1.2; letter-spacing: -.02em;
+}
+.art-copy p { margin: 10px 0 0; color: var(--muted); font-size: .8rem; line-height: 1.5; }
+.preview-art img { width: 100%; max-width: 195px; align-self: end; justify-self: center; display: block; }
+.tiny-label {
+  position: absolute; right: 12px; top: 12px; z-index: 1;
+  font: 700 .66rem var(--mono); border: 1px solid var(--line);
+  color: var(--muted); padding: 3px 7px; border-radius: 4px; background: var(--panel2);
+}
+
+/* Setup Layout */
+.setup-layout {
+  display: grid; grid-template-columns: minmax(0, 1.56fr) minmax(292px, .82fr);
+  gap: 20px; align-items: start;
+}
+.setup-controls { padding: 24px; }
+.setup-group + .setup-group { margin-top: 28px; padding-top: 24px; border-top: 1px solid var(--line); }
+.setup-group .overline {
+  display: inline-flex; align-items: center; gap: 6px;
+  font: 700 .74rem var(--mono); color: var(--cobalt); letter-spacing: .04em; margin: 0 0 6px;
+}
+
+.area-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.area-opt {
+  border: 1.5px solid var(--line); background: var(--bg);
+  padding: 12px 11px; text-align: left; color: var(--text);
+  border-radius: 9px; min-height: 64px;
+  display: flex; align-items: center; justify-content: space-between; gap: 8px;
+  transition: border-color .16s, background .16s, transform .16s;
+}
+.area-opt:hover { border-color: var(--text); background: var(--panel); transform: translateY(-1px); }
+.area-opt[aria-pressed="true"] {
+  border-color: var(--text); background: var(--cobalt-tint);
+  box-shadow: 2px 2px 0 var(--text);
+}
+.area-label-wrap { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.area-label-wrap i { font-size: 1.15rem; color: var(--cobalt); flex: none; }
+.area-opt strong { font-size: .84rem; line-height: 1.25; }
+.area-opt .tick { color: var(--forest); font-size: 1.05rem; visibility: hidden; flex: none; }
+.area-opt[aria-pressed="true"] .tick { visibility: visible; }
+
+.role-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+.role-opt {
+  position: relative; overflow: hidden; text-align: center;
+  border: 1.5px solid var(--line); background: var(--bg);
+  border-radius: 10px; color: var(--text);
+  padding: 12px 8px 13px; min-width: 0; min-height: 174px;
+  transition: border-color .18s, background .18s, transform .18s var(--ease);
+}
+.role-opt:hover { border-color: var(--text); background: var(--panel); transform: translateY(-2px); }
+.role-opt[aria-pressed="true"] {
+  border-color: var(--text); background: var(--vermilion-tint);
+  box-shadow: 2px 2px 0 var(--text);
+}
+.role-opt img { height: 100px; max-width: 100%; display: block; margin: 0 auto 6px; }
+.role-opt strong { font-family: var(--display); display: block; font-size: .9rem; }
+.role-opt small { display: block; color: var(--muted); font-size: .72rem; line-height: 1.25; margin-top: 2px; }
+.role-opt .selected-check {
+  display: none; position: absolute; right: 8px; top: 8px;
+  color: var(--forest); font-size: 1.05rem;
+}
+.role-opt[aria-pressed="true"] .selected-check { display: block; }
+
+/* Barra Lateral do Setup */
+.setup-aside { padding: 20px; position: sticky; top: 82px; background: var(--panel); }
+.setup-aside .mini { display: flex; align-items: center; gap: 6px; margin-bottom: 10px; color: var(--cobalt); }
+.selection-panel {
+  border: 1px solid var(--line); border-radius: 9px;
+  padding: 13px; background: var(--bg);
+}
+.selection-panel .label { font: 600 .7rem var(--mono); color: var(--muted); display: block; text-transform: uppercase; }
+.selection-panel strong { font-family: var(--display); font-size: 1.12rem; display: block; margin: 3px 0 2px; }
+.selection-panel p { font-size: .85rem; color: var(--muted); margin: 0; }
+.scene-preview { display: flex; gap: 14px; align-items: center; margin: 16px 0; }
+.scene-preview img {
+  height: 132px; width: 110px; object-fit: contain;
+  background: var(--panel2); border: 1px solid var(--line); border-radius: 9px; padding: 6px;
+}
+.scene-preview p { font-size: .83rem; color: var(--muted); margin: 6px 0 0; }
+.aside-title { font-family: var(--display); font-weight: 700; font-size: 1.15rem; line-height: 1.25; }
+.privacy {
+  display: flex; align-items: flex-start; gap: 7px;
+  font-size: .76rem; color: var(--muted); margin: 12px 0 0; line-height: 1.45;
+}
+.privacy i { color: var(--forest); font-size: .95rem; margin-top: 2px; flex: none; }
+
+/* Tela de Sessão */
+.session-top { display: flex; justify-content: space-between; gap: 14px; align-items: center; margin-bottom: 20px; flex-wrap: wrap; }
+.session-top h1 { font-size: clamp(1.55rem, 3.8vw, 2.3rem); margin: 8px 0 0; }
+.session-top .eyebrow { color: var(--cobalt); background: var(--cobalt-tint); border-color: #C2D4F2; }
+.session-layout { display: grid; grid-template-columns: minmax(0, 1.65fr) minmax(275px, .78fr); gap: 18px; align-items: start; }
+.session-main { min-width: 0; display: grid; gap: 16px; }
+.session-side { position: sticky; top: 82px; display: grid; gap: 16px; }
+
+.scene {
+  position: relative; border: 1.5px solid var(--text); border-radius: 12px;
+  overflow: hidden; background: var(--panel); box-shadow: var(--shadow-hard);
+}
+.scene-top {
+  display: flex; gap: 8px; justify-content: space-between; align-items: center;
+  padding: 12px 20px; background: var(--panel2); border-bottom: 1px solid var(--line);
+  font: 700 .74rem var(--mono); color: var(--text);
+}
+.scene-body {
+  display: grid; grid-template-columns: 156px minmax(0, 1fr); gap: 16px;
+  align-items: center; padding: 22px 24px 20px; min-height: 235px;
+}
+.person {
+  position: relative; display: flex; align-items: center; justify-content: center;
+  background: var(--bg); border: 1px solid var(--line); border-radius: 10px; padding: 10px;
+}
+.person img { width: min(100%, 145px); max-height: 185px; object-fit: contain; display: block; }
+.role-label {
+  display: inline-flex; align-items: center; gap: 6px;
+  font: 700 .72rem var(--mono); text-transform: uppercase; letter-spacing: .05em;
+  color: var(--vermilion); background: var(--vermilion-tint);
+  border: 1px solid #E7B7A6; padding: 3px 8px; border-radius: 5px; margin-bottom: 10px;
+}
+.scene h2 {
+  font-family: var(--display); font-size: clamp(1.22rem, 2.9vw, 1.62rem);
+  letter-spacing: -.02em; line-height: 1.32; margin: 0 0 11px; overflow-wrap: anywhere;
+}
+.scene-goal { color: var(--muted); font-size: .9rem; margin: 0; line-height: 1.55; }
+.snippet {
+  margin: 14px 0 0; background: var(--code-bg); border: 1.5px solid var(--text);
+  border-left: 4px solid var(--vermilion); padding: 12px 14px; border-radius: 8px;
+  color: #F2EFE9; font: .83rem/1.55 var(--mono); white-space: pre-wrap; overflow-wrap: anywhere;
+}
+.scene-foot {
+  display: flex; justify-content: space-between; gap: 10px; align-items: center;
+  padding: 11px 20px; background: var(--bg); border-top: 1px solid var(--line);
+}
+.scene-foot span { display: inline-flex; align-items: center; gap: 6px; font: 600 .73rem var(--mono); color: var(--muted); }
+.scene-foot .dot { display: inline-block; width: 7px; height: 7px; background: var(--forest); border-radius: 50%; }
+
+/* Caderno de Respostas */
+.notebook { padding: 22px; }
+.notebook-top { display: flex; justify-content: space-between; gap: 9px; align-items: center; flex-wrap: wrap; margin-bottom: 8px; }
+.notebook h3 { font-family: var(--display); font-size: 1.15rem; margin: 0; display: inline-flex; align-items: center; gap: 7px; }
+.notebook label { display: block; font-weight: 600; font-size: .9rem; color: var(--text); margin-bottom: 9px; }
+.notebook textarea {
+  width: 100%; resize: vertical; min-height: 162px;
+  border-radius: 9px; border: 1.5px solid var(--line);
+  background: #FCFBF8; color: var(--text); padding: 14px 15px;
+  line-height: 1.65; outline: 0; transition: border-color .18s, box-shadow .18s;
+}
+.notebook textarea:focus { border-color: var(--cobalt); box-shadow: 0 0 0 3px rgba(21, 70, 158, .12); background: #FFFFFF; }
+.notebook textarea::placeholder { color: #8A8E85; }
+.note-meta {
+  display: flex; justify-content: space-between; gap: 8px; flex-wrap: wrap;
+  margin-top: 9px; color: var(--muted); font: 600 .75rem var(--mono);
+}
+.note-meta b { color: var(--cobalt); }
+.actions {
+  border-top: 1px solid var(--line); margin-top: 18px; padding-top: 16px;
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+}
+
+/* Barra Lateral da Sessão */
+.progress-card { padding: 18px; }
+.progress-card h2 { font-family: var(--display); font-size: 1.04rem; margin: 0; }
+.progress-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 0 0 11px; }
+.progress-top .mini { color: var(--vermilion); }
+.progress-track {
+  height: 8px; background: var(--panel2); border-radius: 4px;
+  overflow: hidden; border: 1px solid var(--line);
+}
+.progress-fill { height: 100%; width: 20%; background: var(--cobalt); transition: width .26s var(--ease); }
+.steps { padding: 0; margin: 14px 0 0; list-style: none; display: grid; gap: 6px; }
+.step-btn {
+  width: 100%; border: 1px solid transparent; background: var(--bg);
+  border-radius: 8px; color: var(--muted);
+  display: flex; gap: 10px; align-items: center; text-align: left;
+  padding: 9px 10px; font-size: .84rem; font-weight: 500;
+}
+.step-btn:hover { border-color: var(--text); color: var(--text); }
+.step-btn[aria-current="step"] {
+  border-color: var(--text); color: var(--text); font-weight: 600; background: var(--cobalt-tint);
+}
+.step-num {
+  width: 26px; height: 26px; display: grid; place-items: center; flex: none;
+  border-radius: 6px; border: 1px solid var(--line); background: var(--panel);
+  font: 700 .74rem var(--mono); color: var(--text);
+}
+.step-btn.answered .step-num { color: #FFFFFF; background: var(--forest); border-color: var(--text); }
+.step-btn.answered .step-num:before { content: '✓'; }
+.step-btn.answered .step-num span { display: none; }
+.step-text { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+.coach { padding: 18px; background: var(--panel2); }
+.coach-head { display: flex; gap: 10px; align-items: center; margin-bottom: 11px; }
+.coach-head img {
+  width: 56px; height: 60px; object-fit: contain;
+  background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 3px;
+}
+.coach-head strong { font-family: var(--display); display: block; font-size: .94rem; }
+.coach-head small { display: block; color: var(--muted); font-size: .75rem; }
+.coach details { border: 1px solid var(--line); background: var(--panel); border-radius: 8px; }
+.coach summary {
+  padding: 10px 12px; color: var(--cobalt); font-weight: 700; font-size: .84rem;
+  cursor: pointer; list-style: none; display: flex; align-items: center; justify-content: space-between;
+}
+.coach summary::-webkit-details-marker { display: none; }
+.coach summary span { display: inline-flex; align-items: center; gap: 6px; }
+.coach summary i.toggle-plus { color: var(--vermilion); transition: transform .2s var(--ease); }
+.coach details[open] summary i.toggle-plus { transform: rotate(45deg); }
+.coach details p { padding: 0 12px 12px; font-size: .85rem; color: var(--text); line-height: 1.58; margin: 0; }
+.coach .sub-note { font-size: .76rem; color: var(--muted); margin: 10px 0 0; }
+
+/* Tela de Resumo */
+.summary-intro { display: flex; gap: 20px; align-items: center; margin-bottom: 24px; }
+.summary-intro img {
+  width: 142px; height: 148px; object-fit: contain; flex: none;
+  background: var(--panel); border: 1.5px solid var(--text); border-radius: 12px;
+  padding: 8px; box-shadow: var(--shadow-hard);
+}
+.summary-intro h1 { margin: 8px 0 10px; font-size: clamp(1.85rem, 4vw, 2.7rem); }
+.summary-intro p { color: var(--muted); margin: 0; }
+.summary-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-bottom: 20px; }
+.metric {
+  border: 1.5px solid var(--text); border-radius: 10px; background: var(--panel);
+  padding: 18px; box-shadow: 2px 2px 0 var(--text);
+}
+.metric strong { font-family: var(--display); display: block; font-size: 1.8rem; color: var(--cobalt); line-height: 1.15; }
+.metric span { display: flex; align-items: center; gap: 6px; margin-top: 5px; font-size: .82rem; font-weight: 600; color: var(--muted); }
+.disclaimer {
+  display: flex; align-items: flex-start; gap: 10px;
+  border: 1px solid #C2D4F2; border-left: 4px solid var(--cobalt);
+  background: var(--cobalt-tint); border-radius: 8px;
+  padding: 13px 15px; color: var(--text); font-size: .88rem; margin-bottom: 22px;
+}
+.disclaimer i { color: var(--cobalt); font-size: 1.15rem; margin-top: 2px; flex: none; }
+.report-list { display: grid; gap: 12px; }
+.report-item {
+  border: 1.5px solid var(--text); border-radius: 10px;
+  background: var(--panel); padding: 18px 20px;
+}
+.report-item header {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  margin-bottom: 8px; color: var(--vermilion); font: 700 .74rem var(--mono);
+}
+.report-item h3 { font-family: var(--display); font-size: 1.04rem; margin: 0 0 8px; line-height: 1.45; }
+.report-item p { white-space: pre-wrap; overflow-wrap: anywhere; color: var(--text); font-size: .92rem; margin: 0; }
+.report-item p.empty { font-style: italic; color: var(--muted); }
+.summary-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px; }
+.summary-actions .primary { order: -1; }
+
+@media (max-width: 980px) {
+  .setup-layout { grid-template-columns: minmax(0, 1.3fr) minmax(260px, .8fr); }
+  .role-grid { grid-template-columns: repeat(2, 1fr); }
+  .role-opt { min-height: 148px; }
+  .role-opt img { height: 88px; }
+  .session-layout { grid-template-columns: minmax(0, 1fr) 265px; }
+  .area-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 760px) {
+  .hero { grid-template-columns: 1fr; gap: 18px; }
+  .hero h1 { max-width: 18ch; }
+  .preview-art { min-height: 200px; }
+  .preview-art img { max-width: 165px; }
+  .setup-layout, .session-layout { grid-template-columns: 1fr; }
+  .setup-aside, .session-side { position: static; }
+  .scene-body { grid-template-columns: 130px minmax(0, 1fr); }
+  .person img { max-height: 160px; }
+  .session-side { grid-row: 1; }
+  .steps { display: flex; gap: 6px; }
+  .steps li { flex: 1; min-width: 0; }
+  .step-btn { justify-content: center; padding: 8px 4px; }
+  .step-text { display: none; }
+  .progress-card { padding: 14px; }
+  .coach { display: none; }
+}
+@media (max-width: 520px) {
+  .wrap { width: calc(100% - 28px); }
+  main { padding-top: 24px; }
+  .top-note { display: none; }
+  .hero h1 { font-size: 2.1rem; }
+  .setup-controls { padding: 18px; }
+  .area-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+  .area-opt { padding: 10px 8px; min-height: 58px; }
+  .area-opt strong { font-size: .78rem; }
+  .role-grid { gap: 8px; }
+  .scene-top, .scene-foot { padding: 11px 13px; }
+  .scene-body { grid-template-columns: 86px minmax(0, 1fr); gap: 10px; min-height: 190px; padding: 16px 13px; }
+  .person img { max-height: 115px; }
+  .notebook { padding: 16px; }
+  .actions .primary { flex: 1; }
+  .summary-intro { flex-direction: column; align-items: flex-start; gap: 14px; }
+  .summary-intro img { height: 110px; width: 106px; }
+  .metric { padding: 13px; }
+  .metric strong { font-size: 1.35rem; }
+  .summary-actions { display: grid; grid-template-columns: 1fr; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap top-inner">
+  <a class="brand" href="./index.html"><b>$</b> debug_english<span aria-hidden="true">_</span></a>
+  <div class="top-side">
+    <span class="top-note">MVP 0.1.1 · 100% gratuito</span>
+    <a class="back" href="./index.html"><i class="ph-bold ph-arrow-left" aria-hidden="true"></i> Voltar ao site</a>
+  </div>
+</div></header>
+
+<main class="wrap">
+  <section id="setup-screen" aria-labelledby="setup-title">
+    <div class="hero">
+      <div>
+        <span class="eyebrow"><i class="ph-bold ph-terminal" aria-hidden="true"></i> Sua sala de prática</span>
+        <h1 id="setup-title">Treine para a sua <em>próxima oportunidade.</em></h1>
+        <p class="lead">Escolha sua área, conheça quem vai conduzir a sessão e responda cinco perguntas reais do universo de TI. Sem notas inventadas, pressão ou cadastro.</p>
+        <div class="hero-features">
+          <span><i class="ph-duotone ph-list-numbers" aria-hidden="true"></i> 05 perguntas</span>
+          <span><i class="ph-duotone ph-prohibit" aria-hidden="true"></i> Sem IA</span>
+          <span><i class="ph-duotone ph-hard-drive" aria-hidden="true"></i> Rascunho local</span>
+          <span><i class="ph-duotone ph-tag" aria-hidden="true"></i> R$ 0</span>
+        </div>
+      </div>
+      <div class="preview-art">
+        <div class="art-copy">
+          <span class="mini">SALA 01 / PREPARAÇÃO</span>
+          <strong>Seu próximo passo começa aqui.</strong>
+          <p>Respostas no seu ritmo, com espaço para pensar.</p>
+        </div>
+        <img id="hero-person" alt="Pinguim entrevistador" />
+        <span class="tiny-label">DEBUG ENGLISH LAB</span>
+      </div>
+    </div>
+
+    <div class="setup-layout">
+      <div class="card setup-controls">
+        <div class="setup-group">
+          <p class="overline"><i class="ph-bold ph-compass" aria-hidden="true"></i> PASSO 01 / ESPECIALIDADE</p>
+          <h2 class="small-heading">Em qual área você quer praticar?</h2>
+          <p class="section-sub">As perguntas mudam conforme sua escolha.</p>
+          <div class="area-grid" id="area-grid">
+            <button class="area-opt" data-area="software" type="button" aria-pressed="false"><span class="area-label-wrap"><i class="ph-duotone ph-code" aria-hidden="true"></i><strong>Software Development</strong></span><i class="ph-bold ph-check-circle tick" aria-hidden="true"></i></button>
+            <button class="area-opt" data-area="cyber" type="button" aria-pressed="false"><span class="area-label-wrap"><i class="ph-duotone ph-shield-check" aria-hidden="true"></i><strong>Cybersecurity</strong></span><i class="ph-bold ph-check-circle tick" aria-hidden="true"></i></button>
+            <button class="area-opt" data-area="cloud" type="button" aria-pressed="false"><span class="area-label-wrap"><i class="ph-duotone ph-cloud" aria-hidden="true"></i><strong>Cloud &amp; DevOps</strong></span><i class="ph-bold ph-check-circle tick" aria-hidden="true"></i></button>
+            <button class="area-opt" data-area="data" type="button" aria-pressed="false"><span class="area-label-wrap"><i class="ph-duotone ph-database" aria-hidden="true"></i><strong>Data &amp; AI</strong></span><i class="ph-bold ph-check-circle tick" aria-hidden="true"></i></button>
+            <button class="area-opt" data-area="support" type="button" aria-pressed="false"><span class="area-label-wrap"><i class="ph-duotone ph-headset" aria-hidden="true"></i><strong>IT Support</strong></span><i class="ph-bold ph-check-circle tick" aria-hidden="true"></i></button>
+            <button class="area-opt" data-area="qa" type="button" aria-pressed="false"><span class="area-label-wrap"><i class="ph-duotone ph-bug-beetle" aria-hidden="true"></i><strong>QA &amp; Testing</strong></span><i class="ph-bold ph-check-circle tick" aria-hidden="true"></i></button>
+          </div>
+        </div>
+
+        <div class="setup-group">
+          <p class="overline"><i class="ph-bold ph-users-three" aria-hidden="true"></i> PASSO 02 / TIPO DE TREINO</p>
+          <h2 class="small-heading">Com quem você vai praticar?</h2>
+          <p class="section-sub">Cada personagem conduz um tipo diferente de sessão.</p>
+          <div class="role-grid" id="role-grid">
+            <button class="role-opt" type="button" data-mode="recrutador" aria-pressed="false"><i class="ph-bold ph-check-circle selected-check" aria-hidden="true"></i><img data-role-image="recrutador" alt="Pinguim recrutador"/><strong>Recrutador</strong><small>Entrevista</small></button>
+            <button class="role-opt" type="button" data-mode="nerd" aria-pressed="false"><i class="ph-bold ph-check-circle selected-check" aria-hidden="true"></i><img data-role-image="nerd" alt="Pinguim nerd"/><strong>Nerd</strong><small>Entrevista técnica</small></button>
+            <button class="role-opt" type="button" data-mode="dev" aria-pressed="false"><i class="ph-bold ph-check-circle selected-check" aria-hidden="true"></i><img data-role-image="dev" alt="Pinguim desenvolvedor"/><strong>Dev</strong><small>Code review</small></button>
+            <button class="role-opt" type="button" data-mode="professor" aria-pressed="false"><i class="ph-bold ph-check-circle selected-check" aria-hidden="true"></i><img data-role-image="professor" alt="Pinguim professor"/><strong>Professor</strong><small>Treino guiado</small></button>
+          </div>
+        </div>
+      </div>
+
+      <aside class="card setup-aside" aria-label="Resumo do treino selecionado">
+        <span class="mini"><i class="ph-bold ph-clipboard-text" aria-hidden="true"></i> SUA PRÓXIMA SESSÃO</span>
+        <div class="selection-panel">
+          <span class="label">Área selecionada</span>
+          <strong id="selected-area">Cybersecurity</strong>
+          <p id="selected-mode">Entrevista com recrutador</p>
+        </div>
+        <div class="scene-preview">
+          <img id="selected-person" alt="Personagem selecionado"/>
+          <div>
+            <div class="aside-title" id="selected-role">Recrutador</div>
+            <p id="selected-intro">Perguntas de processos seletivos.</p>
+          </div>
+        </div>
+        <div class="mini" style="color:var(--muted)"><i class="ph-bold ph-clock" aria-hidden="true"></i> 5 perguntas · cerca de 10–15 min</div>
+        <button class="primary wide" id="start" type="button">Começar a sessão <i class="ph-bold ph-arrow-right" aria-hidden="true"></i></button>
+        <p class="privacy"><i class="ph-bold ph-shield-check" aria-hidden="true"></i><span>Suas respostas ficam neste navegador. Nada é enviado ou avaliado por IA.</span></p>
+        <button class="secondary wide" id="erase-setup" type="button" hidden><i class="ph-bold ph-trash" aria-hidden="true"></i> Apagar rascunho anterior</button>
+      </aside>
+    </div>
+  </section>
+
+  <section id="session-screen" hidden aria-labelledby="session-title">
+    <div class="session-top">
+      <div>
+        <span class="eyebrow" id="session-path">CYBERSECURITY / ENTREVISTA</span>
+        <h1 id="session-title">Sua sessão está em andamento.</h1>
+      </div>
+      <button class="secondary" id="change-track" type="button"><i class="ph-bold ph-sliders-horizontal" aria-hidden="true"></i> Alterar sessão</button>
+    </div>
+
+    <div class="session-layout">
+      <div class="session-main">
+        <section class="scene" aria-labelledby="question-text">
+          <div class="scene-top">
+            <span id="speaker-title">RECRUTADOR · ENTREVISTA</span>
+            <span>SESSÃO / <span id="session-index">01</span> DE 05</span>
+          </div>
+          <div class="scene-body">
+            <div class="person"><img id="session-person" alt="Seu entrevistador"/></div>
+            <div>
+              <span class="role-label" id="question-kind">APRESENTAÇÃO</span>
+              <h2 id="question-text" lang="en">Tell me about yourself.</h2>
+              <p class="scene-goal" id="question-goal"></p>
+              <pre class="snippet" id="question-snippet" hidden><code id="snippet-code"></code></pre>
+            </div>
+          </div>
+          <div class="scene-foot">
+            <span><i class="dot"></i> Treino simulado, sem IA</span>
+            <span id="scene-role">Com o Recrutador</span>
+          </div>
+        </section>
+
+        <section class="card notebook" aria-labelledby="notebook-title">
+          <div class="notebook-top">
+            <h3 id="notebook-title"><i class="ph-duotone ph-notebook" aria-hidden="true"></i> Seu caderno de respostas</h3>
+            <span class="mini">RASCUNHO · SALVAMENTO LOCAL</span>
+          </div>
+          <label for="answer">Responda em inglês, do seu jeito:</label>
+          <textarea id="answer" maxlength="6000" spellcheck="true" autocomplete="off" placeholder="Write your answer here..." aria-describedby="save-status"></textarea>
+          <div class="note-meta">
+            <span><b id="words">0</b> palavras</span>
+            <span id="save-status" role="status" aria-live="polite">Salvo apenas neste navegador</span>
+          </div>
+          <div class="actions">
+            <button class="secondary" id="previous" type="button"><i class="ph-bold ph-arrow-left" aria-hidden="true"></i> Anterior</button>
+            <button class="primary" id="next" type="button">Próxima pergunta <i class="ph-bold ph-arrow-right" aria-hidden="true"></i></button>
+          </div>
+        </section>
+      </div>
+
+      <aside class="session-side" aria-label="Acompanhamento da sessão">
+        <div class="card progress-card">
+          <div class="progress-top">
+            <h2>Seu progresso</h2>
+            <span class="mini" id="progress-label">01 / 05</span>
+          </div>
+          <div class="progress-track" role="progressbar" aria-label="Progresso da sessão" aria-valuemin="0" aria-valuemax="5" aria-valuenow="1" id="progress-track">
+            <div class="progress-fill" id="progress-fill"></div>
+          </div>
+          <ol class="steps" id="steps"></ol>
+        </div>
+
+        <div class="card coach">
+          <div class="coach-head">
+            <img id="coach-image" alt="Pinguim professor"/>
+            <div>
+              <strong>Uma dica do Professor</strong>
+              <small>Sem correção automática</small>
+            </div>
+          </div>
+          <details id="hint-details">
+            <summary>
+              <span><i class="ph-duotone ph-lightbulb" aria-hidden="true"></i> Ver estrutura sugerida</span>
+              <i class="ph-bold ph-plus toggle-plus" aria-hidden="true"></i>
+            </summary>
+            <p id="question-hint"></p>
+          </details>
+          <p class="sub-note">Não existe resposta perfeita. Pratique explicar seu raciocínio de forma clara.</p>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <section id="summary-screen" hidden aria-labelledby="summary-title">
+    <div class="summary-intro">
+      <img id="summary-person" alt="Personagem comemorando o fim do treino"/>
+      <div>
+        <span class="eyebrow"><i class="ph-bold ph-flag-checkered" aria-hidden="true"></i> SESSÃO FINALIZADA · PARABÉNS PELO TREINO</span>
+        <h1 id="summary-title">Seu treino, <em>em perspectiva.</em></h1>
+        <p>Reveja suas respostas e prepare os próximos ensaios. O objetivo aqui é praticar — não receber uma nota automática.</p>
+      </div>
+    </div>
+
+    <div class="summary-grid">
+      <div class="metric"><strong id="metric-answered">0/5</strong><span><i class="ph-bold ph-check-square" aria-hidden="true"></i> Respondidas</span></div>
+      <div class="metric"><strong id="metric-words">0</strong><span><i class="ph-bold ph-text-aa" aria-hidden="true"></i> Palavras escritas</span></div>
+      <div class="metric"><strong id="metric-track">TI</strong><span><i class="ph-bold ph-folder-open" aria-hidden="true"></i> Área praticada</span></div>
+    </div>
+
+    <div class="disclaimer">
+      <i class="ph-bold ph-info" aria-hidden="true"></i>
+      <div><strong>Resumo honesto:</strong> este arquivo reúne apenas o que você escreveu. Ainda não há análise automática de gramática, conteúdo ou fluência.</div>
+    </div>
+
+    <div class="report-list" id="report-list"></div>
+
+    <div class="summary-actions">
+      <button class="primary" id="review" type="button"><i class="ph-bold ph-pencil-simple" aria-hidden="true"></i> Revisar minhas respostas</button>
+      <button class="secondary" id="download" type="button"><i class="ph-bold ph-download-simple" aria-hidden="true"></i> Baixar respostas (.txt)</button>
+      <button class="secondary" id="restart" type="button"><i class="ph-bold ph-arrow-counter-clockwise" aria-hidden="true"></i> Começar novo treino</button>
+      <a class="secondary" href="./index.html" style="text-decoration:none"><i class="ph-bold ph-house" aria-hidden="true"></i> Voltar ao Debug English</a>
+    </div>
+  </section>
+</main>
+
+<footer><div class="wrap">Debug English · Treino prático de inglês para tecnologia · MVP gratuito em desenvolvimento</div></footer>
+
+<script>
+(() => {
+'use strict';
+const DATA = {"modes":{"recrutador":{"label":"Recrutador","short":"Entrevista","role":"Entrevistador","intro":"Perguntas comportamentais e técnicas de processos seletivos.","tagline":"Entrevista de emprego","accent":"amber"},"nerd":{"label":"Nerd","short":"Técnica","role":"Especialista técnico","intro":"Raciocínio técnico e explicações que fazem sentido.","tagline":"Entrevista técnica","accent":"blue"},"dev":{"label":"Dev","short":"Code review","role":"Colega desenvolvedor","intro":"Revisão de código e feedback construtivo em inglês.","tagline":"Revisão de PR","accent":"green"},"professor":{"label":"Professor","short":"Guiado","role":"Mentor de inglês","intro":"Treino com estrutura, dicas e linguagem profissional.","tagline":"Prática guiada","accent":"violet"}},"images":{"recrutador":{"neutral":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIiB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiI+CjxlbGxpcHNlIGN4PSIyNTYiIGN5PSI0ODAiIHJ4PSIxMjgiIHJ5PSIxNSIgZmlsbD0iIzAwMCIgb3BhY2l0eT0iLjE0Ii8+CjxlbGxpcHNlIGN4PSIyMDIiIGN5PSI0NjMiIHJ4PSI0NCIgcnk9IjE3IiBmaWxsPSIjRjZCMjFCIi8+CjxlbGxpcHNlIGN4PSIzMTAiIGN5PSI0NjMiIHJ4PSI0NCIgcnk9IjE3IiBmaWxsPSIjRjZCMjFCIi8+CjxwYXRoIGQ9Ik0yNTYgMTEyIEMzNDYgMTEyIDM5MiAxODggMzkyIDI5MiBDMzkyIDM5MiAzMzYgNDUyIDI1NiA0NTIgQzE3NiA0NTIgMTIwIDM5MiAxMjAgMjkyIEMxMjAgMTg4IDE2NiAxMTIgMjU2IDExMiBaIiBmaWxsPSIjMkQyRDMzIi8+CjxlbGxpcHNlIGN4PSIxOTYiIGN5PSIxNjAiIHJ4PSIzNCIgcnk9IjE2IiB0cmFuc2Zvcm09InJvdGF0ZSgtMzIgMTk2IDE2MCkiIGZpbGw9IiM0NjQ2NTAiIG9wYWNpdHk9Ii41NSIvPgo8cGF0aCBkPSJNMjU2IDIzMiBDMzE4IDIzMiAzNTAgMjg4IDM1MCAzNTAgQzM1MCA0MDggMzEyIDQ0MCAyNTYgNDQwIEMyMDAgNDQwIDE2MiA0MDggMTYyIDM1MCBDMTYyIDI4OCAxOTQgMjMyIDI1NiAyMzIgWiIgZmlsbD0iI0Y2RjNFQSIvPgo8cGF0aCBkPSJNMzM0IDMzNiBDMzM0IDM5NiAzMDQgNDI4IDI1NiA0MzQgQzI5OCA0MjAgMzE4IDM5MCAzMjYgMzM2IFoiIGZpbGw9IiNFNkUxRDIiLz4KCjxwYXRoIHRyYW5zZm9ybT0icm90YXRlKDAgMTMyIDI2MikiIGQ9Ik0xMzIgMjUyIEM5NCAyNzIgODAgMzQyIDEwMiAzOTQgQzEyNCAzODAgMTQ0IDMzMiAxNTAgMjc2IFoiIGZpbGw9IiMzQTNBNDMiIHN0cm9rZT0iIzU1NTU1RiIgc3Ryb2tlLXdpZHRoPSIzIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+CjxwYXRoIHRyYW5zZm9ybT0icm90YXRlKDAgMzgwIDI2MikiIGQ9Ik0zODAgMjUyIEM0MTggMjcyIDQzMiAzNDIgNDEwIDM5NCBDMzg4IDM4MCAzNjggMzMyIDM2MiAyNzYgWiIgZmlsbD0iIzNBM0E0MyIgc3Ryb2tlPSIjNTU1NTVGIiBzdHJva2Utd2lkdGg9IjMiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KPGVsbGlwc2UgY3g9IjIyMCIgY3k9IjE5MCIgcng9IjIyIiByeT0iMjYiIGZpbGw9IiNGRkZGRkYiLz48Y2lyY2xlIGN4PSIyMjQiIGN5PSIxOTQiIHI9IjEwIiBmaWxsPSIjMTcxNzFCIi8+PGNpcmNsZSBjeD0iMjI4IiBjeT0iMTkwIiByPSIzLjUiIGZpbGw9IiNGRkZGRkYiLz48ZWxsaXBzZSBjeD0iMjkyIiBjeT0iMTkwIiByeD0iMjIiIHJ5PSIyNiIgZmlsbD0iI0ZGRkZGRiIvPjxjaXJjbGUgY3g9IjI4OCIgY3k9IjE5NCIgcj0iMTAiIGZpbGw9IiMxNzE3MUIiLz48Y2lyY2xlIGN4PSIyOTIiIGN5PSIxOTAiIHI9IjMuNSIgZmlsbD0iI0ZGRkZGRiIvPjxwYXRoIGQ9Ik0yMjYgMjE2IFEyNTYgMTk4IDI4NiAyMTYgUTI3NCAyNDYgMjU2IDI1MiBRMjM4IDI0NiAyMjYgMjE2IFoiIGZpbGw9IiNGNkIyMUIiLz48cGF0aCBkPSJNMjQwIDIzMCBRMjU2IDIzNiAyNzIgMjMwIiBzdHJva2U9IiNEOTgzMEEiIHN0cm9rZS13aWR0aD0iNCIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CjxwYXRoIGQ9Ik0xNTAgMjMyIEMxNDAgOTAgMzcyIDkwIDM2MiAyMzIiIHN0cm9rZT0iI0E4QjBCRCIgc3Ryb2tlLXdpZHRoPSI5IiBmaWxsPSJub25lIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KPHJlY3QgeD0iMTI4IiB5PSIyMTgiIHdpZHRoPSIzMCIgaGVpZ2h0PSI1MCIgcng9IjEzIiBmaWxsPSIjNkI3MjgwIi8+CjxyZWN0IHg9IjM1NCIgeT0iMjE4IiB3aWR0aD0iMzAiIGhlaWdodD0iNTAiIHJ4PSIxMyIgZmlsbD0iIzZCNzI4MCIvPgo8cGF0aCBkPSJNMzcwIDI2MiBRMzc4IDMwNiAzMDYgMjcwIiBzdHJva2U9IiNBOEIwQkQiIHN0cm9rZS13aWR0aD0iNSIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CjxjaXJjbGUgY3g9IjMwMCIgY3k9IjI2OCIgcj0iOCIgZmlsbD0iIzMzMzg0MCIvPgo8cGF0aCBkPSJNMjI2IDI1NiBMMjU2IDI3NiBMMjQwIDI5MCBaIiBmaWxsPSIjZmZmIiBzdHJva2U9IiNDRkNBQkIiIHN0cm9rZS13aWR0aD0iMiIvPgo8cGF0aCBkPSJNMjg2IDI1NiBMMjU2IDI3NiBMMjcyIDI5MCBaIiBmaWxsPSIjZmZmIiBzdHJva2U9IiNDRkNBQkIiIHN0cm9rZS13aWR0aD0iMiIvPgo8cGF0aCBkPSJNMjQ2IDI3MiBMMjY2IDI3MiBMMjc0IDM0MCBMMjU2IDM2MCBMMjM4IDM0MCBaIiBmaWxsPSIjMkU2RkQ5Ii8+CjxwYXRoIGQ9Ik0yNDggMjcyIEwyNjQgMjcyIEwyNjIgMjg0IEwyNTAgMjg0IFoiIGZpbGw9IiMyNDU3QUQiLz4KPC9zdmc+","thinking":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIiB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiI+CjxlbGxpcHNlIGN4PSIyNTYiIGN5PSI0ODAiIHJ4PSIxMjgiIHJ5PSIxNSIgZmlsbD0iIzAwMCIgb3BhY2l0eT0iLjE0Ii8+CjxlbGxpcHNlIGN4PSIyMDIiIGN5PSI0NjMiIHJ4PSI0NCIgcnk9IjE3IiBmaWxsPSIjRjZCMjFCIi8+CjxlbGxpcHNlIGN4PSIzMTAiIGN5PSI0NjMiIHJ4PSI0NCIgcnk9IjE3IiBmaWxsPSIjRjZCMjFCIi8+CjxwYXRoIGQ9Ik0yNTYgMTEyIEMzNDYgMTEyIDM5MiAxODggMzkyIDI5MiBDMzkyIDM5MiAzMzYgNDUyIDI1NiA0NTIgQzE3NiA0NTIgMTIwIDM5MiAxMjAgMjkyIEMxMjAgMTg4IDE2NiAxMTIgMjU2IDExMiBaIiBmaWxsPSIjMkQyRDMzIi8+CjxlbGxpcHNlIGN4PSIxOTYiIGN5PSIxNjAiIHJ4PSIzNCIgcnk9IjE2IiB0cmFuc2Zvcm09InJvdGF0ZSgtMzIgMTk2IDE2MCkiIGZpbGw9IiM0NjQ2NTAiIG9wYWNpdHk9Ii41NSIvPgo8cGF0aCBkPSJNMjU2IDIzMiBDMzE4IDIzMiAzNTAgMjg4IDM1MCAzNTAgQzM1MCA0MDggMzEyIDQ0MCAyNTYgNDQwIEMyMDAgNDQwIDE2MiA0MDggMTYyIDM1MCBDMTYyIDI4OCAxOTQgMjMyIDI1NiAyMzIgWiIgZmlsbD0iI0Y2RjNFQSIvPgo8cGF0aCBkPSJNMzM0IDMzNiBDMzM0IDM5NiAzMDQgNDI4IDI1NiA0MzQgQzI5OCA0MjAgMzE4IDM5MCAzMjYgMzM2IFoiIGZpbGw9IiNFNkUxRDIiLz4KCjxwYXRoIHRyYW5zZm9ybT0icm90YXRlKDAgMTMyIDI2MikiIGQ9Ik0xMzIgMjUyIEM5NCAyNzIgODAgMzQyIDEwMiAzOTQgQzEyNCAzODAgMTQ0IDMzMiAxNTAgMjc2IFoiIGZpbGw9IiMzQTNBNDMiIHN0cm9rZT0iIzU1NTU1RiIgc3Ryb2tlLXdpZHRoPSIzIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+CjxwYXRoIHRyYW5zZm9ybT0icm90YXRlKDk4IDM4MCAyNjIpIiBkPSJNMzgwIDI1MiBDNDE4IDI3MiA0MzIgMzQyIDQxMCAzOTQgQzM4OCAzODAgMzY4IDMzMiAzNjIgMjc2IFoiIGZpbGw9IiMzQTNBNDMiIHN0cm9rZT0iIzU1NTU1RiIgc3Ryb2tlLXdpZHRoPSIzIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+CjxlbGxpcHNlIGN4PSIyMjAiIGN5PSIxOTAiIHJ4PSIyMiIgcnk9IjI2IiBmaWxsPSIjRkZGRkZGIi8+PGNpcmNsZSBjeD0iMjEzIiBjeT0iMTg0IiByPSIxMCIgZmlsbD0iIzE3MTcxQiIvPjxjaXJjbGUgY3g9IjIxNyIgY3k9IjE4MCIgcj0iMy41IiBmaWxsPSIjRkZGRkZGIi8+PGVsbGlwc2UgY3g9IjI5MiIgY3k9IjE5MCIgcng9IjIyIiByeT0iMjYiIGZpbGw9IiNGRkZGRkYiLz48Y2lyY2xlIGN4PSIyODUiIGN5PSIxODQiIHI9IjEwIiBmaWxsPSIjMTcxNzFCIi8+PGNpcmNsZSBjeD0iMjg5IiBjeT0iMTgwIiByPSIzLjUiIGZpbGw9IiNGRkZGRkYiLz48cGF0aCBkPSJNMTk2IDE1MCBRMjIwIDEzNiAyNDQgMTQ4IiBzdHJva2U9IiNFOUU5RjAiIHN0cm9rZS13aWR0aD0iNiIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PHBhdGggZD0iTTI3MiAxNjIgTDMxNiAxNjIiIHN0cm9rZT0iI0U5RTlGMCIgc3Ryb2tlLXdpZHRoPSI2IiBmaWxsPSJub25lIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48cGF0aCBkPSJNMjI2IDIxNiBRMjU2IDE5OCAyODYgMjE2IFEyNzQgMjQ2IDI1NiAyNTIgUTIzOCAyNDYgMjI2IDIxNiBaIiBmaWxsPSIjRjZCMjFCIi8+PHBhdGggZD0iTTI0MCAyMzAgUTI1NiAyMzYgMjcyIDIzMCIgc3Ryb2tlPSIjRDk4MzBBIiBzdHJva2Utd2lkdGg9IjQiIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxwYXRoIGQ9Ik0yMzIgNjYgUTIzMiA0MCAyNTggNDAgUTI4NCA0MCAyODQgNjIgUTI4NCA4MCAyNjIgODggTDI2MiAxMDAiIHN0cm9rZT0iIzVCN0NGQSIgc3Ryb2tlLXdpZHRoPSIxMCIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PGNpcmNsZSBjeD0iMjYyIiBjeT0iMTE4IiByPSI3IiBmaWxsPSIjNUI3Q0ZBIi8+CjxwYXRoIGQ9Ik0xNTAgMjMyIEMxNDAgOTAgMzcyIDkwIDM2MiAyMzIiIHN0cm9rZT0iI0E4QjBCRCIgc3Ryb2tlLXdpZHRoPSI5IiBmaWxsPSJub25lIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KPHJlY3QgeD0iMTI4IiB5PSIyMTgiIHdpZHRoPSIzMCIgaGVpZ2h0PSI1MCIgcng9IjEzIiBmaWxsPSIjNkI3MjgwIi8+CjxyZWN0IHg9IjM1NCIgeT0iMjE4IiB3aWR0aD0iMzAiIGhlaWdodD0iNTAiIHJ4PSIxMyIgZmlsbD0iIzZCNzI4MCIvPgo8cGF0aCBkPSJNMzcwIDI2MiBRMzc4IDMwNiAzMDYgMjcwIiBzdHJva2U9IiNBOEIwQkQiIHN0cm9rZS13aWR0aD0iNSIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CjxjaXJjbGUgY3g9IjMwMCIgY3k9IjI2OCIgcj0iOCIgZmlsbD0iIzMzMzg0MCIvPgo8cGF0aCBkPSJNMjI2IDI1NiBMMjU2IDI3NiBMMjQwIDI5MCBaIiBmaWxsPSIjZmZmIiBzdHJva2U9IiNDRkNBQkIiIHN0cm9rZS13aWR0aD0iMiIvPgo8cGF0aCBkPSJNMjg2IDI1NiBMMjU2IDI3NiBMMjcyIDI5MCBaIiBmaWxsPSIjZmZmIiBzdHJva2U9IiNDRkNBQkIiIHN0cm9rZS13aWR0aD0iMiIvPgo8cGF0aCBkPSJNMjQ2IDI3MiBMMjY2IDI3MiBMMjc0IDM0MCBMMjU2IDM2MCBMMjM4IDM0MCBaIiBmaWxsPSIjMkU2RkQ5Ii8+CjxwYXRoIGQ9Ik0yNDggMjcyIEwyNjQgMjcyIEwyNjIgMjg0IEwyNTAgMjg0IFoiIGZpbGw9IiMyNDU3QUQiLz4KPC9zdmc+","happy":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIiB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiI+CjxlbGxpcHNlIGN4PSIyNTYiIGN5PSI0ODAiIHJ4PSIxMjgiIHJ5PSIxNSIgZmlsbD0iIzAwMCIgb3BhY2l0eT0iLjE0Ii8+CjxlbGxpcHNlIGN4PSIyMDIiIGN5PSI0NjMiIHJ4PSI0NCIgcnk9IjE3IiBmaWxsPSIjRjZCMjFCIi8+CjxlbGxpcHNlIGN4PSIzMTAiIGN5PSI0NjMiIHJ4PSI0NCIgcnk9IjE3IiBmaWxsPSIjRjZCMjFCIi8+CjxwYXRoIGQ9Ik0yNTYgMTEyIEMzNDYgMTEyIDM5MiAxODggMzkyIDI5MiBDMzkyIDM5MiAzMzYgNDUyIDI1NiA0NTIgQzE3NiA0NTIgMTIwIDM5MiAxMjAgMjkyIEMxMjAgMTg4IDE2NiAxMTIgMjU2IDExMiBaIiBmaWxsPSIjMkQyRDMzIi8+CjxlbGxpcHNlIGN4PSIxOTYiIGN5PSIxNjAiIHJ4PSIzNCIgcnk9IjE2IiB0cmFuc2Zvcm09InJvdGF0ZSgtMzIgMTk2IDE2MCkiIGZpbGw9IiM0NjQ2NTAiIG9wYWNpdHk9Ii41NSIvPgo8cGF0aCBkPSJNMjU2IDIzMiBDMzE4IDIzMiAzNTAgMjg4IDM1MCAzNTAgQzM1MCA0MDggMzEyIDQ0MCAyNTYgNDQwIEMyMDAgNDQwIDE2MiA0MDggMTYyIDM1MCBDMTYyIDI4OCAxOTQgMjMyIDI1NiAyMzIgWiIgZmlsbD0iI0Y2RjNFQSIvPgo8cGF0aCBkPSJNMzM0IDMzNiBDMzM0IDM5NiAzMDQgNDI4IDI1NiA0MzQgQzI5OCA0MjAgMzE4IDM5MCAzMjYgMzM2IFoiIGZpbGw9IiNFNkUxRDIiLz4KCjxwYXRoIHRyYW5zZm9ybT0icm90YXRlKC0xMiAxMzIgMjYyKSIgZD0iTTEzMiAyNTIgQzk0IDI3MiA4MCAzNDIgMTAyIDM5NCBDMTI0IDM4MCAxNDQgMzMyIDE1MCAyNzYgWiIgZmlsbD0iIzNBM0E0MyIgc3Ryb2tlPSIjNTU1NTVGIiBzdHJva2Utd2lkdGg9IjMiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KPHBhdGggdHJhbnNmb3JtPSJyb3RhdGUoMTIgMzgwIDI2MikiIGQ9Ik0zODAgMjUyIEM0MTggMjcyIDQzMiAzNDIgNDEwIDM5NCBDMzg4IDM4MCAzNjggMzMyIDM2MiAyNzYgWiIgZmlsbD0iIzNBM0E0MyIgc3Ryb2tlPSIjNTU1NTVGIiBzdHJva2Utd2lkdGg9IjMiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KPHBhdGggZD0iTTE5OCAxOTYgUTIyMCAxNjQgMjQyIDE5NiIgc3Ryb2tlPSIjMTcxNzFCIiBzdHJva2Utd2lkdGg9IjgiIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxwYXRoIGQ9Ik0yNzAgMTk2IFEyOTIgMTY0IDMxNCAxOTYiIHN0cm9rZT0iIzE3MTcxQiIgc3Ryb2tlLXdpZHRoPSI4IiBmaWxsPSJub25lIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48ZWxsaXBzZSBjeD0iMTg0IiBjeT0iMjI4IiByeD0iMTUiIHJ5PSI5IiBmaWxsPSIjRjI5QTlBIiBvcGFjaXR5PSIuODUiLz48ZWxsaXBzZSBjeD0iMzI4IiBjeT0iMjI4IiByeD0iMTUiIHJ5PSI5IiBmaWxsPSIjRjI5QTlBIiBvcGFjaXR5PSIuODUiLz48cGF0aCBkPSJNMjI2IDIxNiBRMjU2IDE5OCAyODYgMjE2IFEyNzQgMjQ2IDI1NiAyNTIgUTIzOCAyNDYgMjI2IDIxNiBaIiBmaWxsPSIjRjZCMjFCIi8+PHBhdGggZD0iTTIzOCAyMjggUTI1NiAyNDYgMjc0IDIyOCIgc3Ryb2tlPSIjRDk4MzBBIiBzdHJva2Utd2lkdGg9IjUiIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgo8cGF0aCBkPSJNMTUwIDIzMiBDMTQwIDkwIDM3MiA5MCAzNjIgMjMyIiBzdHJva2U9IiNBOEIwQkQiIHN0cm9rZS13aWR0aD0iOSIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CjxyZWN0IHg9IjEyOCIgeT0iMjE4IiB3aWR0aD0iMzAiIGhlaWdodD0iNTAiIHJ4PSIxMyIgZmlsbD0iIzZCNzI4MCIvPgo8cmVjdCB4PSIzNTQiIHk9IjIxOCIgd2lkdGg9IjMwIiBoZWlnaHQ9IjUwIiByeD0iMTMiIGZpbGw9IiM2QjcyODAiLz4KPHBhdGggZD0iTTM3MCAyNjIgUTM3OCAzMDYgMzA2IDI3MCIgc3Ryb2tlPSIjQThCMEJEIiBzdHJva2Utd2lkdGg9IjUiIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgo8Y2lyY2xlIGN4PSIzMDAiIGN5PSIyNjgiIHI9IjgiIGZpbGw9IiMzMzM4NDAiLz4KPHBhdGggZD0iTTIyNiAyNTYgTDI1NiAyNzYgTDI0MCAyOTAgWiIgZmlsbD0iI2ZmZiIgc3Ryb2tlPSIjQ0ZDQUJCIiBzdHJva2Utd2lkdGg9IjIiLz4KPHBhdGggZD0iTTI4NiAyNTYgTDI1NiAyNzYgTDI3MiAyOTAgWiIgZmlsbD0iI2ZmZiIgc3Ryb2tlPSIjQ0ZDQUJCIiBzdHJva2Utd2lkdGg9IjIiLz4KPHBhdGggZD0iTTI0NiAyNzIgTDI2NiAyNzIgTDI3NCAzNDAgTDI1NiAzNjAgTDIzOCAzNDAgWiIgZmlsbD0iIzJFNkZEOSIvPgo8cGF0aCBkPSJNMjQ4IDI3MiBMMjY0IDI3MiBMMjYyIDI4NCBMMjUwIDI4NCBaIiBmaWxsPSIjMjQ1N0FEIi8+Cjwvc3ZnPg==","celebrating":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIiB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiI+CjxlbGxpcHNlIGN4PSIyNTYiIGN5PSI0ODAiIHJ4PSIxMjgiIHJ5PSIxNSIgZmlsbD0iIzAwMCIgb3BhY2l0eT0iLjE0Ii8+CjxlbGxpcHNlIGN4PSIyMDIiIGN5PSI0NjMiIHJ4PSI0NCIgcnk9IjE3IiBmaWxsPSIjRjZCMjFCIi8+CjxlbGxpcHNlIGN4PSIzMTAiIGN5PSI0NjMiIHJ4PSI0NCIgcnk9IjE3IiBmaWxsPSIjRjZCMjFCIi8+CjxwYXRoIGQ9Ik0yNTYgMTEyIEMzNDYgMTEyIDM5MiAxODggMzkyIDI5MiBDMzkyIDM5MiAzMzYgNDUyIDI1NiA0NTIgQzE3NiA0NTIgMTIwIDM5MiAxMjAgMjkyIEMxMjAgMTg4IDE2NiAxMTIgMjU2IDExMiBaIiBmaWxsPSIjMkQyRDMzIi8+CjxlbGxpcHNlIGN4PSIxOTYiIGN5PSIxNjAiIHJ4PSIzNCIgcnk9IjE2IiB0cmFuc2Zvcm09InJvdGF0ZSgtMzIgMTk2IDE2MCkiIGZpbGw9IiM0NjQ2NTAiIG9wYWNpdHk9Ii41NSIvPgo8cGF0aCBkPSJNMjU2IDIzMiBDMzE4IDIzMiAzNTAgMjg4IDM1MCAzNTAgQzM1MCA0MDggMzEyIDQ0MCAyNTYgNDQwIEMyMDAgNDQwIDE2MiA0MDggMTYyIDM1MCBDMTYyIDI4OCAxOTQgMjMyIDI1NiAyMzIgWiIgZmlsbD0iI0Y2RjNFQSIvPgo8cGF0aCBkPSJNMzM0IDMzNiBDMzM0IDM5NiAzMDQgNDI4IDI1NiA0MzQgQzI5OCA0MjAgMzE4IDM5MCAzMjYgMzM2IFoiIGZpbGw9IiNFNkUxRDIiLz4KCjxwYXRoIHRyYW5zZm9ybT0icm90YXRlKDE0MCAxMzIgMjYyKSIgZD0iTTEzMiAyNTIgQzk0IDI3MiA4MCAzNDIgMTAyIDM5NCBDMTI0IDM4MCAxNDQgMzMyIDE1MCAyNzYgWiIgZmlsbD0iIzNBM0E0MyIgc3Ryb2tlPSIjNTU1NTVGIiBzdHJva2Utd2lkdGg9IjMiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KPHBhdGggdHJhbnNmb3JtPSJyb3RhdGUoLTE0MCAzODAgMjYyKSIgZD0iTTM4MCAyNTIgQzQxOCAyNzIgNDMyIDM0MiA0MTAgMzk0IEMzODggMzgwIDM2OCAzMzIgMzYyIDI3NiBaIiBmaWxsPSIjM0EzQTQzIiBzdHJva2U9IiM1NTU1NUYiIHN0cm9rZS13aWR0aD0iMyIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgo8cGF0aCBkPSJNMTk4IDE5NiBRMjIwIDE2NCAyNDIgMTk2IiBzdHJva2U9IiMxNzE3MUIiIHN0cm9rZS13aWR0aD0iOCIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PHBhdGggZD0iTTI3MCAxOTYgUTI5MiAxNjQgMzE0IDE5NiIgc3Ryb2tlPSIjMTcxNzFCIiBzdHJva2Utd2lkdGg9IjgiIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxlbGxpcHNlIGN4PSIxODQiIGN5PSIyMjgiIHJ4PSIxNSIgcnk9IjkiIGZpbGw9IiNGMjlBOUEiIG9wYWNpdHk9Ii44NSIvPjxlbGxpcHNlIGN4PSIzMjgiIGN5PSIyMjgiIHJ4PSIxNSIgcnk9IjkiIGZpbGw9IiNGMjlBOUEiIG9wYWNpdHk9Ii44NSIvPjxwYXRoIGQ9Ik0yMzAgMjIwIFEyNTYgMjY4IDI4MiAyMjAgWiIgZmlsbD0iI0Q5ODMwQSIvPjxwYXRoIGQ9Ik0yMzggMjIyIFEyNTYgMjU2IDI3NCAyMjIgWiIgZmlsbD0iIzhFMjQzNCIvPjxwYXRoIGQ9Ik0yMjYgMjE2IFEyNTYgMTk2IDI4NiAyMTYgUTI1NiAyMzIgMjI2IDIxNiBaIiBmaWxsPSIjRjZCMjFCIi8+PHJlY3QgeD0iNzAiIHk9IjkwIiB3aWR0aD0iMTQiIGhlaWdodD0iOCIgcng9IjIiIGZpbGw9IiNGMjVGNUMiIHRyYW5zZm9ybT0icm90YXRlKDI1IDcwIDkwKSIvPjxyZWN0IHg9IjEyMCIgeT0iNTAiIHdpZHRoPSIxMCIgaGVpZ2h0PSIxMCIgcng9IjIiIGZpbGw9IiMzQUE2NzUiIHRyYW5zZm9ybT0icm90YXRlKDAgMTIwIDUwKSIvPjxyZWN0IHg9IjQzMCIgeT0iODAiIHdpZHRoPSIxNCIgaGVpZ2h0PSI4IiByeD0iMiIgZmlsbD0iIzVCN0NGQSIgdHJhbnNmb3JtPSJyb3RhdGUoLTMwIDQzMCA4MCkiLz48cmVjdCB4PSIzOTAiIHk9IjQwIiB3aWR0aD0iMTAiIGhlaWdodD0iMTAiIHJ4PSIyIiBmaWxsPSIjRjZCMjFCIiB0cmFuc2Zvcm09InJvdGF0ZSgwIDM5MCA0MCkiLz48cmVjdCB4PSI2MCIgeT0iMjEwIiB3aWR0aD0iMTAiIGhlaWdodD0iMTAiIHJ4PSIyIiBmaWxsPSIjNUI3Q0ZBIiB0cmFuc2Zvcm09InJvdGF0ZSgwIDYwIDIxMCkiLz48cmVjdCB4PSI0NTAiIHk9IjIwMCIgd2lkdGg9IjE0IiBoZWlnaHQ9IjgiIHJ4PSIyIiBmaWxsPSIjRjI1RjVDIiB0cmFuc2Zvcm09InJvdGF0ZSg0MCA0NTAgMjAwKSIvPjxyZWN0IHg9IjI1NiIgeT0iMzAiIHdpZHRoPSIxMiIgaGVpZ2h0PSI4IiByeD0iMiIgZmlsbD0iIzNBQTY3NSIgdHJhbnNmb3JtPSJyb3RhdGUoMTUgMjU2IDMwKSIvPjxyZWN0IHg9IjE3MCIgeT0iNjYiIHdpZHRoPSI4IiBoZWlnaHQ9IjgiIHJ4PSIyIiBmaWxsPSIjRjZCMjFCIiB0cmFuc2Zvcm09InJvdGF0ZSgwIDE3MCA2NikiLz48cmVjdCB4PSIzNTAiIHk9IjY2IiB3aWR0aD0iOCIgaGVpZ2h0PSI4IiByeD0iMiIgZmlsbD0iI0YyNUY1QyIgdHJhbnNmb3JtPSJyb3RhdGUoMCAzNTAgNjYpIi8+CjxwYXRoIGQ9Ik0xNTAgMjMyIEMxNDAgOTAgMzcyIDkwIDM2MiAyMzIiIHN0cm9rZT0iI0E4QjBCRCIgc3Ryb2tlLXdpZHRoPSI5IiBmaWxsPSJub25lIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KPHJlY3QgeD0iMTI4IiB5PSIyMTgiIHdpZHRoPSIzMCIgaGVpZ2h0PSI1MCIgcng9IjEzIiBmaWxsPSIjNkI3MjgwIi8+CjxyZWN0IHg9IjM1NCIgeT0iMjE4IiB3aWR0aD0iMzAiIGhlaWdodD0iNTAiIHJ4PSIxMyIgZmlsbD0iIzZCNzI4MCIvPgo8cGF0aCBkPSJNMzcwIDI2MiBRMzc4IDMwNiAzMDYgMjcwIiBzdHJva2U9IiNBOEIwQkQiIHN0cm9rZS13aWR0aD0iNSIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CjxjaXJjbGUgY3g9IjMwMCIgY3k9IjI2OCIgcj0iOCIgZmlsbD0iIzMzMzg0MCIvPgo8cGF0aCBkPSJNMjI2IDI1NiBMMjU2IDI3NiBMMjQwIDI5MCBaIiBmaWxsPSIjZmZmIiBzdHJva2U9IiNDRkNBQkIiIHN0cm9rZS13aWR0aD0iMiIvPgo8cGF0aCBkPSJNMjg2IDI1NiBMMjU2IDI3NiBMMjcyIDI5MCBaIiBmaWxsPSIjZmZmIiBzdHJva2U9IiNDRkNBQkIiIHN0cm9rZS13aWR0aD0iMiIvPgo8cGF0aCBkPSJNMjQ2IDI3MiBMMjY2IDI3MiBMMjc0IDM0MCBMMjU2IDM2MCBMMjM4IDM0MCBaIiBmaWxsPSIjMkU2RkQ5Ii8+CjxwYXRoIGQ9Ik0yNDggMjcyIEwyNjQgMjcyIEwyNjIgMjg0IEwyNTAgMjg0IFoiIGZpbGw9IiMyNDU3QUQiLz4KPC9zdmc+"},"nerd":{"neutral":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIiB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiI+CjxlbGxpcHNlIGN4PSIyNTYiIGN5PSI0ODAiIHJ4PSIxMjgiIHJ5PSIxNSIgZmlsbD0iIzAwMCIgb3BhY2l0eT0iLjE0Ii8+CjxlbGxpcHNlIGN4PSIyMDIiIGN5PSI0NjMiIHJ4PSI0NCIgcnk9IjE3IiBmaWxsPSIjRjZCMjFCIi8+CjxlbGxpcHNlIGN4PSIzMTAiIGN5PSI0NjMiIHJ4PSI0NCIgcnk9IjE3IiBmaWxsPSIjRjZCMjFCIi8+CjxwYXRoIGQ9Ik0yNTYgMTEyIEMzNDYgMTEyIDM5MiAxODggMzkyIDI5MiBDMzkyIDM5MiAzMzYgNDUyIDI1NiA0NTIgQzE3NiA0NTIgMTIwIDM5MiAxMjAgMjkyIEMxMjAgMTg4IDE2NiAxMTIgMjU2IDExMiBaIiBmaWxsPSIjMkQyRDMzIi8+CjxlbGxpcHNlIGN4PSIxOTYiIGN5PSIxNjAiIHJ4PSIzNCIgcnk9IjE2IiB0cmFuc2Zvcm09InJvdGF0ZSgtMzIgMTk2IDE2MCkiIGZpbGw9IiM0NjQ2NTAiIG9wYWNpdHk9Ii41NSIvPgo8cGF0aCBkPSJNMjU2IDIzMiBDMzE4IDIzMiAzNTAgMjg4IDM1MCAzNTAgQzM1MCA0MDggMzEyIDQ0MCAyNTYgNDQwIEMyMDAgNDQwIDE2MiA0MDggMTYyIDM1MCBDMTYyIDI4OCAxOTQgMjMyIDI1NiAyMzIgWiIgZmlsbD0iI0Y2RjNFQSIvPgo8cGF0aCBkPSJNMzM0IDMzNiBDMzM0IDM5NiAzMDQgNDI4IDI1NiA0MzQgQzI5OCA0MjAgMzE4IDM5MCAzMjYgMzM2IFoiIGZpbGw9IiNFNkUxRDIiLz4KCjxwYXRoIHRyYW5zZm9ybT0icm90YXRlKDAgMTMyIDI2MikiIGQ9Ik0xMzIgMjUyIEM5NCAyNzIgODAgMzQyIDEwMiAzOTQgQzEyNCAzODAgMTQ0IDMzMiAxNTAgMjc2IFoiIGZpbGw9IiMzQTNBNDMiIHN0cm9rZT0iIzU1NTU1RiIgc3Ryb2tlLXdpZHRoPSIzIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+CjxwYXRoIHRyYW5zZm9ybT0icm90YXRlKDAgMzgwIDI2MikiIGQ9Ik0zODAgMjUyIEM0MTggMjcyIDQzMiAzNDIgNDEwIDM5NCBDMzg4IDM4MCAzNjggMzMyIDM2MiAyNzYgWiIgZmlsbD0iIzNBM0E0MyIgc3Ryb2tlPSIjNTU1NTVGIiBzdHJva2Utd2lkdGg9IjMiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KPGVsbGlwc2UgY3g9IjIyMCIgY3k9IjE5MCIgcng9IjIyIiByeT0iMjYiIGZpbGw9IiNGRkZGRkYiLz48Y2lyY2xlIGN4PSIyMjQiIGN5PSIxOTQiIHI9IjEwIiBmaWxsPSIjMTcxNzFCIi8+PGNpcmNsZSBjeD0iMjI4IiBjeT0iMTkwIiByPSIzLjUiIGZpbGw9IiNGRkZGRkYiLz48ZWxsaXBzZSBjeD0iMjkyIiBjeT0iMTkwIiByeD0iMjIiIHJ5PSIyNiIgZmlsbD0iI0ZGRkZGRiIvPjxjaXJjbGUgY3g9IjI4OCIgY3k9IjE5NCIgcj0iMTAiIGZpbGw9IiMxNzE3MUIiLz48Y2lyY2xlIGN4PSIyOTIiIGN5PSIxOTAiIHI9IjMuNSIgZmlsbD0iI0ZGRkZGRiIvPjxwYXRoIGQ9Ik0yMjYgMjE2IFEyNTYgMTk4IDI4NiAyMTYgUTI3NCAyNDYgMjU2IDI1MiBRMjM4IDI0NiAyMjYgMjE2IFoiIGZpbGw9IiNGNkIyMUIiLz48cGF0aCBkPSJNMjQwIDIzMCBRMjU2IDIzNiAyNzIgMjMwIiBzdHJva2U9IiNEOTgzMEEiIHN0cm9rZS13aWR0aD0iNCIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CjxyZWN0IHg9IjE4OCIgeT0iMTYyIiB3aWR0aD0iNjQiIGhlaWdodD0iNTQiIHJ4PSIxMiIgZmlsbD0iI0JGRTNGRiIgb3BhY2l0eT0iLjI4IiBzdHJva2U9IiMxMTExMTQiIHN0cm9rZS13aWR0aD0iOCIvPgo8cmVjdCB4PSIyNjAiIHk9IjE2MiIgd2lkdGg9IjY0IiBoZWlnaHQ9IjU0IiByeD0iMTIiIGZpbGw9IiNCRkUzRkYiIG9wYWNpdHk9Ii4yOCIgc3Ryb2tlPSIjMTExMTE0IiBzdHJva2Utd2lkdGg9IjgiLz4KPHBhdGggZD0iTTI1MiAxODYgTDI2MCAxODYiIHN0cm9rZT0iIzExMTExNCIgc3Ryb2tlLXdpZHRoPSI4Ii8+CjxyZWN0IHg9IjI0NiIgeT0iMTc4IiB3aWR0aD0iMjAiIGhlaWdodD0iMTMiIHJ4PSIyIiBmaWxsPSIjZmZmIiBzdHJva2U9IiM5QUEwQUEiIHN0cm9rZS13aWR0aD0iMiIgdHJhbnNmb3JtPSJyb3RhdGUoLTggMjU2IDE4NCkiLz4KPHJlY3QgeD0iMjgyIiB5PSIyODYiIHdpZHRoPSI0NiIgaGVpZ2h0PSI1OCIgcng9IjYiIGZpbGw9IiNFQ0U4REEiIHN0cm9rZT0iI0NGQ0FCQiIgc3Ryb2tlLXdpZHRoPSIzIi8+CjxyZWN0IHg9IjI5MCIgeT0iMjY4IiB3aWR0aD0iNiIgaGVpZ2h0PSIyNiIgcng9IjIiIGZpbGw9IiMyRTZGRDkiLz4KPHJlY3QgeD0iMzAyIiB5PSIyNzIiIHdpZHRoPSI2IiBoZWlnaHQ9IjIyIiByeD0iMiIgZmlsbD0iI0MwMzkyQiIvPgo8cmVjdCB4PSIzMTQiIHk9IjI3MCIgd2lkdGg9IjYiIGhlaWdodD0iMjQiIHJ4PSIyIiBmaWxsPSIjMTcxNzFCIi8+CjxwYXRoIGQ9Ik0yNDQgMTEyIFEyMzYgODggMjU4IDgyIFEyNTIgOTggMjYyIDEwOCIgc3Ryb2tlPSIjMkQyRDMzIiBzdHJva2Utd2lkdGg9IjkiIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgo8L3N2Zz4=","thinking":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIiB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiI+CjxlbGxpcHNlIGN4PSIyNTYiIGN5PSI0ODAiIHJ4PSIxMjgiIHJ5PSIxNSIgZmlsbD0iIzAwMCIgb3BhY2l0eT0iLjE0Ii8+CjxlbGxpcHNlIGN4PSIyMDIiIGN5PSI0NjMiIHJ4PSI0NCIgcnk9IjE3IiBmaWxsPSIjRjZCMjFCIi8+CjxlbGxpcHNlIGN4PSIzMTAiIGN5PSI0NjMiIHJ4PSI0NCIgcnk9IjE3IiBmaWxsPSIjRjZCMjFCIi8+CjxwYXRoIGQ9Ik0yNTYgMTEyIEMzNDYgMTEyIDM5MiAxODggMzkyIDI5MiBDMzkyIDM5MiAzMzYgNDUyIDI1NiA0NTIgQzE3NiA0NTIgMTIwIDM5MiAxMjAgMjkyIEMxMjAgMTg4IDE2NiAxMTIgMjU2IDExMiBaIiBmaWxsPSIjMkQyRDMzIi8+CjxlbGxpcHNlIGN4PSIxOTYiIGN5PSIxNjAiIHJ4PSIzNCIgcnk9IjE2IiB0cmFuc2Zvcm09InJvdGF0ZSgtMzIgMTk2IDE2MCkiIGZpbGw9IiM0NjQ2NTAiIG9wYWNpdHk9Ii41NSIvPgo8cGF0aCBkPSJNMjU2IDIzMiBDMzE4IDIzMiAzNTAgMjg4IDM1MCAzNTAgQzM1MCA0MDggMzEyIDQ0MCAyNTYgNDQwIEMyMDAgNDQwIDE2MiA0MDggMTYyIDM1MCBDMTYyIDI4OCAxOTQgMjMyIDI1NiAyMzIgWiIgZmlsbD0iI0Y2RjNFQSIvPgo8cGF0aCBkPSJNMzM0IDMzNiBDMzM0IDM5NiAzMDQgNDI4IDI1NiA0MzQgQzI5OCA0MjAgMzE4IDM5MCAzMjYgMzM2IFoiIGZpbGw9IiNFNkUxRDIiLz4KCjxwYXRoIHRyYW5zZm9ybT0icm90YXRlKDAgMTMyIDI2MikiIGQ9Ik0xMzIgMjUyIEM5NCAyNzIgODAgMzQyIDEwMiAzOTQgQzEyNCAzODAgMTQ0IDMzMiAxNTAgMjc2IFoiIGZpbGw9IiMzQTNBNDMiIHN0cm9rZT0iIzU1NTU1RiIgc3Ryb2tlLXdpZHRoPSIzIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+CjxwYXRoIHRyYW5zZm9ybT0icm90YXRlKDk4IDM4MCAyNjIpIiBkPSJNMzgwIDI1MiBDNDE4IDI3MiA0MzIgMzQyIDQxMCAzOTQgQzM4OCAzODAgMzY4IDMzMiAzNjIgMjc2IFoiIGZpbGw9IiMzQTNBNDMiIHN0cm9rZT0iIzU1NTU1RiIgc3Ryb2tlLXdpZHRoPSIzIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+CjxlbGxpcHNlIGN4PSIyMjAiIGN5PSIxOTAiIHJ4PSIyMiIgcnk9IjI2IiBmaWxsPSIjRkZGRkZGIi8+PGNpcmNsZSBjeD0iMjEzIiBjeT0iMTg0IiByPSIxMCIgZmlsbD0iIzE3MTcxQiIvPjxjaXJjbGUgY3g9IjIxNyIgY3k9IjE4MCIgcj0iMy41IiBmaWxsPSIjRkZGRkZGIi8+PGVsbGlwc2UgY3g9IjI5MiIgY3k9IjE5MCIgcng9IjIyIiByeT0iMjYiIGZpbGw9IiNGRkZGRkYiLz48Y2lyY2xlIGN4PSIyODUiIGN5PSIxODQiIHI9IjEwIiBmaWxsPSIjMTcxNzFCIi8+PGNpcmNsZSBjeD0iMjg5IiBjeT0iMTgwIiByPSIzLjUiIGZpbGw9IiNGRkZGRkYiLz48cGF0aCBkPSJNMTk2IDE1MCBRMjIwIDEzNiAyNDQgMTQ4IiBzdHJva2U9IiNFOUU5RjAiIHN0cm9rZS13aWR0aD0iNiIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PHBhdGggZD0iTTI3MiAxNjIgTDMxNiAxNjIiIHN0cm9rZT0iI0U5RTlGMCIgc3Ryb2tlLXdpZHRoPSI2IiBmaWxsPSJub25lIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48cGF0aCBkPSJNMjI2IDIxNiBRMjU2IDE5OCAyODYgMjE2IFEyNzQgMjQ2IDI1NiAyNTIgUTIzOCAyNDYgMjI2IDIxNiBaIiBmaWxsPSIjRjZCMjFCIi8+PHBhdGggZD0iTTI0MCAyMzAgUTI1NiAyMzYgMjcyIDIzMCIgc3Ryb2tlPSIjRDk4MzBBIiBzdHJva2Utd2lkdGg9IjQiIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxwYXRoIGQ9Ik0yMzIgNjYgUTIzMiA0MCAyNTggNDAgUTI4NCA0MCAyODQgNjIgUTI4NCA4MCAyNjIgODggTDI2MiAxMDAiIHN0cm9rZT0iIzVCN0NGQSIgc3Ryb2tlLXdpZHRoPSIxMCIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PGNpcmNsZSBjeD0iMjYyIiBjeT0iMTE4IiByPSI3IiBmaWxsPSIjNUI3Q0ZBIi8+CjxyZWN0IHg9IjE4OCIgeT0iMTYyIiB3aWR0aD0iNjQiIGhlaWdodD0iNTQiIHJ4PSIxMiIgZmlsbD0iI0JGRTNGRiIgb3BhY2l0eT0iLjI4IiBzdHJva2U9IiMxMTExMTQiIHN0cm9rZS13aWR0aD0iOCIvPgo8cmVjdCB4PSIyNjAiIHk9IjE2MiIgd2lkdGg9IjY0IiBoZWlnaHQ9IjU0IiByeD0iMTIiIGZpbGw9IiNCRkUzRkYiIG9wYWNpdHk9Ii4yOCIgc3Ryb2tlPSIjMTExMTE0IiBzdHJva2Utd2lkdGg9IjgiLz4KPHBhdGggZD0iTTI1MiAxODYgTDI2MCAxODYiIHN0cm9rZT0iIzExMTExNCIgc3Ryb2tlLXdpZHRoPSI4Ii8+CjxyZWN0IHg9IjI0NiIgeT0iMTc4IiB3aWR0aD0iMjAiIGhlaWdodD0iMTMiIHJ4PSIyIiBmaWxsPSIjZmZmIiBzdHJva2U9IiM5QUEwQUEiIHN0cm9rZS13aWR0aD0iMiIgdHJhbnNmb3JtPSJyb3RhdGUoLTggMjU2IDE4NCkiLz4KPHJlY3QgeD0iMjgyIiB5PSIyODYiIHdpZHRoPSI0NiIgaGVpZ2h0PSI1OCIgcng9IjYiIGZpbGw9IiNFQ0U4REEiIHN0cm9rZT0iI0NGQ0FCQiIgc3Ryb2tlLXdpZHRoPSIzIi8+CjxyZWN0IHg9IjI5MCIgeT0iMjY4IiB3aWR0aD0iNiIgaGVpZ2h0PSIyNiIgcng9IjIiIGZpbGw9IiMyRTZGRDkiLz4KPHJlY3QgeD0iMzAyIiB5PSIyNzIiIHdpZHRoPSI2IiBoZWlnaHQ9IjIyIiByeD0iMiIgZmlsbD0iI0MwMzkyQiIvPgo8cmVjdCB4PSIzMTQiIHk9IjI3MCIgd2lkdGg9IjYiIGhlaWdodD0iMjQiIHJ4PSIyIiBmaWxsPSIjMTcxNzFCIi8+CjxwYXRoIGQ9Ik0yNDQgMTEyIFEyMzYgODggMjU4IDgyIFEyNTIgOTggMjYyIDEwOCIgc3Ryb2tlPSIjMkQyRDMzIiBzdHJva2Utd2lkdGg9IjkiIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgo8L3N2Zz4=","happy":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIiB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiI+CjxlbGxpcHNlIGN4PSIyNTYiIGN5PSI0ODAiIHJ4PSIxMjgiIHJ5PSIxNSIgZmlsbD0iIzAwMCIgb3BhY2l0eT0iLjE0Ii8+CjxlbGxpcHNlIGN4PSIyMDIiIGN5PSI0NjMiIHJ4PSI0NCIgcnk9IjE3IiBmaWxsPSIjRjZCMjFCIi8+CjxlbGxpcHNlIGN4PSIzMTAiIGN5PSI0NjMiIHJ4PSI0NCIgcnk9IjE3IiBmaWxsPSIjRjZCMjFCIi8+CjxwYXRoIGQ9Ik0yNTYgMTEyIEMzNDYgMTEyIDM5MiAxODggMzkyIDI5MiBDMzkyIDM5MiAzMzYgNDUyIDI1NiA0NTIgQzE3NiA0NTIgMTIwIDM5MiAxMjAgMjkyIEMxMjAgMTg4IDE2NiAxMTIgMjU2IDExMiBaIiBmaWxsPSIjMkQyRDMzIi8+CjxlbGxpcHNlIGN4PSIxOTYiIGN5PSIxNjAiIHJ4PSIzNCIgcnk9IjE2IiB0cmFuc2Zvcm09InJvdGF0ZSgtMzIgMTk2IDE2MCkiIGZpbGw9IiM0NjQ2NTAiIG9wYWNpdHk9Ii41NSIvPgo8cGF0aCBkPSJNMjU2IDIzMiBDMzE4IDIzMiAzNTAgMjg4IDM1MCAzNTAgQzM1MCA0MDggMzEyIDQ0MCAyNTYgNDQwIEMyMDAgNDQwIDE2MiA0MDggMTYyIDM1MCBDMTYyIDI4OCAxOTQgMjMyIDI1NiAyMzIgWiIgZmlsbD0iI0Y2RjNFQSIvPgo8cGF0aCBkPSJNMzM0IDMzNiBDMzM0IDM5NiAzMDQgNDI4IDI1NiA0MzQgQzI5OCA0MjAgMzE4IDM5MCAzMjYgMzM2IFoiIGZpbGw9IiNFNkUxRDIiLz4KCjxwYXRoIHRyYW5zZm9ybT0icm90YXRlKC0xMiAxMzIgMjYyKSIgZD0iTTEzMiAyNTIgQzk0IDI3MiA4MCAzNDIgMTAyIDM5NCBDMTI0IDM4MCAxNDQgMzMyIDE1MCAyNzYgWiIgZmlsbD0iIzNBM0E0MyIgc3Ryb2tlPSIjNTU1NTVGIiBzdHJva2Utd2lkdGg9IjMiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KPHBhdGggdHJhbnNmb3JtPSJyb3RhdGUoMTIgMzgwIDI2MikiIGQ9Ik0zODAgMjUyIEM0MTggMjcyIDQzMiAzNDIgNDEwIDM5NCBDMzg4IDM4MCAzNjggMzMyIDM2MiAyNzYgWiIgZmlsbD0iIzNBM0E0MyIgc3Ryb2tlPSIjNTU1NTVGIiBzdHJva2Utd2lkdGg9IjMiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KPHBhdGggZD0iTTE5OCAxOTYgUTIyMCAxNjQgMjQyIDE5NiIgc3Ryb2tlPSIjMTcxNzFCIiBzdHJva2Utd2lkdGg9IjgiIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxwYXRoIGQ9Ik0yNzAgMTk2IFEyOTIgMTY0IDMxNCAxOTYiIHN0cm9rZT0iIzE3MTcxQiIgc3Ryb2tlLXdpZHRoPSI4IiBmaWxsPSJub25lIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48ZWxsaXBzZSBjeD0iMTg0IiBjeT0iMjI4IiByeD0iMTUiIHJ5PSI5IiBmaWxsPSIjRjI5QTlBIiBvcGFjaXR5PSIuODUiLz48ZWxsaXBzZSBjeD0iMzI4IiBjeT0iMjI4IiByeD0iMTUiIHJ5PSI5IiBmaWxsPSIjRjI5QTlBIiBvcGFjaXR5PSIuODUiLz48cGF0aCBkPSJNMjI2IDIxNiBRMjU2IDE5OCAyODYgMjE2IFEyNzQgMjQ2IDI1NiAyNTIgUTIzOCAyNDYgMjI2IDIxNiBaIiBmaWxsPSIjRjZCMjFCIi8+PHBhdGggZD0iTTIzOCAyMjggUTI1NiAyNDYgMjc0IDIyOCIgc3Ryb2tlPSIjRDk4MzBBIiBzdHJva2Utd2lkdGg9IjUiIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgo8cmVjdCB4PSIxODgiIHk9IjE2MiIgd2lkdGg9IjY0IiBoZWlnaHQ9IjU0IiByeD0iMTIiIGZpbGw9IiNCRkUzRkYiIG9wYWNpdHk9Ii4yOCIgc3Ryb2tlPSIjMTExMTE0IiBzdHJva2Utd2lkdGg9IjgiLz4KPHJlY3QgeD0iMjYwIiB5PSIxNjIiIHdpZHRoPSI2NCIgaGVpZ2h0PSI1NCIgcng9IjEyIiBmaWxsPSIjQkZFM0ZGIiBvcGFjaXR5PSIuMjgiIHN0cm9rZT0iIzExMTExNCIgc3Ryb2tlLXdpZHRoPSI4Ii8+CjxwYXRoIGQ9Ik0yNTIgMTg2IEwyNjAgMTg2IiBzdHJva2U9IiMxMTExMTQiIHN0cm9rZS13aWR0aD0iOCIvPgo8cmVjdCB4PSIyNDYiIHk9IjE3OCIgd2lkdGg9IjIwIiBoZWlnaHQ9IjEzIiByeD0iMiIgZmlsbD0iI2ZmZiIgc3Ryb2tlPSIjOUFBMEFBIiBzdHJva2Utd2lkdGg9IjIiIHRyYW5zZm9ybT0icm90YXRlKC04IDI1NiAxODQpIi8+CjxyZWN0IHg9IjI4MiIgeT0iMjg2IiB3aWR0aD0iNDYiIGhlaWdodD0iNTgiIHJ4PSI2IiBmaWxsPSIjRUNFOERBIiBzdHJva2U9IiNDRkNBQkIiIHN0cm9rZS13aWR0aD0iMyIvPgo8cmVjdCB4PSIyOTAiIHk9IjI2OCIgd2lkdGg9IjYiIGhlaWdodD0iMjYiIHJ4PSIyIiBmaWxsPSIjMkU2RkQ5Ii8+CjxyZWN0IHg9IjMwMiIgeT0iMjcyIiB3aWR0aD0iNiIgaGVpZ2h0PSIyMiIgcng9IjIiIGZpbGw9IiNDMDM5MkIiLz4KPHJlY3QgeD0iMzE0IiB5PSIyNzAiIHdpZHRoPSI2IiBoZWlnaHQ9IjI0IiByeD0iMiIgZmlsbD0iIzE3MTcxQiIvPgo8cGF0aCBkPSJNMjQ0IDExMiBRMjM2IDg4IDI1OCA4MiBRMjUyIDk4IDI2MiAxMDgiIHN0cm9rZT0iIzJEMkQzMyIgc3Ryb2tlLXdpZHRoPSI5IiBmaWxsPSJub25lIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KPC9zdmc+","celebrating":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIiB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiI+CjxlbGxpcHNlIGN4PSIyNTYiIGN5PSI0ODAiIHJ4PSIxMjgiIHJ5PSIxNSIgZmlsbD0iIzAwMCIgb3BhY2l0eT0iLjE0Ii8+CjxlbGxpcHNlIGN4PSIyMDIiIGN5PSI0NjMiIHJ4PSI0NCIgcnk9IjE3IiBmaWxsPSIjRjZCMjFCIi8+CjxlbGxpcHNlIGN4PSIzMTAiIGN5PSI0NjMiIHJ4PSI0NCIgcnk9IjE3IiBmaWxsPSIjRjZCMjFCIi8+CjxwYXRoIGQ9Ik0yNTYgMTEyIEMzNDYgMTEyIDM5MiAxODggMzkyIDI5MiBDMzkyIDM5MiAzMzYgNDUyIDI1NiA0NTIgQzE3NiA0NTIgMTIwIDM5MiAxMjAgMjkyIEMxMjAgMTg4IDE2NiAxMTIgMjU2IDExMiBaIiBmaWxsPSIjMkQyRDMzIi8+CjxlbGxpcHNlIGN4PSIxOTYiIGN5PSIxNjAiIHJ4PSIzNCIgcnk9IjE2IiB0cmFuc2Zvcm09InJvdGF0ZSgtMzIgMTk2IDE2MCkiIGZpbGw9IiM0NjQ2NTAiIG9wYWNpdHk9Ii41NSIvPgo8cGF0aCBkPSJNMjU2IDIzMiBDMzE4IDIzMiAzNTAgMjg4IDM1MCAzNTAgQzM1MCA0MDggMzEyIDQ0MCAyNTYgNDQwIEMyMDAgNDQwIDE2MiA0MDggMTYyIDM1MCBDMTYyIDI4OCAxOTQgMjMyIDI1NiAyMzIgWiIgZmlsbD0iI0Y2RjNFQSIvPgo8cGF0aCBkPSJNMzM0IDMzNiBDMzM0IDM5NiAzMDQgNDI4IDI1NiA0MzQgQzI5OCA0MjAgMzE4IDM5MCAzMjYgMzM2IFoiIGZpbGw9IiNFNkUxRDIiLz4KCjxwYXRoIHRyYW5zZm9ybT0icm90YXRlKDE0MCAxMzIgMjYyKSIgZD0iTTEzMiAyNTIgQzk0IDI3MiA4MCAzNDIgMTAyIDM5NCBDMTI0IDM4MCAxNDQgMzMyIDE1MCAyNzYgWiIgZmlsbD0iIzNBM0E0MyIgc3Ryb2tlPSIjNTU1NTVGIiBzdHJva2Utd2lkdGg9IjMiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KPHBhdGggdHJhbnNmb3JtPSJyb3RhdGUoLTE0MCAzODAgMjYyKSIgZD0iTTM4MCAyNTIgQzQxOCAyNzIgNDMyIDM0MiA0MTAgMzk0IEMzODggMzgwIDM2OCAzMzIgMzYyIDI3NiBaIiBmaWxsPSIjM0EzQTQzIiBzdHJva2U9IiM1NTU1NUYiIHN0cm9rZS13aWR0aD0iMyIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgo8cGF0aCBkPSJNMTk4IDE5NiBRMjIwIDE2NCAyNDIgMTk2IiBzdHJva2U9IiMxNzE3MUIiIHN0cm9rZS13aWR0aD0iOCIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PHBhdGggZD0iTTI3MCAxOTYgUTI5MiAxNjQgMzE0IDE5NiIgc3Ryb2tlPSIjMTcxNzFCIiBzdHJva2Utd2lkdGg9IjgiIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxlbGxpcHNlIGN4PSIxODQiIGN5PSIyMjgiIHJ4PSIxNSIgcnk9IjkiIGZpbGw9IiNGMjlBOUEiIG9wYWNpdHk9Ii44NSIvPjxlbGxpcHNlIGN4PSIzMjgiIGN5PSIyMjgiIHJ4PSIxNSIgcnk9IjkiIGZpbGw9IiNGMjlBOUEiIG9wYWNpdHk9Ii44NSIvPjxwYXRoIGQ9Ik0yMzAgMjIwIFEyNTYgMjY4IDI4MiAyMjAgWiIgZmlsbD0iI0Q5ODMwQSIvPjxwYXRoIGQ9Ik0yMzggMjIyIFEyNTYgMjU2IDI3NCAyMjIgWiIgZmlsbD0iIzhFMjQzNCIvPjxwYXRoIGQ9Ik0yMjYgMjE2IFEyNTYgMTk2IDI4NiAyMTYgUTI1NiAyMzIgMjI2IDIxNiBaIiBmaWxsPSIjRjZCMjFCIi8+PHJlY3QgeD0iNzAiIHk9IjkwIiB3aWR0aD0iMTQiIGhlaWdodD0iOCIgcng9IjIiIGZpbGw9IiNGMjVGNUMiIHRyYW5zZm9ybT0icm90YXRlKDI1IDcwIDkwKSIvPjxyZWN0IHg9IjEyMCIgeT0iNTAiIHdpZHRoPSIxMCIgaGVpZ2h0PSIxMCIgcng9IjIiIGZpbGw9IiMzQUE2NzUiIHRyYW5zZm9ybT0icm90YXRlKDAgMTIwIDUwKSIvPjxyZWN0IHg9IjQzMCIgeT0iODAiIHdpZHRoPSIxNCIgaGVpZ2h0PSI4IiByeD0iMiIgZmlsbD0iIzVCN0NGQSIgdHJhbnNmb3JtPSJyb3RhdGUoLTMwIDQzMCA4MCkiLz48cmVjdCB4PSIzOTAiIHk9IjQwIiB3aWR0aD0iMTAiIGhlaWdodD0iMTAiIHJ4PSIyIiBmaWxsPSIjRjZCMjFCIiB0cmFuc2Zvcm09InJvdGF0ZSgwIDM5MCA0MCkiLz48cmVjdCB4PSI2MCIgeT0iMjEwIiB3aWR0aD0iMTAiIGhlaWdodD0iMTAiIHJ4PSIyIiBmaWxsPSIjNUI3Q0ZBIiB0cmFuc2Zvcm09InJvdGF0ZSgwIDYwIDIxMCkiLz48cmVjdCB4PSI0NTAiIHk9IjIwMCIgd2lkdGg9IjE0IiBoZWlnaHQ9IjgiIHJ4PSIyIiBmaWxsPSIjRjI1RjVDIiB0cmFuc2Zvcm09InJvdGF0ZSg0MCA0NTAgMjAwKSIvPjxyZWN0IHg9IjI1NiIgeT0iMzAiIHdpZHRoPSIxMiIgaGVpZ2h0PSI4IiByeD0iMiIgZmlsbD0iIzNBQTY3NSIgdHJhbnNmb3JtPSJyb3RhdGUoMTUgMjU2IDMwKSIvPjxyZWN0IHg9IjE3MCIgeT0iNjYiIHdpZHRoPSI4IiBoZWlnaHQ9IjgiIHJ4PSIyIiBmaWxsPSIjRjZCMjFCIiB0cmFuc2Zvcm09InJvdGF0ZSgwIDE3MCA2NikiLz48cmVjdCB4PSIzNTAiIHk9IjY2IiB3aWR0aD0iOCIgaGVpZ2h0PSI4IiByeD0iMiIgZmlsbD0iI0YyNUY1QyIgdHJhbnNmb3JtPSJyb3RhdGUoMCAzNTAgNjYpIi8+CjxyZWN0IHg9IjE4OCIgeT0iMTYyIiB3aWR0aD0iNjQiIGhlaWdodD0iNTQiIHJ4PSIxMiIgZmlsbD0iI0JGRTNGRiIgb3BhY2l0eT0iLjI4IiBzdHJva2U9IiMxMTExMTQiIHN0cm9rZS13aWR0aD0iOCIvPgo8cmVjdCB4PSIyNjAiIHk9IjE2MiIgd2lkdGg9IjY0IiBoZWlnaHQ9IjU0IiByeD0iMTIiIGZpbGw9IiNCRkUzRkYiIG9wYWNpdHk9Ii4yOCIgc3Ryb2tlPSIjMTExMTE0IiBzdHJva2Utd2lkdGg9IjgiLz4KPHBhdGggZD0iTTI1MiAxODYgTDI2MCAxODYiIHN0cm9rZT0iIzExMTExNCIgc3Ryb2tlLXdpZHRoPSI4Ii8+CjxyZWN0IHg9IjI0NiIgeT0iMTc4IiB3aWR0aD0iMjAiIGhlaWdodD0iMTMiIHJ4PSIyIiBmaWxsPSIjZmZmIiBzdHJva2U9IiM5QUEwQUEiIHN0cm9rZS13aWR0aD0iMiIgdHJhbnNmb3JtPSJyb3RhdGUoLTggMjU2IDE4NCkiLz4KPHJlY3QgeD0iMjgyIiB5PSIyODYiIHdpZHRoPSI0NiIgaGVpZ2h0PSI1OCIgcng9IjYiIGZpbGw9IiNFQ0U4REEiIHN0cm9rZT0iI0NGQ0FCQiIgc3Ryb2tlLXdpZHRoPSIzIi8+CjxyZWN0IHg9IjI5MCIgeT0iMjY4IiB3aWR0aD0iNiIgaGVpZ2h0PSIyNiIgcng9IjIiIGZpbGw9IiMyRTZGRDkiLz4KPHJlY3QgeD0iMzAyIiB5PSIyNzIiIHdpZHRoPSI2IiBoZWlnaHQ9IjIyIiByeD0iMiIgZmlsbD0iI0MwMzkyQiIvPgo8cmVjdCB4PSIzMTQiIHk9IjI3MCIgd2lkdGg9IjYiIGhlaWdodD0iMjQiIHJ4PSIyIiBmaWxsPSIjMTcxNzFCIi8+CjxwYXRoIGQ9Ik0yNDQgMTEyIFEyMzYgODggMjU4IDgyIFEyNTIgOTggMjYyIDEwOCIgc3Ryb2tlPSIjMkQyRDMzIiBzdHJva2Utd2lkdGg9IjkiIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgo8L3N2Zz4="},"dev":{"neutral":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIiB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiI+CjxlbGxpcHNlIGN4PSIyNTYiIGN5PSI0ODAiIHJ4PSIxMjgiIHJ5PSIxNSIgZmlsbD0iIzAwMCIgb3BhY2l0eT0iLjE0Ii8+CjxlbGxpcHNlIGN4PSIyMDIiIGN5PSI0NjMiIHJ4PSI0NCIgcnk9IjE3IiBmaWxsPSIjRjZCMjFCIi8+CjxlbGxpcHNlIGN4PSIzMTAiIGN5PSI0NjMiIHJ4PSI0NCIgcnk9IjE3IiBmaWxsPSIjRjZCMjFCIi8+CjxwYXRoIGQ9Ik0yNTYgMTEyIEMzNDYgMTEyIDM5MiAxODggMzkyIDI5MiBDMzkyIDM5MiAzMzYgNDUyIDI1NiA0NTIgQzE3NiA0NTIgMTIwIDM5MiAxMjAgMjkyIEMxMjAgMTg4IDE2NiAxMTIgMjU2IDExMiBaIiBmaWxsPSIjMkQyRDMzIi8+CjxlbGxpcHNlIGN4PSIxOTYiIGN5PSIxNjAiIHJ4PSIzNCIgcnk9IjE2IiB0cmFuc2Zvcm09InJvdGF0ZSgtMzIgMTk2IDE2MCkiIGZpbGw9IiM0NjQ2NTAiIG9wYWNpdHk9Ii41NSIvPgo8cGF0aCBkPSJNMjU2IDIzMiBDMzE4IDIzMiAzNTAgMjg4IDM1MCAzNTAgQzM1MCA0MDggMzEyIDQ0MCAyNTYgNDQwIEMyMDAgNDQwIDE2MiA0MDggMTYyIDM1MCBDMTYyIDI4OCAxOTQgMjMyIDI1NiAyMzIgWiIgZmlsbD0iI0Y2RjNFQSIvPgo8cGF0aCBkPSJNMzM0IDMzNiBDMzM0IDM5NiAzMDQgNDI4IDI1NiA0MzQgQzI5OCA0MjAgMzE4IDM5MCAzMjYgMzM2IFoiIGZpbGw9IiNFNkUxRDIiLz4KCjxwYXRoIHRyYW5zZm9ybT0icm90YXRlKDAgMTMyIDI2MikiIGQ9Ik0xMzIgMjUyIEM5NCAyNzIgODAgMzQyIDEwMiAzOTQgQzEyNCAzODAgMTQ0IDMzMiAxNTAgMjc2IFoiIGZpbGw9IiMzQTNBNDMiIHN0cm9rZT0iIzU1NTU1RiIgc3Ryb2tlLXdpZHRoPSIzIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+CjxwYXRoIHRyYW5zZm9ybT0icm90YXRlKDAgMzgwIDI2MikiIGQ9Ik0zODAgMjUyIEM0MTggMjcyIDQzMiAzNDIgNDEwIDM5NCBDMzg4IDM4MCAzNjggMzMyIDM2MiAyNzYgWiIgZmlsbD0iIzNBM0E0MyIgc3Ryb2tlPSIjNTU1NTVGIiBzdHJva2Utd2lkdGg9IjMiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KPGVsbGlwc2UgY3g9IjIyMCIgY3k9IjE5MCIgcng9IjIyIiByeT0iMjYiIGZpbGw9IiNGRkZGRkYiLz48Y2lyY2xlIGN4PSIyMjQiIGN5PSIxOTQiIHI9IjEwIiBmaWxsPSIjMTcxNzFCIi8+PGNpcmNsZSBjeD0iMjI4IiBjeT0iMTkwIiByPSIzLjUiIGZpbGw9IiNGRkZGRkYiLz48ZWxsaXBzZSBjeD0iMjkyIiBjeT0iMTkwIiByeD0iMjIiIHJ5PSIyNiIgZmlsbD0iI0ZGRkZGRiIvPjxjaXJjbGUgY3g9IjI4OCIgY3k9IjE5NCIgcj0iMTAiIGZpbGw9IiMxNzE3MUIiLz48Y2lyY2xlIGN4PSIyOTIiIGN5PSIxOTAiIHI9IjMuNSIgZmlsbD0iI0ZGRkZGRiIvPjxwYXRoIGQ9Ik0yMjYgMjE2IFEyNTYgMTk4IDI4NiAyMTYgUTI3NCAyNDYgMjU2IDI1MiBRMjM4IDI0NiAyMjYgMjE2IFoiIGZpbGw9IiNGNkIyMUIiLz48cGF0aCBkPSJNMjQwIDIzMCBRMjU2IDIzNiAyNzIgMjMwIiBzdHJva2U9IiNEOTgzMEEiIHN0cm9rZS13aWR0aD0iNCIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CjxwYXRoIGQ9Ik0xNDggMjMyIEMxNDAgODQgMzcyIDg0IDM2NCAyMzIiIHN0cm9rZT0iI0YyNUY1QyIgc3Ryb2tlLXdpZHRoPSIxMyIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CjxlbGxpcHNlIGN4PSIxNDQiIGN5PSIyNDQiIHJ4PSIyMSIgcnk9IjMyIiBmaWxsPSIjRjI1RjVDIi8+CjxlbGxpcHNlIGN4PSIzNjgiIGN5PSIyNDQiIHJ4PSIyMSIgcnk9IjMyIiBmaWxsPSIjRjI1RjVDIi8+CjxlbGxpcHNlIGN4PSIxNTAiIGN5PSIyNDQiIHJ4PSIxMCIgcnk9IjIwIiBmaWxsPSIjQzk0NjQzIi8+CjxlbGxpcHNlIGN4PSIzNjIiIGN5PSIyNDQiIHJ4PSIxMCIgcnk9IjIwIiBmaWxsPSIjQzk0NjQzIi8+CjxwYXRoIGQ9Ik0yMzIgMzAwIEwyMTIgMzIwIEwyMzIgMzQwIiBzdHJva2U9IiMzQUE2NzUiIHN0cm9rZS13aWR0aD0iOCIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+CjxwYXRoIGQ9Ik0yODAgMzAwIEwzMDAgMzIwIEwyODAgMzQwIiBzdHJva2U9IiMzQUE2NzUiIHN0cm9rZS13aWR0aD0iOCIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+CjxwYXRoIGQ9Ik0yNjQgMjk2IEwyNDggMzQ0IiBzdHJva2U9IiMzQUE2NzUiIHN0cm9rZS13aWR0aD0iOCIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+Cjwvc3ZnPg==","thinking":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIiB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiI+CjxlbGxpcHNlIGN4PSIyNTYiIGN5PSI0ODAiIHJ4PSIxMjgiIHJ5PSIxNSIgZmlsbD0iIzAwMCIgb3BhY2l0eT0iLjE0Ii8+CjxlbGxpcHNlIGN4PSIyMDIiIGN5PSI0NjMiIHJ4PSI0NCIgcnk9IjE3IiBmaWxsPSIjRjZCMjFCIi8+CjxlbGxpcHNlIGN4PSIzMTAiIGN5PSI0NjMiIHJ4PSI0NCIgcnk9IjE3IiBmaWxsPSIjRjZCMjFCIi8+CjxwYXRoIGQ9Ik0yNTYgMTEyIEMzNDYgMTEyIDM5MiAxODggMzkyIDI5MiBDMzkyIDM5MiAzMzYgNDUyIDI1NiA0NTIgQzE3NiA0NTIgMTIwIDM5MiAxMjAgMjkyIEMxMjAgMTg4IDE2NiAxMTIgMjU2IDExMiBaIiBmaWxsPSIjMkQyRDMzIi8+CjxlbGxpcHNlIGN4PSIxOTYiIGN5PSIxNjAiIHJ4PSIzNCIgcnk9IjE2IiB0cmFuc2Zvcm09InJvdGF0ZSgtMzIgMTk2IDE2MCkiIGZpbGw9IiM0NjQ2NTAiIG9wYWNpdHk9Ii41NSIvPgo8cGF0aCBkPSJNMjU2IDIzMiBDMzE4IDIzMiAzNTAgMjg4IDM1MCAzNTAgQzM1MCA0MDggMzEyIDQ0MCAyNTYgNDQwIEMyMDAgNDQwIDE2MiA0MDggMTYyIDM1MCBDMTYyIDI4OCAxOTQgMjMyIDI1NiAyMzIgWiIgZmlsbD0iI0Y2RjNFQSIvPgo8cGF0aCBkPSJNMzM0IDMzNiBDMzM0IDM5NiAzMDQgNDI4IDI1NiA0MzQgQzI5OCA0MjAgMzE4IDM5MCAzMjYgMzM2IFoiIGZpbGw9IiNFNkUxRDIiLz4KCjxwYXRoIHRyYW5zZm9ybT0icm90YXRlKDAgMTMyIDI2MikiIGQ9Ik0xMzIgMjUyIEM5NCAyNzIgODAgMzQyIDEwMiAzOTQgQzEyNCAzODAgMTQ0IDMzMiAxNTAgMjc2IFoiIGZpbGw9IiMzQTNBNDMiIHN0cm9rZT0iIzU1NTU1RiIgc3Ryb2tlLXdpZHRoPSIzIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+CjxwYXRoIHRyYW5zZm9ybT0icm90YXRlKDk4IDM4MCAyNjIpIiBkPSJNMzgwIDI1MiBDNDE4IDI3MiA0MzIgMzQyIDQxMCAzOTQgQzM4OCAzODAgMzY4IDMzMiAzNjIgMjc2IFoiIGZpbGw9IiMzQTNBNDMiIHN0cm9rZT0iIzU1NTU1RiIgc3Ryb2tlLXdpZHRoPSIzIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+CjxlbGxpcHNlIGN4PSIyMjAiIGN5PSIxOTAiIHJ4PSIyMiIgcnk9IjI2IiBmaWxsPSIjRkZGRkZGIi8+PGNpcmNsZSBjeD0iMjEzIiBjeT0iMTg0IiByPSIxMCIgZmlsbD0iIzE3MTcxQiIvPjxjaXJjbGUgY3g9IjIxNyIgY3k9IjE4MCIgcj0iMy41IiBmaWxsPSIjRkZGRkZGIi8+PGVsbGlwc2UgY3g9IjI5MiIgY3k9IjE5MCIgcng9IjIyIiByeT0iMjYiIGZpbGw9IiNGRkZGRkYiLz48Y2lyY2xlIGN4PSIyODUiIGN5PSIxODQiIHI9IjEwIiBmaWxsPSIjMTcxNzFCIi8+PGNpcmNsZSBjeD0iMjg5IiBjeT0iMTgwIiByPSIzLjUiIGZpbGw9IiNGRkZGRkYiLz48cGF0aCBkPSJNMTk2IDE1MCBRMjIwIDEzNiAyNDQgMTQ4IiBzdHJva2U9IiNFOUU5RjAiIHN0cm9rZS13aWR0aD0iNiIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PHBhdGggZD0iTTI3MiAxNjIgTDMxNiAxNjIiIHN0cm9rZT0iI0U5RTlGMCIgc3Ryb2tlLXdpZHRoPSI2IiBmaWxsPSJub25lIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48cGF0aCBkPSJNMjI2IDIxNiBRMjU2IDE5OCAyODYgMjE2IFEyNzQgMjQ2IDI1NiAyNTIgUTIzOCAyNDYgMjI2IDIxNiBaIiBmaWxsPSIjRjZCMjFCIi8+PHBhdGggZD0iTTI0MCAyMzAgUTI1NiAyMzYgMjcyIDIzMCIgc3Ryb2tlPSIjRDk4MzBBIiBzdHJva2Utd2lkdGg9IjQiIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxwYXRoIGQ9Ik0yMzIgNjYgUTIzMiA0MCAyNTggNDAgUTI4NCA0MCAyODQgNjIgUTI4NCA4MCAyNjIgODggTDI2MiAxMDAiIHN0cm9rZT0iIzVCN0NGQSIgc3Ryb2tlLXdpZHRoPSIxMCIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PGNpcmNsZSBjeD0iMjYyIiBjeT0iMTE4IiByPSI3IiBmaWxsPSIjNUI3Q0ZBIi8+CjxwYXRoIGQ9Ik0xNDggMjMyIEMxNDAgODQgMzcyIDg0IDM2NCAyMzIiIHN0cm9rZT0iI0YyNUY1QyIgc3Ryb2tlLXdpZHRoPSIxMyIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CjxlbGxpcHNlIGN4PSIxNDQiIGN5PSIyNDQiIHJ4PSIyMSIgcnk9IjMyIiBmaWxsPSIjRjI1RjVDIi8+CjxlbGxpcHNlIGN4PSIzNjgiIGN5PSIyNDQiIHJ4PSIyMSIgcnk9IjMyIiBmaWxsPSIjRjI1RjVDIi8+CjxlbGxpcHNlIGN4PSIxNTAiIGN5PSIyNDQiIHJ4PSIxMCIgcnk9IjIwIiBmaWxsPSIjQzk0NjQzIi8+CjxlbGxpcHNlIGN4PSIzNjIiIGN5PSIyNDQiIHJ4PSIxMCIgcnk9IjIwIiBmaWxsPSIjQzk0NjQzIi8+CjxwYXRoIGQ9Ik0yMzIgMzAwIEwyMTIgMzIwIEwyMzIgMzQwIiBzdHJva2U9IiMzQUE2NzUiIHN0cm9rZS13aWR0aD0iOCIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+CjxwYXRoIGQ9Ik0yODAgMzAwIEwzMDAgMzIwIEwyODAgMzQwIiBzdHJva2U9IiMzQUE2NzUiIHN0cm9rZS13aWR0aD0iOCIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+CjxwYXRoIGQ9Ik0yNjQgMjk2IEwyNDggMzQ0IiBzdHJva2U9IiMzQUE2NzUiIHN0cm9rZS13aWR0aD0iOCIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+Cjwvc3ZnPg==","happy":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIiB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiI+CjxlbGxpcHNlIGN4PSIyNTYiIGN5PSI0ODAiIHJ4PSIxMjgiIHJ5PSIxNSIgZmlsbD0iIzAwMCIgb3BhY2l0eT0iLjE0Ii8+CjxlbGxpcHNlIGN4PSIyMDIiIGN5PSI0NjMiIHJ4PSI0NCIgcnk9IjE3IiBmaWxsPSIjRjZCMjFCIi8+CjxlbGxpcHNlIGN4PSIzMTAiIGN5PSI0NjMiIHJ4PSI0NCIgcnk9IjE3IiBmaWxsPSIjRjZCMjFCIi8+CjxwYXRoIGQ9Ik0yNTYgMTEyIEMzNDYgMTEyIDM5MiAxODggMzkyIDI5MiBDMzkyIDM5MiAzMzYgNDUyIDI1NiA0NTIgQzE3NiA0NTIgMTIwIDM5MiAxMjAgMjkyIEMxMjAgMTg4IDE2NiAxMTIgMjU2IDExMiBaIiBmaWxsPSIjMkQyRDMzIi8+CjxlbGxpcHNlIGN4PSIxOTYiIGN5PSIxNjAiIHJ4PSIzNCIgcnk9IjE2IiB0cmFuc2Zvcm09InJvdGF0ZSgtMzIgMTk2IDE2MCkiIGZpbGw9IiM0NjQ2NTAiIG9wYWNpdHk9Ii41NSIvPgo8cGF0aCBkPSJNMjU2IDIzMiBDMzE4IDIzMiAzNTAgMjg4IDM1MCAzNTAgQzM1MCA0MDggMzEyIDQ0MCAyNTYgNDQwIEMyMDAgNDQwIDE2MiA0MDggMTYyIDM1MCBDMTYyIDI4OCAxOTQgMjMyIDI1NiAyMzIgWiIgZmlsbD0iI0Y2RjNFQSIvPgo8cGF0aCBkPSJNMzM0IDMzNiBDMzM0IDM5NiAzMDQgNDI4IDI1NiA0MzQgQzI5OCA0MjAgMzE4IDM5MCAzMjYgMzM2IFoiIGZpbGw9IiNFNkUxRDIiLz4KCjxwYXRoIHRyYW5zZm9ybT0icm90YXRlKC0xMiAxMzIgMjYyKSIgZD0iTTEzMiAyNTIgQzk0IDI3MiA4MCAzNDIgMTAyIDM5NCBDMTI0IDM4MCAxNDQgMzMyIDE1MCAyNzYgWiIgZmlsbD0iIzNBM0E0MyIgc3Ryb2tlPSIjNTU1NTVGIiBzdHJva2Utd2lkdGg9IjMiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KPHBhdGggdHJhbnNmb3JtPSJyb3RhdGUoMTIgMzgwIDI2MikiIGQ9Ik0zODAgMjUyIEM0MTggMjcyIDQzMiAzNDIgNDEwIDM5NCBDMzg4IDM4MCAzNjggMzMyIDM2MiAyNzYgWiIgZmlsbD0iIzNBM0E0MyIgc3Ryb2tlPSIjNTU1NTVGIiBzdHJva2Utd2lkdGg9IjMiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KPHBhdGggZD0iTTE5OCAxOTYgUTIyMCAxNjQgMjQyIDE5NiIgc3Ryb2tlPSIjMTcxNzFCIiBzdHJva2Utd2lkdGg9IjgiIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxwYXRoIGQ9Ik0yNzAgMTk2IFEyOTIgMTY0IDMxNCAxOTYiIHN0cm9rZT0iIzE3MTcxQiIgc3Ryb2tlLXdpZHRoPSI4IiBmaWxsPSJub25lIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48ZWxsaXBzZSBjeD0iMTg0IiBjeT0iMjI4IiByeD0iMTUiIHJ5PSI5IiBmaWxsPSIjRjI5QTlBIiBvcGFjaXR5PSIuODUiLz48ZWxsaXBzZSBjeD0iMzI4IiBjeT0iMjI4IiByeD0iMTUiIHJ5PSI5IiBmaWxsPSIjRjI5QTlBIiBvcGFjaXR5PSIuODUiLz48cGF0aCBkPSJNMjI2IDIxNiBRMjU2IDE5OCAyODYgMjE2IFEyNzQgMjQ2IDI1NiAyNTIgUTIzOCAyNDYgMjI2IDIxNiBaIiBmaWxsPSIjRjZCMjFCIi8+PHBhdGggZD0iTTIzOCAyMjggUTI1NiAyNDYgMjc0IDIyOCIgc3Ryb2tlPSIjRDk4MzBBIiBzdHJva2Utd2lkdGg9IjUiIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgo8cGF0aCBkPSJNMTQ4IDIzMiBDMTQwIDg0IDM3MiA4NCAzNjQgMjMyIiBzdHJva2U9IiNGMjVGNUMiIHN0cm9rZS13aWR0aD0iMTMiIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgo8ZWxsaXBzZSBjeD0iMTQ0IiBjeT0iMjQ0IiByeD0iMjEiIHJ5PSIzMiIgZmlsbD0iI0YyNUY1QyIvPgo8ZWxsaXBzZSBjeD0iMzY4IiBjeT0iMjQ0IiByeD0iMjEiIHJ5PSIzMiIgZmlsbD0iI0YyNUY1QyIvPgo8ZWxsaXBzZSBjeD0iMTUwIiBjeT0iMjQ0IiByeD0iMTAiIHJ5PSIyMCIgZmlsbD0iI0M5NDY0MyIvPgo8ZWxsaXBzZSBjeD0iMzYyIiBjeT0iMjQ0IiByeD0iMTAiIHJ5PSIyMCIgZmlsbD0iI0M5NDY0MyIvPgo8cGF0aCBkPSJNMjMyIDMwMCBMMjEyIDMyMCBMMjMyIDM0MCIgc3Ryb2tlPSIjM0FBNjc1IiBzdHJva2Utd2lkdGg9IjgiIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgo8cGF0aCBkPSJNMjgwIDMwMCBMMzAwIDMyMCBMMjgwIDM0MCIgc3Ryb2tlPSIjM0FBNjc1IiBzdHJva2Utd2lkdGg9IjgiIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgo8cGF0aCBkPSJNMjY0IDI5NiBMMjQ4IDM0NCIgc3Ryb2tlPSIjM0FBNjc1IiBzdHJva2Utd2lkdGg9IjgiIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgo8L3N2Zz4=","celebrating":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIiB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiI+CjxlbGxpcHNlIGN4PSIyNTYiIGN5PSI0ODAiIHJ4PSIxMjgiIHJ5PSIxNSIgZmlsbD0iIzAwMCIgb3BhY2l0eT0iLjE0Ii8+CjxlbGxpcHNlIGN4PSIyMDIiIGN5PSI0NjMiIHJ4PSI0NCIgcnk9IjE3IiBmaWxsPSIjRjZCMjFCIi8+CjxlbGxpcHNlIGN4PSIzMTAiIGN5PSI0NjMiIHJ4PSI0NCIgcnk9IjE3IiBmaWxsPSIjRjZCMjFCIi8+CjxwYXRoIGQ9Ik0yNTYgMTEyIEMzNDYgMTEyIDM5MiAxODggMzkyIDI5MiBDMzkyIDM5MiAzMzYgNDUyIDI1NiA0NTIgQzE3NiA0NTIgMTIwIDM5MiAxMjAgMjkyIEMxMjAgMTg4IDE2NiAxMTIgMjU2IDExMiBaIiBmaWxsPSIjMkQyRDMzIi8+CjxlbGxpcHNlIGN4PSIxOTYiIGN5PSIxNjAiIHJ4PSIzNCIgcnk9IjE2IiB0cmFuc2Zvcm09InJvdGF0ZSgtMzIgMTk2IDE2MCkiIGZpbGw9IiM0NjQ2NTAiIG9wYWNpdHk9Ii41NSIvPgo8cGF0aCBkPSJNMjU2IDIzMiBDMzE4IDIzMiAzNTAgMjg4IDM1MCAzNTAgQzM1MCA0MDggMzEyIDQ0MCAyNTYgNDQwIEMyMDAgNDQwIDE2MiA0MDggMTYyIDM1MCBDMTYyIDI4OCAxOTQgMjMyIDI1NiAyMzIgWiIgZmlsbD0iI0Y2RjNFQSIvPgo8cGF0aCBkPSJNMzM0IDMzNiBDMzM0IDM5NiAzMDQgNDI4IDI1NiA0MzQgQzI5OCA0MjAgMzE4IDM5MCAzMjYgMzM2IFoiIGZpbGw9IiNFNkUxRDIiLz4KCjxwYXRoIHRyYW5zZm9ybT0icm90YXRlKDE0MCAxMzIgMjYyKSIgZD0iTTEzMiAyNTIgQzk0IDI3MiA4MCAzNDIgMTAyIDM5NCBDMTI0IDM4MCAxNDQgMzMyIDE1MCAyNzYgWiIgZmlsbD0iIzNBM0E0MyIgc3Ryb2tlPSIjNTU1NTVGIiBzdHJva2Utd2lkdGg9IjMiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KPHBhdGggdHJhbnNmb3JtPSJyb3RhdGUoLTE0MCAzODAgMjYyKSIgZD0iTTM4MCAyNTIgQzQxOCAyNzIgNDMyIDM0MiA0MTAgMzk0IEMzODggMzgwIDM2OCAzMzIgMzYyIDI3NiBaIiBmaWxsPSIjM0EzQTQzIiBzdHJva2U9IiM1NTU1NUYiIHN0cm9rZS13aWR0aD0iMyIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgo8cGF0aCBkPSJNMTk4IDE5NiBRMjIwIDE2NCAyNDIgMTk2IiBzdHJva2U9IiMxNzE3MUIiIHN0cm9rZS13aWR0aD0iOCIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PHBhdGggZD0iTTI3MCAxOTYgUTI5MiAxNjQgMzE0IDE5NiIgc3Ryb2tlPSIjMTcxNzFCIiBzdHJva2Utd2lkdGg9IjgiIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxlbGxpcHNlIGN4PSIxODQiIGN5PSIyMjgiIHJ4PSIxNSIgcnk9IjkiIGZpbGw9IiNGMjlBOUEiIG9wYWNpdHk9Ii44NSIvPjxlbGxpcHNlIGN4PSIzMjgiIGN5PSIyMjgiIHJ4PSIxNSIgcnk9IjkiIGZpbGw9IiNGMjlBOUEiIG9wYWNpdHk9Ii44NSIvPjxwYXRoIGQ9Ik0yMzAgMjIwIFEyNTYgMjY4IDI4MiAyMjAgWiIgZmlsbD0iI0Q5ODMwQSIvPjxwYXRoIGQ9Ik0yMzggMjIyIFEyNTYgMjU2IDI3NCAyMjIgWiIgZmlsbD0iIzhFMjQzNCIvPjxwYXRoIGQ9Ik0yMjYgMjE2IFEyNTYgMTk2IDI4NiAyMTYgUTI1NiAyMzIgMjI2IDIxNiBaIiBmaWxsPSIjRjZCMjFCIi8+PHJlY3QgeD0iNzAiIHk9IjkwIiB3aWR0aD0iMTQiIGhlaWdodD0iOCIgcng9IjIiIGZpbGw9IiNGMjVGNUMiIHRyYW5zZm9ybT0icm90YXRlKDI1IDcwIDkwKSIvPjxyZWN0IHg9IjEyMCIgeT0iNTAiIHdpZHRoPSIxMCIgaGVpZ2h0PSIxMCIgcng9IjIiIGZpbGw9IiMzQUE2NzUiIHRyYW5zZm9ybT0icm90YXRlKDAgMTIwIDUwKSIvPjxyZWN0IHg9IjQzMCIgeT0iODAiIHdpZHRoPSIxNCIgaGVpZ2h0PSI4IiByeD0iMiIgZmlsbD0iIzVCN0NGQSIgdHJhbnNmb3JtPSJyb3RhdGUoLTMwIDQzMCA4MCkiLz48cmVjdCB4PSIzOTAiIHk9IjQwIiB3aWR0aD0iMTAiIGhlaWdodD0iMTAiIHJ4PSIyIiBmaWxsPSIjRjZCMjFCIiB0cmFuc2Zvcm09InJvdGF0ZSgwIDM5MCA0MCkiLz48cmVjdCB4PSI2MCIgeT0iMjEwIiB3aWR0aD0iMTAiIGhlaWdodD0iMTAiIHJ4PSIyIiBmaWxsPSIjNUI3Q0ZBIiB0cmFuc2Zvcm09InJvdGF0ZSgwIDYwIDIxMCkiLz48cmVjdCB4PSI0NTAiIHk9IjIwMCIgd2lkdGg9IjE0IiBoZWlnaHQ9IjgiIHJ4PSIyIiBmaWxsPSIjRjI1RjVDIiB0cmFuc2Zvcm09InJvdGF0ZSg0MCA0NTAgMjAwKSIvPjxyZWN0IHg9IjI1NiIgeT0iMzAiIHdpZHRoPSIxMiIgaGVpZ2h0PSI4IiByeD0iMiIgZmlsbD0iIzNBQTY3NSIgdHJhbnNmb3JtPSJyb3RhdGUoMTUgMjU2IDMwKSIvPjxyZWN0IHg9IjE3MCIgeT0iNjYiIHdpZHRoPSI4IiBoZWlnaHQ9IjgiIHJ4PSIyIiBmaWxsPSIjRjZCMjFCIiB0cmFuc2Zvcm09InJvdGF0ZSgwIDE3MCA2NikiLz48cmVjdCB4PSIzNTAiIHk9IjY2IiB3aWR0aD0iOCIgaGVpZ2h0PSI4IiByeD0iMiIgZmlsbD0iI0YyNUY1QyIgdHJhbnNmb3JtPSJyb3RhdGUoMCAzNTAgNjYpIi8+CjxwYXRoIGQ9Ik0xNDggMjMyIEMxNDAgODQgMzcyIDg0IDM2NCAyMzIiIHN0cm9rZT0iI0YyNUY1QyIgc3Ryb2tlLXdpZHRoPSIxMyIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CjxlbGxpcHNlIGN4PSIxNDQiIGN5PSIyNDQiIHJ4PSIyMSIgcnk9IjMyIiBmaWxsPSIjRjI1RjVDIi8+CjxlbGxpcHNlIGN4PSIzNjgiIGN5PSIyNDQiIHJ4PSIyMSIgcnk9IjMyIiBmaWxsPSIjRjI1RjVDIi8+CjxlbGxpcHNlIGN4PSIxNTAiIGN5PSIyNDQiIHJ4PSIxMCIgcnk9IjIwIiBmaWxsPSIjQzk0NjQzIi8+CjxlbGxpcHNlIGN4PSIzNjIiIGN5PSIyNDQiIHJ4PSIxMCIgcnk9IjIwIiBmaWxsPSIjQzk0NjQzIi8+CjxwYXRoIGQ9Ik0yMzIgMzAwIEwyMTIgMzIwIEwyMzIgMzQwIiBzdHJva2U9IiMzQUE2NzUiIHN0cm9rZS13aWR0aD0iOCIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+CjxwYXRoIGQ9Ik0yODAgMzAwIEwzMDAgMzIwIEwyODAgMzQwIiBzdHJva2U9IiMzQUE2NzUiIHN0cm9rZS13aWR0aD0iOCIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+CjxwYXRoIGQ9Ik0yNjQgMjk2IEwyNDggMzQ0IiBzdHJva2U9IiMzQUE2NzUiIHN0cm9rZS13aWR0aD0iOCIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+Cjwvc3ZnPg=="},"professor":{"neutral":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIiB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiI+CjxlbGxpcHNlIGN4PSIyNTYiIGN5PSI0ODAiIHJ4PSIxMjgiIHJ5PSIxNSIgZmlsbD0iIzAwMCIgb3BhY2l0eT0iLjE0Ii8+CjxlbGxpcHNlIGN4PSIyMDIiIGN5PSI0NjMiIHJ4PSI0NCIgcnk9IjE3IiBmaWxsPSIjRjZCMjFCIi8+CjxlbGxpcHNlIGN4PSIzMTAiIGN5PSI0NjMiIHJ4PSI0NCIgcnk9IjE3IiBmaWxsPSIjRjZCMjFCIi8+CjxwYXRoIGQ9Ik0yNTYgMTEyIEMzNDYgMTEyIDM5MiAxODggMzkyIDI5MiBDMzkyIDM5MiAzMzYgNDUyIDI1NiA0NTIgQzE3NiA0NTIgMTIwIDM5MiAxMjAgMjkyIEMxMjAgMTg4IDE2NiAxMTIgMjU2IDExMiBaIiBmaWxsPSIjMkQyRDMzIi8+CjxlbGxpcHNlIGN4PSIxOTYiIGN5PSIxNjAiIHJ4PSIzNCIgcnk9IjE2IiB0cmFuc2Zvcm09InJvdGF0ZSgtMzIgMTk2IDE2MCkiIGZpbGw9IiM0NjQ2NTAiIG9wYWNpdHk9Ii41NSIvPgo8cGF0aCBkPSJNMjU2IDIzMiBDMzE4IDIzMiAzNTAgMjg4IDM1MCAzNTAgQzM1MCA0MDggMzEyIDQ0MCAyNTYgNDQwIEMyMDAgNDQwIDE2MiA0MDggMTYyIDM1MCBDMTYyIDI4OCAxOTQgMjMyIDI1NiAyMzIgWiIgZmlsbD0iI0Y2RjNFQSIvPgo8cGF0aCBkPSJNMzM0IDMzNiBDMzM0IDM5NiAzMDQgNDI4IDI1NiA0MzQgQzI5OCA0MjAgMzE4IDM5MCAzMjYgMzM2IFoiIGZpbGw9IiNFNkUxRDIiLz4KCjxwYXRoIHRyYW5zZm9ybT0icm90YXRlKDAgMTMyIDI2MikiIGQ9Ik0xMzIgMjUyIEM5NCAyNzIgODAgMzQyIDEwMiAzOTQgQzEyNCAzODAgMTQ0IDMzMiAxNTAgMjc2IFoiIGZpbGw9IiMzQTNBNDMiIHN0cm9rZT0iIzU1NTU1RiIgc3Ryb2tlLXdpZHRoPSIzIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+CjxwYXRoIHRyYW5zZm9ybT0icm90YXRlKDAgMzgwIDI2MikiIGQ9Ik0zODAgMjUyIEM0MTggMjcyIDQzMiAzNDIgNDEwIDM5NCBDMzg4IDM4MCAzNjggMzMyIDM2MiAyNzYgWiIgZmlsbD0iIzNBM0E0MyIgc3Ryb2tlPSIjNTU1NTVGIiBzdHJva2Utd2lkdGg9IjMiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KPGVsbGlwc2UgY3g9IjIyMCIgY3k9IjE5MCIgcng9IjIyIiByeT0iMjYiIGZpbGw9IiNGRkZGRkYiLz48Y2lyY2xlIGN4PSIyMjQiIGN5PSIxOTQiIHI9IjEwIiBmaWxsPSIjMTcxNzFCIi8+PGNpcmNsZSBjeD0iMjI4IiBjeT0iMTkwIiByPSIzLjUiIGZpbGw9IiNGRkZGRkYiLz48ZWxsaXBzZSBjeD0iMjkyIiBjeT0iMTkwIiByeD0iMjIiIHJ5PSIyNiIgZmlsbD0iI0ZGRkZGRiIvPjxjaXJjbGUgY3g9IjI4OCIgY3k9IjE5NCIgcj0iMTAiIGZpbGw9IiMxNzE3MUIiLz48Y2lyY2xlIGN4PSIyOTIiIGN5PSIxOTAiIHI9IjMuNSIgZmlsbD0iI0ZGRkZGRiIvPjxwYXRoIGQ9Ik0yMjYgMjE2IFEyNTYgMTk4IDI4NiAyMTYgUTI3NCAyNDYgMjU2IDI1MiBRMjM4IDI0NiAyMjYgMjE2IFoiIGZpbGw9IiNGNkIyMUIiLz48cGF0aCBkPSJNMjQwIDIzMCBRMjU2IDIzNiAyNzIgMjMwIiBzdHJva2U9IiNEOTgzMEEiIHN0cm9rZS13aWR0aD0iNCIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CjxwYXRoIGQ9Ik0yMDYgMTIyIEwyMDYgMTUyIFEyNTYgMTc2IDMwNiAxNTIgTDMwNiAxMjIgWiIgZmlsbD0iIzJCM0E1RSIvPgo8cGF0aCBkPSJNMTcwIDExNiBMMjU2IDgwIEwzNDIgMTE2IEwyNTYgMTUyIFoiIGZpbGw9IiMxRjJBNDQiLz4KPHBhdGggZD0iTTI1NiAxMTYgTDMzMCAxMTYgTDMzMCAxNTYiIHN0cm9rZT0iI0Y2QjIxQiIgc3Ryb2tlLXdpZHRoPSI1IiBmaWxsPSJub25lIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KPGNpcmNsZSBjeD0iMzMwIiBjeT0iMTYwIiByPSI3IiBmaWxsPSIjRjZCMjFCIi8+CjxjaXJjbGUgY3g9IjIyMCIgY3k9IjE5MCIgcj0iMzEiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzhBNUEyQiIgc3Ryb2tlLXdpZHRoPSI1Ii8+CjxjaXJjbGUgY3g9IjI5MiIgY3k9IjE5MCIgcj0iMzEiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzhBNUEyQiIgc3Ryb2tlLXdpZHRoPSI1Ii8+CjxwYXRoIGQ9Ik0yNTAgMTg2IFEyNTYgMTgwIDI2MiAxODYiIHN0cm9rZT0iIzhBNUEyQiIgc3Ryb2tlLXdpZHRoPSI1IiBmaWxsPSJub25lIi8+CjxwYXRoIGQ9Ik0yNTYgMjcwIEwyMTggMjUyIEwyMTggMjg4IFoiIGZpbGw9IiNDMDM5MkIiLz4KPHBhdGggZD0iTTI1NiAyNzAgTDI5NCAyNTIgTDI5NCAyODggWiIgZmlsbD0iI0MwMzkyQiIvPgo8Y2lyY2xlIGN4PSIyNTYiIGN5PSIyNzAiIHI9IjkiIGZpbGw9IiM5NjJEMjIiLz4KPC9zdmc+","thinking":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIiB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiI+CjxlbGxpcHNlIGN4PSIyNTYiIGN5PSI0ODAiIHJ4PSIxMjgiIHJ5PSIxNSIgZmlsbD0iIzAwMCIgb3BhY2l0eT0iLjE0Ii8+CjxlbGxpcHNlIGN4PSIyMDIiIGN5PSI0NjMiIHJ4PSI0NCIgcnk9IjE3IiBmaWxsPSIjRjZCMjFCIi8+CjxlbGxpcHNlIGN4PSIzMTAiIGN5PSI0NjMiIHJ4PSI0NCIgcnk9IjE3IiBmaWxsPSIjRjZCMjFCIi8+CjxwYXRoIGQ9Ik0yNTYgMTEyIEMzNDYgMTEyIDM5MiAxODggMzkyIDI5MiBDMzkyIDM5MiAzMzYgNDUyIDI1NiA0NTIgQzE3NiA0NTIgMTIwIDM5MiAxMjAgMjkyIEMxMjAgMTg4IDE2NiAxMTIgMjU2IDExMiBaIiBmaWxsPSIjMkQyRDMzIi8+CjxlbGxpcHNlIGN4PSIxOTYiIGN5PSIxNjAiIHJ4PSIzNCIgcnk9IjE2IiB0cmFuc2Zvcm09InJvdGF0ZSgtMzIgMTk2IDE2MCkiIGZpbGw9IiM0NjQ2NTAiIG9wYWNpdHk9Ii41NSIvPgo8cGF0aCBkPSJNMjU2IDIzMiBDMzE4IDIzMiAzNTAgMjg4IDM1MCAzNTAgQzM1MCA0MDggMzEyIDQ0MCAyNTYgNDQwIEMyMDAgNDQwIDE2MiA0MDggMTYyIDM1MCBDMTYyIDI4OCAxOTQgMjMyIDI1NiAyMzIgWiIgZmlsbD0iI0Y2RjNFQSIvPgo8cGF0aCBkPSJNMzM0IDMzNiBDMzM0IDM5NiAzMDQgNDI4IDI1NiA0MzQgQzI5OCA0MjAgMzE4IDM5MCAzMjYgMzM2IFoiIGZpbGw9IiNFNkUxRDIiLz4KCjxwYXRoIHRyYW5zZm9ybT0icm90YXRlKDAgMTMyIDI2MikiIGQ9Ik0xMzIgMjUyIEM5NCAyNzIgODAgMzQyIDEwMiAzOTQgQzEyNCAzODAgMTQ0IDMzMiAxNTAgMjc2IFoiIGZpbGw9IiMzQTNBNDMiIHN0cm9rZT0iIzU1NTU1RiIgc3Ryb2tlLXdpZHRoPSIzIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+CjxwYXRoIHRyYW5zZm9ybT0icm90YXRlKDk4IDM4MCAyNjIpIiBkPSJNMzgwIDI1MiBDNDE4IDI3MiA0MzIgMzQyIDQxMCAzOTQgQzM4OCAzODAgMzY4IDMzMiAzNjIgMjc2IFoiIGZpbGw9IiMzQTNBNDMiIHN0cm9rZT0iIzU1NTU1RiIgc3Ryb2tlLXdpZHRoPSIzIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+CjxlbGxpcHNlIGN4PSIyMjAiIGN5PSIxOTAiIHJ4PSIyMiIgcnk9IjI2IiBmaWxsPSIjRkZGRkZGIi8+PGNpcmNsZSBjeD0iMjEzIiBjeT0iMTg0IiByPSIxMCIgZmlsbD0iIzE3MTcxQiIvPjxjaXJjbGUgY3g9IjIxNyIgY3k9IjE4MCIgcj0iMy41IiBmaWxsPSIjRkZGRkZGIi8+PGVsbGlwc2UgY3g9IjI5MiIgY3k9IjE5MCIgcng9IjIyIiByeT0iMjYiIGZpbGw9IiNGRkZGRkYiLz48Y2lyY2xlIGN4PSIyODUiIGN5PSIxODQiIHI9IjEwIiBmaWxsPSIjMTcxNzFCIi8+PGNpcmNsZSBjeD0iMjg5IiBjeT0iMTgwIiByPSIzLjUiIGZpbGw9IiNGRkZGRkYiLz48cGF0aCBkPSJNMTk2IDE1MCBRMjIwIDEzNiAyNDQgMTQ4IiBzdHJva2U9IiNFOUU5RjAiIHN0cm9rZS13aWR0aD0iNiIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PHBhdGggZD0iTTI3MiAxNjIgTDMxNiAxNjIiIHN0cm9rZT0iI0U5RTlGMCIgc3Ryb2tlLXdpZHRoPSI2IiBmaWxsPSJub25lIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48cGF0aCBkPSJNMjI2IDIxNiBRMjU2IDE5OCAyODYgMjE2IFEyNzQgMjQ2IDI1NiAyNTIgUTIzOCAyNDYgMjI2IDIxNiBaIiBmaWxsPSIjRjZCMjFCIi8+PHBhdGggZD0iTTI0MCAyMzAgUTI1NiAyMzYgMjcyIDIzMCIgc3Ryb2tlPSIjRDk4MzBBIiBzdHJva2Utd2lkdGg9IjQiIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxwYXRoIGQ9Ik0yMzIgNjYgUTIzMiA0MCAyNTggNDAgUTI4NCA0MCAyODQgNjIgUTI4NCA4MCAyNjIgODggTDI2MiAxMDAiIHN0cm9rZT0iIzVCN0NGQSIgc3Ryb2tlLXdpZHRoPSIxMCIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PGNpcmNsZSBjeD0iMjYyIiBjeT0iMTE4IiByPSI3IiBmaWxsPSIjNUI3Q0ZBIi8+CjxwYXRoIGQ9Ik0yMDYgMTIyIEwyMDYgMTUyIFEyNTYgMTc2IDMwNiAxNTIgTDMwNiAxMjIgWiIgZmlsbD0iIzJCM0E1RSIvPgo8cGF0aCBkPSJNMTcwIDExNiBMMjU2IDgwIEwzNDIgMTE2IEwyNTYgMTUyIFoiIGZpbGw9IiMxRjJBNDQiLz4KPHBhdGggZD0iTTI1NiAxMTYgTDMzMCAxMTYgTDMzMCAxNTYiIHN0cm9rZT0iI0Y2QjIxQiIgc3Ryb2tlLXdpZHRoPSI1IiBmaWxsPSJub25lIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KPGNpcmNsZSBjeD0iMzMwIiBjeT0iMTYwIiByPSI3IiBmaWxsPSIjRjZCMjFCIi8+CjxjaXJjbGUgY3g9IjIyMCIgY3k9IjE5MCIgcj0iMzEiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzhBNUEyQiIgc3Ryb2tlLXdpZHRoPSI1Ii8+CjxjaXJjbGUgY3g9IjI5MiIgY3k9IjE5MCIgcj0iMzEiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzhBNUEyQiIgc3Ryb2tlLXdpZHRoPSI1Ii8+CjxwYXRoIGQ9Ik0yNTAgMTg2IFEyNTYgMTgwIDI2MiAxODYiIHN0cm9rZT0iIzhBNUEyQiIgc3Ryb2tlLXdpZHRoPSI1IiBmaWxsPSJub25lIi8+CjxwYXRoIGQ9Ik0yNTYgMjcwIEwyMTggMjUyIEwyMTggMjg4IFoiIGZpbGw9IiNDMDM5MkIiLz4KPHBhdGggZD0iTTI1NiAyNzAgTDI5NCAyNTIgTDI5NCAyODggWiIgZmlsbD0iI0MwMzkyQiIvPgo8Y2lyY2xlIGN4PSIyNTYiIGN5PSIyNzAiIHI9IjkiIGZpbGw9IiM5NjJEMjIiLz4KPC9zdmc+","happy":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIiB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiI+CjxlbGxpcHNlIGN4PSIyNTYiIGN5PSI0ODAiIHJ4PSIxMjgiIHJ5PSIxNSIgZmlsbD0iIzAwMCIgb3BhY2l0eT0iLjE0Ii8+CjxlbGxpcHNlIGN4PSIyMDIiIGN5PSI0NjMiIHJ4PSI0NCIgcnk9IjE3IiBmaWxsPSIjRjZCMjFCIi8+CjxlbGxpcHNlIGN4PSIzMTAiIGN5PSI0NjMiIHJ4PSI0NCIgcnk9IjE3IiBmaWxsPSIjRjZCMjFCIi8+CjxwYXRoIGQ9Ik0yNTYgMTEyIEMzNDYgMTEyIDM5MiAxODggMzkyIDI5MiBDMzkyIDM5MiAzMzYgNDUyIDI1NiA0NTIgQzE3NiA0NTIgMTIwIDM5MiAxMjAgMjkyIEMxMjAgMTg4IDE2NiAxMTIgMjU2IDExMiBaIiBmaWxsPSIjMkQyRDMzIi8+CjxlbGxpcHNlIGN4PSIxOTYiIGN5PSIxNjAiIHJ4PSIzNCIgcnk9IjE2IiB0cmFuc2Zvcm09InJvdGF0ZSgtMzIgMTk2IDE2MCkiIGZpbGw9IiM0NjQ2NTAiIG9wYWNpdHk9Ii41NSIvPgo8cGF0aCBkPSJNMjU2IDIzMiBDMzE4IDIzMiAzNTAgMjg4IDM1MCAzNTAgQzM1MCA0MDggMzEyIDQ0MCAyNTYgNDQwIEMyMDAgNDQwIDE2MiA0MDggMTYyIDM1MCBDMTYyIDI4OCAxOTQgMjMyIDI1NiAyMzIgWiIgZmlsbD0iI0Y2RjNFQSIvPgo8cGF0aCBkPSJNMzM0IDMzNiBDMzM0IDM5NiAzMDQgNDI4IDI1NiA0MzQgQzI5OCA0MjAgMzE4IDM5MCAzMjYgMzM2IFoiIGZpbGw9IiNFNkUxRDIiLz4KCjxwYXRoIHRyYW5zZm9ybT0icm90YXRlKC0xMiAxMzIgMjYyKSIgZD0iTTEzMiAyNTIgQzk0IDI3MiA4MCAzNDIgMTAyIDM5NCBDMTI0IDM4MCAxNDQgMzMyIDE1MCAyNzYgWiIgZmlsbD0iIzNBM0E0MyIgc3Ryb2tlPSIjNTU1NTVGIiBzdHJva2Utd2lkdGg9IjMiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KPHBhdGggdHJhbnNmb3JtPSJyb3RhdGUoMTIgMzgwIDI2MikiIGQ9Ik0zODAgMjUyIEM0MTggMjcyIDQzMiAzNDIgNDEwIDM5NCBDMzg4IDM4MCAzNjggMzMyIDM2MiAyNzYgWiIgZmlsbD0iIzNBM0E0MyIgc3Ryb2tlPSIjNTU1NTVGIiBzdHJva2Utd2lkdGg9IjMiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KPHBhdGggZD0iTTE5OCAxOTYgUTIyMCAxNjQgMjQyIDE5NiIgc3Ryb2tlPSIjMTcxNzFCIiBzdHJva2Utd2lkdGg9IjgiIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxwYXRoIGQ9Ik0yNzAgMTk2IFEyOTIgMTY0IDMxNCAxOTYiIHN0cm9rZT0iIzE3MTcxQiIgc3Ryb2tlLXdpZHRoPSI4IiBmaWxsPSJub25lIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48ZWxsaXBzZSBjeD0iMTg0IiBjeT0iMjI4IiByeD0iMTUiIHJ5PSI5IiBmaWxsPSIjRjI5QTlBIiBvcGFjaXR5PSIuODUiLz48ZWxsaXBzZSBjeD0iMzI4IiBjeT0iMjI4IiByeD0iMTUiIHJ5PSI5IiBmaWxsPSIjRjI5QTlBIiBvcGFjaXR5PSIuODUiLz48cGF0aCBkPSJNMjI2IDIxNiBRMjU2IDE5OCAyODYgMjE2IFEyNzQgMjQ2IDI1NiAyNTIgUTIzOCAyNDYgMjI2IDIxNiBaIiBmaWxsPSIjRjZCMjFCIi8+PHBhdGggZD0iTTIzOCAyMjggUTI1NiAyNDYgMjc0IDIyOCIgc3Ryb2tlPSIjRDk4MzBBIiBzdHJva2Utd2lkdGg9IjUiIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgo8cGF0aCBkPSJNMjA2IDEyMiBMMjA2IDE1MiBRMjU2IDE3NiAzMDYgMTUyIEwzMDYgMTIyIFoiIGZpbGw9IiMyQjNBNUUiLz4KPHBhdGggZD0iTTE3MCAxMTYgTDI1NiA4MCBMMzQyIDExNiBMMjU2IDE1MiBaIiBmaWxsPSIjMUYyQTQ0Ii8+CjxwYXRoIGQ9Ik0yNTYgMTE2IEwzMzAgMTE2IEwzMzAgMTU2IiBzdHJva2U9IiNGNkIyMUIiIHN0cm9rZS13aWR0aD0iNSIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CjxjaXJjbGUgY3g9IjMzMCIgY3k9IjE2MCIgcj0iNyIgZmlsbD0iI0Y2QjIxQiIvPgo8Y2lyY2xlIGN4PSIyMjAiIGN5PSIxOTAiIHI9IjMxIiBmaWxsPSJub25lIiBzdHJva2U9IiM4QTVBMkIiIHN0cm9rZS13aWR0aD0iNSIvPgo8Y2lyY2xlIGN4PSIyOTIiIGN5PSIxOTAiIHI9IjMxIiBmaWxsPSJub25lIiBzdHJva2U9IiM4QTVBMkIiIHN0cm9rZS13aWR0aD0iNSIvPgo8cGF0aCBkPSJNMjUwIDE4NiBRMjU2IDE4MCAyNjIgMTg2IiBzdHJva2U9IiM4QTVBMkIiIHN0cm9rZS13aWR0aD0iNSIgZmlsbD0ibm9uZSIvPgo8cGF0aCBkPSJNMjU2IDI3MCBMMjE4IDI1MiBMMjE4IDI4OCBaIiBmaWxsPSIjQzAzOTJCIi8+CjxwYXRoIGQ9Ik0yNTYgMjcwIEwyOTQgMjUyIEwyOTQgMjg4IFoiIGZpbGw9IiNDMDM5MkIiLz4KPGNpcmNsZSBjeD0iMjU2IiBjeT0iMjcwIiByPSI5IiBmaWxsPSIjOTYyRDIyIi8+Cjwvc3ZnPg==","celebrating":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIiB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiI+CjxlbGxpcHNlIGN4PSIyNTYiIGN5PSI0ODAiIHJ4PSIxMjgiIHJ5PSIxNSIgZmlsbD0iIzAwMCIgb3BhY2l0eT0iLjE0Ii8+CjxlbGxpcHNlIGN4PSIyMDIiIGN5PSI0NjMiIHJ4PSI0NCIgcnk9IjE3IiBmaWxsPSIjRjZCMjFCIi8+CjxlbGxpcHNlIGN4PSIzMTAiIGN5PSI0NjMiIHJ4PSI0NCIgcnk9IjE3IiBmaWxsPSIjRjZCMjFCIi8+CjxwYXRoIGQ9Ik0yNTYgMTEyIEMzNDYgMTEyIDM5MiAxODggMzkyIDI5MiBDMzkyIDM5MiAzMzYgNDUyIDI1NiA0NTIgQzE3NiA0NTIgMTIwIDM5MiAxMjAgMjkyIEMxMjAgMTg4IDE2NiAxMTIgMjU2IDExMiBaIiBmaWxsPSIjMkQyRDMzIi8+CjxlbGxpcHNlIGN4PSIxOTYiIGN5PSIxNjAiIHJ4PSIzNCIgcnk9IjE2IiB0cmFuc2Zvcm09InJvdGF0ZSgtMzIgMTk2IDE2MCkiIGZpbGw9IiM0NjQ2NTAiIG9wYWNpdHk9Ii41NSIvPgo8cGF0aCBkPSJNMjU2IDIzMiBDMzE4IDIzMiAzNTAgMjg4IDM1MCAzNTAgQzM1MCA0MDggMzEyIDQ0MCAyNTYgNDQwIEMyMDAgNDQwIDE2MiA0MDggMTYyIDM1MCBDMTYyIDI4OCAxOTQgMjMyIDI1NiAyMzIgWiIgZmlsbD0iI0Y2RjNFQSIvPgo8cGF0aCBkPSJNMzM0IDMzNiBDMzM0IDM5NiAzMDQgNDI4IDI1NiA0MzQgQzI5OCA0MjAgMzE4IDM5MCAzMjYgMzM2IFoiIGZpbGw9IiNFNkUxRDIiLz4KCjxwYXRoIHRyYW5zZm9ybT0icm90YXRlKDE0MCAxMzIgMjYyKSIgZD0iTTEzMiAyNTIgQzk0IDI3MiA4MCAzNDIgMTAyIDM5NCBDMTI0IDM4MCAxNDQgMzMyIDE1MCAyNzYgWiIgZmlsbD0iIzNBM0E0MyIgc3Ryb2tlPSIjNTU1NTVGIiBzdHJva2Utd2lkdGg9IjMiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KPHBhdGggdHJhbnNmb3JtPSJyb3RhdGUoLTE0MCAzODAgMjYyKSIgZD0iTTM4MCAyNTIgQzQxOCAyNzIgNDMyIDM0MiA0MTAgMzk0IEMzODggMzgwIDM2OCAzMzIgMzYyIDI3NiBaIiBmaWxsPSIjM0EzQTQzIiBzdHJva2U9IiM1NTU1NUYiIHN0cm9rZS13aWR0aD0iMyIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgo8cGF0aCBkPSJNMTk4IDE5NiBRMjIwIDE2NCAyNDIgMTk2IiBzdHJva2U9IiMxNzE3MUIiIHN0cm9rZS13aWR0aD0iOCIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PHBhdGggZD0iTTI3MCAxOTYgUTI5MiAxNjQgMzE0IDE5NiIgc3Ryb2tlPSIjMTcxNzFCIiBzdHJva2Utd2lkdGg9IjgiIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxlbGxpcHNlIGN4PSIxODQiIGN5PSIyMjgiIHJ4PSIxNSIgcnk9IjkiIGZpbGw9IiNGMjlBOUEiIG9wYWNpdHk9Ii44NSIvPjxlbGxpcHNlIGN4PSIzMjgiIGN5PSIyMjgiIHJ4PSIxNSIgcnk9IjkiIGZpbGw9IiNGMjlBOUEiIG9wYWNpdHk9Ii44NSIvPjxwYXRoIGQ9Ik0yMzAgMjIwIFEyNTYgMjY4IDI4MiAyMjAgWiIgZmlsbD0iI0Q5ODMwQSIvPjxwYXRoIGQ9Ik0yMzggMjIyIFEyNTYgMjU2IDI3NCAyMjIgWiIgZmlsbD0iIzhFMjQzNCIvPjxwYXRoIGQ9Ik0yMjYgMjE2IFEyNTYgMTk2IDI4NiAyMTYgUTI1NiAyMzIgMjI2IDIxNiBaIiBmaWxsPSIjRjZCMjFCIi8+PHJlY3QgeD0iNzAiIHk9IjkwIiB3aWR0aD0iMTQiIGhlaWdodD0iOCIgcng9IjIiIGZpbGw9IiNGMjVGNUMiIHRyYW5zZm9ybT0icm90YXRlKDI1IDcwIDkwKSIvPjxyZWN0IHg9IjEyMCIgeT0iNTAiIHdpZHRoPSIxMCIgaGVpZ2h0PSIxMCIgcng9IjIiIGZpbGw9IiMzQUE2NzUiIHRyYW5zZm9ybT0icm90YXRlKDAgMTIwIDUwKSIvPjxyZWN0IHg9IjQzMCIgeT0iODAiIHdpZHRoPSIxNCIgaGVpZ2h0PSI4IiByeD0iMiIgZmlsbD0iIzVCN0NGQSIgdHJhbnNmb3JtPSJyb3RhdGUoLTMwIDQzMCA4MCkiLz48cmVjdCB4PSIzOTAiIHk9IjQwIiB3aWR0aD0iMTAiIGhlaWdodD0iMTAiIHJ4PSIyIiBmaWxsPSIjRjZCMjFCIiB0cmFuc2Zvcm09InJvdGF0ZSgwIDM5MCA0MCkiLz48cmVjdCB4PSI2MCIgeT0iMjEwIiB3aWR0aD0iMTAiIGhlaWdodD0iMTAiIHJ4PSIyIiBmaWxsPSIjNUI3Q0ZBIiB0cmFuc2Zvcm09InJvdGF0ZSgwIDYwIDIxMCkiLz48cmVjdCB4PSI0NTAiIHk9IjIwMCIgd2lkdGg9IjE0IiBoZWlnaHQ9IjgiIHJ4PSIyIiBmaWxsPSIjRjI1RjVDIiB0cmFuc2Zvcm09InJvdGF0ZSg0MCA0NTAgMjAwKSIvPjxyZWN0IHg9IjI1NiIgeT0iMzAiIHdpZHRoPSIxMiIgaGVpZ2h0PSI4IiByeD0iMiIgZmlsbD0iIzNBQTY3NSIgdHJhbnNmb3JtPSJyb3RhdGUoMTUgMjU2IDMwKSIvPjxyZWN0IHg9IjE3MCIgeT0iNjYiIHdpZHRoPSI4IiBoZWlnaHQ9IjgiIHJ4PSIyIiBmaWxsPSIjRjZCMjFCIiB0cmFuc2Zvcm09InJvdGF0ZSgwIDE3MCA2NikiLz48cmVjdCB4PSIzNTAiIHk9IjY2IiB3aWR0aD0iOCIgaGVpZ2h0PSI4IiByeD0iMiIgZmlsbD0iI0YyNUY1QyIgdHJhbnNmb3JtPSJyb3RhdGUoMCAzNTAgNjYpIi8+CjxwYXRoIGQ9Ik0yMDYgMTIyIEwyMDYgMTUyIFEyNTYgMTc2IDMwNiAxNTIgTDMwNiAxMjIgWiIgZmlsbD0iIzJCM0E1RSIvPgo8cGF0aCBkPSJNMTcwIDExNiBMMjU2IDgwIEwzNDIgMTE2IEwyNTYgMTUyIFoiIGZpbGw9IiMxRjJBNDQiLz4KPHBhdGggZD0iTTI1NiAxMTYgTDMzMCAxMTYgTDMzMCAxNTYiIHN0cm9rZT0iI0Y2QjIxQiIgc3Ryb2tlLXdpZHRoPSI1IiBmaWxsPSJub25lIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KPGNpcmNsZSBjeD0iMzMwIiBjeT0iMTYwIiByPSI3IiBmaWxsPSIjRjZCMjFCIi8+CjxjaXJjbGUgY3g9IjIyMCIgY3k9IjE5MCIgcj0iMzEiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzhBNUEyQiIgc3Ryb2tlLXdpZHRoPSI1Ii8+CjxjaXJjbGUgY3g9IjI5MiIgY3k9IjE5MCIgcj0iMzEiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzhBNUEyQiIgc3Ryb2tlLXdpZHRoPSI1Ii8+CjxwYXRoIGQ9Ik0yNTAgMTg2IFEyNTYgMTgwIDI2MiAxODYiIHN0cm9rZT0iIzhBNUEyQiIgc3Ryb2tlLXdpZHRoPSI1IiBmaWxsPSJub25lIi8+CjxwYXRoIGQ9Ik0yNTYgMjcwIEwyMTggMjUyIEwyMTggMjg4IFoiIGZpbGw9IiNDMDM5MkIiLz4KPHBhdGggZD0iTTI1NiAyNzAgTDI5NCAyNTIgTDI5NCAyODggWiIgZmlsbD0iI0MwMzkyQiIvPgo8Y2lyY2xlIGN4PSIyNTYiIGN5PSIyNzAiIHI9IjkiIGZpbGw9IiM5NjJEMjIiLz4KPC9zdmc+"}},"technical":{"software":[["APIs","An API endpoint suddenly returns HTTP 500 errors. How would you investigate?","Organize hipóteses e etapas de investigação.","Start with impact and recent changes. Describe logs, reproduction, isolation, and verification."],["Databases","A database query has become very slow. What would you check first?","Explique seu diagnóstico antes de propor mudanças.","Mention query plans, indexes, cardinality, workload and realistic testing."],["Concurrency","How would you explain a race condition to a junior developer?","Mostre domínio técnico com linguagem clara.","Give a short scenario, possible consequences, and one way to prevent it."],["Backend","How would you design pagination for a large API response?","Defenda escolhas técnicas e limitações.","Compare offset and cursor pagination, stability, and API usability."],["Architecture","When would you introduce caching to a system?","Apresente benefícios e riscos técnicos.","Mention latency, invalidation, consistency, and measurement."]],"cyber":[["SOC","You receive an unusual login alert. What evidence would you examine first?","Demonstre triagem defensiva de incidentes.","Describe validation, identity context, logs, correlation and escalation."],["Identity","What is the difference between authentication and authorization?","Explique conceitos de maneira objetiva.","Give one everyday application example for each concept."],["Risk","How would you prioritize vulnerabilities across many systems?","Apresente critérios coerentes de risco.","Consider asset criticality, exposure, exploitability and compensating controls."],["Detection","What would you expect to find in useful security logs?","Demonstre visão de observabilidade e investigação.","Explain timestamp, identity, action, result and data retention considerations."],["Response","How would you communicate a confirmed security incident to your team?","Mostre clareza e responsabilidade operacional.","Mention facts, uncertainty, scope, actions and the next update."]],"cloud":[["Deploy","A production deployment fails. What would you investigate first?","Mostre uma abordagem segura e organizada.","Talk about service health, change history, rollback, logs and ownership."],["Security","How would you manage application secrets in the cloud?","Mostre noções práticas de boas práticas.","Mention secret managers, limited access, rotation and avoiding logs."],["Scale","When should a service scale horizontally instead of vertically?","Explique critérios e limitações.","Discuss load, cost, state, resilience and operational complexity."],["IaC","How can infrastructure as code reduce deployment risks?","Demonstre entendimento de práticas de equipe.","Include versioning, review, consistent environments and safe rollouts."],["Reliability","How would you define an alert for a customer-facing service?","Relacione métricas ao impacto real.","Mention symptoms, actionable thresholds, false positives and ownership."]],"data":[["Quality","Your dataset contains missing and inconsistent values. What would you do?","Explique validação antes da análise.","Discuss profiling, domain assumptions, documentation and controlled cleaning."],["Machine learning","What is data leakage, and why is it dangerous?","Demonstre compreensão de avaliação.","Give a simple example and explain how to avoid the leakage."],["SQL","What steps would you take to investigate a slow SQL query?","Mostre raciocínio diagnóstico.","Mention execution plans, joins, indexes and input size."],["Metrics","Why can accuracy be misleading in an imbalanced dataset?","Explique avaliação de modelos com clareza.","Discuss precision, recall, confusion matrix and business costs."],["Stakeholders","How would you explain uncertainty in a forecast to a manager?","Traduza números em decisões.","Explain assumptions, ranges, drivers and limits rather than a single number."]],"support":[["Connectivity","A user reports that the VPN is not working. How would you diagnose it?","Pratique diagnóstico e atendimento.","Start with user impact and connectivity; check approved troubleshooting steps."],["Networking","What is DNS, and how would you explain it to a non-technical user?","Comunique um conceito técnico sem jargão.","Use an accurate analogy and a simple example."],["Priority","Three critical tickets arrive together. How do you prioritize them?","Defenda critérios de atendimento.","Compare impact, urgency, scope and escalation agreements."],["Systems","A workstation is unusually slow. Where would you start?","Mostre uma investigação estruturada.","Mention observations, recent changes, resource usage and safe diagnosis."],["Documentation","What information belongs in a useful support ticket?","Mostre qualidade de registro.","Cover symptoms, impact, timeline, attempts, outcome and next steps."]],"qa":[["Flaky tests","An automated test fails intermittently. What would you investigate?","Demonstre diagnóstico de confiabilidade.","Discuss environment, data, timing, dependencies and reproducibility."],["Test design","How would you test a new login feature?","Construa uma estratégia de cobertura.","Include happy path, invalid input, edge cases, accessibility and security risks."],["APIs","How would you design tests for a pagination endpoint?","Explique casos funcionais e limites.","Consider ordering, empty results, bounds, consistency and invalid parameters."],["Regression","When is a regression test especially valuable?","Mostre pensamento orientado a riscos.","Talk about recent changes, critical flows, probability and impact."],["Bug reporting","What makes a bug report useful to a developer?","Mostre colaboração e precisão.","Include steps, expected and actual results, evidence and impact."]]},"review":{"software":[["Leitura de código","You are reviewing this API query. What would you ask the author to improve?","Avalie eficiência e contexto.","Mention selecting required fields, result size and pagination.","SELECT * FROM users;"],["Erros","What is the risk in this error-handling block? How would you improve it?","Explique como registrar e tratar falhas.","Mention observability, meaningful user behavior and not hiding exceptions.","try { await saveOrder(); } catch (error) {}"],["Security","What would you flag about this logging statement?","Revise proteção de dados e observabilidade.","Explain why sensitive values should never reach logs.","console.log(\"Password:\", password);"],["Quality","How would you improve this function for testability?","Pense em responsabilidade e clareza.","Discuss naming, dependency separation and single-purpose functions.","function handle(data) { /* validate, save, email */ }"],["Feedback","How would you request a change in a teammate’s PR politely?","Treine linguagem de code review.","Use a question, explain the reason and suggest one concrete alternative.","// PR note: \"Refactor this. It is bad.\""]],"cyber":[["Secrets","How would you review this log statement?","Aponte o risco e uma alternativa segura.","Explain exposure, redaction and logging only non-sensitive context.","console.log(\"token:\", accessToken);"],["Access control","What security review would you perform on this role check?","Avalie controle de acesso sem afirmar resultado de execução.","Discuss comparison, authorization on the server and test coverage.","if (user.role === \"admin\") { allow(); }"],["Configuration","What questions would you ask about this CORS setting?","Contextualize permissões e origens confiáveis.","Explain allowed origins, credentials and documented intent.","Access-Control-Allow-Origin: *"],["Input validation","What would you check when reviewing this user input?","Descreva validações defensivas apropriadas.","Mention type, bounds, expected format and server-side enforcement.","const id = req.query.userId;"],["Review culture","How would you explain a serious vulnerability to a developer respectfully?","Pratique feedback técnico e priorização.","Focus on impact, reproduction evidence and constructive remediation.","// Review: \"This code is insecure.\""]],"cloud":[["Containers","What concern would you raise about this image version?","Explique reprodutibilidade de deploy.","Discuss immutable tags or digests, rollout and rollback.","image: my-service:latest"],["Reliability","What would you check before approving a single-replica deployment?","Discuta disponibilidade e restrições.","Consider workload, disruption, cost and recovery needs.","replicas: 1"],["Observability","What would you expect to add to this service configuration?","Revise monitoramento e saúde.","Mention health checks, metrics and alert ownership.","service: api\nport: 8080"],["Secrets","What would you recommend about this environment variable?","Revise o armazenamento de segredos.","Discuss managed secrets, access control and rotation.","API_KEY: \"example-secret-value\""],["Deploy safety","How would you improve a deployment with no rollback plan?","Defenda mudanças seguras.","Mention stages, metrics, rollback criteria and communication.","strategy: replace-all-at-once"]],"data":[["Missing data","Would you approve dropping every row with a missing value? Why?","Avalie a decisão à luz do contexto.","Mention missingness patterns, bias and dataset impact.","df = df.dropna()"],["Leakage","What concerns would you raise about this evaluation workflow?","Reconheça vazamento de dados.","Discuss train/test split, fit on training only and validation.","scaled = scaler.fit_transform(all_data)"],["SQL","What would you ask before approving this query?","Discuta filtros e volume de dados.","Mention needed columns, date range and query plan.","SELECT * FROM events;"],["Metrics","How would you review this evaluation for a fraud model?","Explique métricas para dados desbalanceados.","Mention precision/recall, false positives and costs.","print(\"accuracy:\", accuracy_score(y, pred))"],["Documentation","What would make this data pipeline easier to maintain?","Revise observabilidade e rastreabilidade.","Discuss schema, assumptions, tests and failure handling.","def run(data):\n    return transform(data)"]],"support":[["Scripts","What would you ask about a script that restarts a service automatically?","Avalie risco operacional antes de automatizar.","Mention authorization, validation, logging and impact.","if check_failed: restart_service()"],["Diagnostics","What is missing from this troubleshooting logic?","Evite conclusões precipitadas.","Discuss multiple causes and verifying the user issue.","if ping_ok: ticket.status = \"resolved\""],["Logs","How could this support script avoid exposing personal data?","Revise privacidade e registros.","Discuss minimum data, redaction and access control.","log(\"Ticket details:\", user_record)"],["Change management","What should be documented before running this maintenance task?","Pratique revisão de mudanças.","Mention impact, approval, rollback and test plan.","maintenance_window = None"],["Clarity","How would you improve this support message to a user?","Pratique comunicação objetiva e respeitosa.","Use simple language, status, next steps and realistic expectations.","\"Ticket closed. Works for me.\""]],"qa":[["Assertions","What is missing from this API test?","Revise cobertura e contratos.","Mention response schema, key values and error behavior.","assert response.status_code == 200"],["Timing","How would you improve this unreliable waiting strategy?","Discuta estabilidade de testes.","Prefer explicit conditions and bounded timeouts.","time.sleep(30)"],["Selectors","What would make this UI test easier to maintain?","Revise qualidade dos seletores.","Discuss stable semantic selectors rather than brittle layout order.","page.locator(\"div:nth-child(7) > button\").click()"],["Test value","What is wrong with this automated test?","Diferencie teste útil de falso positivo.","Explain meaningful assertions and failure behavior.","def test_login():\n    assert True"],["Review quality","How would you suggest additional test cases in a PR?","Treine feedback colaborativo.","Give examples of important edge cases and justify their impact.","// PR: only one successful login test"]]},"coach":{"software":[["Apresentação","How would you introduce yourself to a new international engineering team?","Treine uma apresentação concisa.","Start with your role or interest, one specific project and one goal."],["Projeto","Explain a software project you built, from the problem to the result.","Pratique sequenciar ideias.","Try: problem → your contribution → technology → outcome."],["Vocabulário","How would you explain a bug you fixed to a teammate?","Treine vocabulário técnico em frases naturais.","Use: We noticed…, I investigated…, We fixed…, I verified…"],["Opinião","Would you prefer working on frontend or backend? Why?","Pratique defender preferências com exemplos.","State your preference, a reason and a concrete example."],["Reflexão","What skill do you want to improve over the next six months?","Treine falar sobre desenvolvimento profissional.","Use one present skill, a target and an action plan."]],"cyber":[["Apresentação","How would you introduce your cybersecurity interests to an interviewer?","Apresente seu foco sem decorar um discurso.","Mention your area of interest, one practical example and your motivation."],["Investigação","Explain how you would document an unusual security event.","Treine frases claras em sequência.","Use first, then, after that and finally."],["Vocabulário","What is the difference between a threat, a vulnerability and a risk?","Pratique vocabulário com definições simples.","Give one sentence and one example for each term."],["Comunicação","How would you explain multi-factor authentication to a colleague?","Pratique explicação não técnica.","Define it simply, explain the benefit and give one example."],["Reflexão","Which cybersecurity skill are you currently developing, and why?","Treine falar sobre aprendizado.","Include what you study, how you practice and what you want to achieve."]],"cloud":[["Apresentação","How would you describe your experience with cloud technologies?","Organize sua trajetória de aprendizagem.","Mention what you know, one hands-on project and your current learning goal."],["Processo","Explain the steps of a safe deployment in simple English.","Pratique sequência e clareza.","Use first, next, if necessary and finally."],["Vocabulário","How would you explain the purpose of a load balancer?","Treine um conceito técnico em linguagem clara.","State what it does, when it helps and one limitation."],["Decisão","Why might a team choose managed cloud services?","Pratique um argumento técnico.","Give a reason, one trade-off and an example."],["Reflexão","What infrastructure topic would you like to learn next?","Treine metas profissionais.","Use I want to learn…, because…, by doing…"]],"data":[["Apresentação","How would you describe a data project to someone outside your team?","Pratique explicação acessível.","Begin with the problem, the data and the decision supported."],["Processo","Explain how you check a dataset before analyzing it.","Treine passos de processo.","Use first, then, I check for… and finally."],["Vocabulário","How would you explain the difference between correlation and causation?","Pratique um conceito importante.","Use a simple everyday example."],["Decisão","How would you present an uncertain model result to a manager?","Treine comunicação responsável.","Mention the result, uncertainty, assumptions and next step."],["Reflexão","Which data skill would you like to improve?","Pratique falar sobre objetivos.","Say what, why and how you plan to practice."]],"support":[["Apresentação","How would you introduce yourself to a new IT support team?","Treine uma apresentação profissional.","Include one strength, a support example and your goal."],["Atendimento","Explain to a user how you would investigate a connection issue.","Pratique linguagem simples e organizada.","Try: I understand…, First I will…, Next…, I will update you…"],["Vocabulário","What is a help desk ticket, and why is it useful?","Treine definições técnicas curtas.","Describe the purpose and the information recorded."],["Prioridade","How would you politely ask a colleague for more information?","Pratique perguntas profissionais.","Use Could you…?, Would you mind…? and explain why."],["Reflexão","What is one customer-service skill you want to improve?","Pratique metas com exemplos.","Explain the skill, why it matters and an action to practice."]],"qa":[["Apresentação","How would you introduce your approach to software testing?","Treine uma explicação concisa.","Explain what quality means to you and one example."],["Processo","Describe how you would report a bug to a developer.","Pratique sequência e linguagem profissional.","Use: steps to reproduce, expected, actual, evidence."],["Vocabulário","What is the difference between a test case and a bug report?","Treine definições claras.","Give one definition and one example for each."],["Feedback","How would you suggest another test case without sounding critical?","Pratique colaboração em inglês.","Try: Could we also test…? It might help because…"],["Reflexão","Which QA skill would you like to learn next?","Treine objetivos profissionais.","State the skill, motivation and practice plan."]]}};
+const STORAGE_KEY = 'debugEnglish.mvpInterview.v2';
+const PREVIOUS_KEY = 'debugEnglish.mvpInterview.v1';
+const tracks = {
+      software: {label:'Software Development',short:'Software',questions:[
+        ['Introduction','Tell me about yourself and your experience with software development.','Mostre sua trajetória e o que você procura na área.','Organize em três partes: quem você é, projeto ou habilidade relevante, e próximo objetivo.'],
+        ['Projects','Walk me through a project you are proud of. What was your contribution?','Destaque sua responsabilidade pessoal e um resultado.','Use Situation, Task, Action, Result (STAR). Explique o que você implementou, não só o que a equipe fez.'],
+        ['Problem solving','Tell me about a difficult bug you solved. How did you approach it?','Explique seu método de investigação e resolução.','Mencione como reproduziu o problema, testou hipóteses e verificou a solução.'],
+        ['Architecture','How would you decide between a monolith and microservices for a new product?','Compare alternativas e justifique os trade-offs.','Considere equipe, complexidade, escala, observabilidade e custo. Não existe uma resposta universal.'],
+        ['Collaboration','Describe a time you received critical feedback on your code. How did you respond?','Mostre comunicação, responsabilidade e aprendizado.','Explique o contexto, como ouviu o feedback, o que mudou e o que aprendeu.']
+      ]},
+      cyber: {label:'Cybersecurity',short:'Security',questions:[
+        ['Introduction','Tell me about your interest in cybersecurity and what you have learned so far.','Conecte seus estudos e experiências à área.','Cite um projeto, laboratório ou habilidade defensiva e explique o que aprendeu.'],
+        ['Incident response','How would you investigate a suspicious login alert in a cloud environment?','Mostre raciocínio de triagem e comunicação de riscos.','Comece pela validação do alerta, contexto dos registros, escopo, escalonamento e documentação.'],
+        ['Risk assessment','How would you explain a critical vulnerability to a non-technical manager?','Pratique traduzir risco técnico em impacto de negócio.','Descreva impacto, probabilidade, ações recomendadas e prioridade sem jargões excessivos.'],
+        ['Teamwork','Describe a time you had to learn a security tool quickly. How did you do it?','Demonstre autonomia e método de aprendizagem.','Apresente o objetivo, recursos utilizados, aplicação prática e resultado verificável.'],
+        ['Prioritization','Two security alerts arrive at the same time. How would you prioritize them?','Explicite critérios de decisão em vez de adivinhar.','Considere criticidade do ativo, impacto potencial, sinais de comprometimento e procedimentos da equipe.']
+      ]},
+      cloud: {label:'Cloud & DevOps',short:'Cloud',questions:[
+        ['Introduction','Tell me about your experience with cloud platforms and automation.','Apresente experiências, mesmo de projetos pessoais.','Explique o cenário, serviços usados e resultado; evite listar ferramentas sem contexto.'],
+        ['Troubleshooting','A deployment fails in production. What would you check first?','Organize a investigação e a comunicação com o time.','Fale sobre saúde do serviço, mudanças recentes, logs, rollback e comunicação do incidente.'],
+        ['Reliability','How would you improve the reliability of a frequently failing service?','Mostre pensamento sistêmico.','Considere observabilidade, análise de causa raiz, testes, capacidade e resposta a incidentes.'],
+        ['Trade-offs','When would you choose managed cloud services over self-hosted infrastructure?','Explique critérios e possíveis custos.','Compare equipe, operação, segurança, disponibilidade, requisitos e dependência do fornecedor.'],
+        ['Teamwork','Tell me about a time you automated a repetitive task.','Demonstre impacto e clareza técnica.','Diga qual era o processo, o que automatizou, como validou e o resultado.']
+      ]},
+      data: {label:'Data & AI',short:'Data',questions:[
+        ['Introduction','Tell me about a data project you worked on and the problem it solved.','Mostre contexto e impacto, não apenas bibliotecas.','Inclua origem dos dados, objetivo, seu papel e conclusões.'],
+        ['Data quality','What would you do if a dataset contained missing and inconsistent values?','Mostre uma abordagem cuidadosa de qualidade de dados.','Descreva diagnóstico, critérios para limpeza, documentação e validação antes de modelar.'],
+        ['Communication','How would you explain a complex analytical result to a non-technical stakeholder?','Traduza dados em uma decisão útil.','Comece pela pergunta de negócio, depois evidência, incertezas e recomendação.'],
+        ['Evaluation','How would you know if a machine-learning model is good enough for production?','Mostre compreensão de avaliação e riscos.','Fale sobre métricas adequadas ao problema, baseline, viés, testes e monitoramento.'],
+        ['Collaboration','Describe a time when the data contradicted your initial assumption.','Demonstre senso crítico e abertura à evidência.','Conte qual era a hipótese, o que os dados mostraram e como você ajustou a decisão.']
+      ]},
+      support: {label:'IT Support',short:'Support',questions:[
+        ['Introduction','Tell me about your experience helping people solve technical problems.','Apresente seu perfil de atendimento e tecnologia.','Inclua um exemplo em que você resolveu um problema e explicou a solução.'],
+        ['Troubleshooting','A user cannot connect to the company VPN. How would you troubleshoot the issue?','Mostre uma sequência lógica e comunicação com o usuário.','Pergunte sobre sintomas, contexto, mudanças recentes e verificações permitidas, depois registre o resultado.'],
+        ['Prioritization','How would you handle multiple urgent support tickets at once?','Explique como definir prioridades.','Considere impacto, urgência, usuários afetados, políticas internas e comunicação.'],
+        ['Communication','How would you explain a technical issue to a frustrated customer?','Demonstre clareza e empatia profissional.','Reconheça o problema, explique em linguagem simples, ofereça próximos passos e atualização.'],
+        ['Learning','Tell me about a technical problem you could not solve immediately. What did you do?','Mostre autonomia e capacidade de escalar problemas.','Explique investigação, documentação, consulta à equipe e acompanhamento até a solução.']
+      ]},
+      qa: {label:'QA & Testing',short:'QA',questions:[
+        ['Introduction','Tell me about your experience with software testing and quality assurance.','Apresente sua abordagem de qualidade.','Cite tipos de teste, ferramentas que conhece e um exemplo concreto.'],
+        ['Bug reports','Describe a difficult bug you found. How did you report it?','Demonstre precisão e colaboração.','Explique passos de reprodução, resultado esperado, resultado observado, evidências e impacto.'],
+        ['Test design','How would you design tests for a new user login feature?','Mostre pensamento estruturado e cobertura equilibrada.','Inclua casos positivos, negativos, limites, acessibilidade e risco.'],
+        ['Automation','How do you decide which tests should be automated?','Explique custo-benefício e manutenção.','Considere repetição, estabilidade, criticidade, esforço de implementação e falsos positivos.'],
+        ['Teamwork','What would you do if a developer disagreed with the severity of a bug?','Mostre comunicação e foco no usuário.','Descreva evidências, impacto, alinhamento com critérios e decisão conjunta.']
+      ]}
+    };
+const $ = (id) => document.getElementById(id);
+const validArea = (name) => Object.prototype.hasOwnProperty.call(tracks,name);
+const validMode = (name) => Object.prototype.hasOwnProperty.call(DATA.modes,name);
+const wordCount = (value) => (value.trim().match(/\S+/g)||[]).length;
+const screens = {setup:$('setup-screen'),session:$('session-screen'),summary:$('summary-screen')};
+const initialState = () => ({area:null,mode:null,index:0,answers:{},finished:false});
+let state = initialState();
+let draftSelection = {area:'cyber', mode:'recrutador'};
+function image(mode,mood='neutral') {return DATA.images[mode][mood]||DATA.images.recrutador.neutral;}
+function questionsFor(){
+  if(state.mode==='nerd')return DATA.technical[state.area];
+  if(state.mode==='dev')return DATA.review[state.area];
+  if(state.mode==='professor')return DATA.coach[state.area];
+  return tracks[state.area].questions;
+}
+function updateSetup(){
+  document.querySelectorAll('[data-area]').forEach(b=>b.setAttribute('aria-pressed', String(b.dataset.area===draftSelection.area)));
+  document.querySelectorAll('[data-mode]').forEach(b=>b.setAttribute('aria-pressed', String(b.dataset.mode===draftSelection.mode)));
+  const m=DATA.modes[draftSelection.mode];
+  $('selected-area').textContent=tracks[draftSelection.area].label;
+  $('selected-mode').textContent=m.tagline;
+  $('selected-role').textContent=m.label;
+  $('selected-intro').textContent=m.intro;
+  $('selected-person').src=image(draftSelection.mode,'neutral');
+  $('selected-person').alt='Pinguim '+m.label;
+}
+function storageAvailableStatus(success){$('save-status').textContent=success?'Salvo apenas neste navegador':'Não foi possível salvar: mantenha esta aba aberta';}
+function save(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(state));storageAvailableStatus(true);}catch(e){storageAvailableStatus(false)}}
+function clear(){try{localStorage.removeItem(STORAGE_KEY);}catch(e){}}
+function normalize(parsed,old=false){
+  if(!parsed||!validArea(old?parsed.track:parsed.area)||!validMode(old?'recrutador':parsed.mode)||typeof parsed.answers!=='object'||!parsed.answers)return null;
+  const answers={};for(let i=0;i<5;i++){const a=parsed.answers[i];if(typeof a==='string')answers[i]=a.slice(0,6000)}
+  return {area:old?parsed.track:parsed.area,mode:old?'recrutador':parsed.mode,index:Number.isInteger(parsed.index)?Math.max(0,Math.min(4,parsed.index)):0,answers,finished:parsed.finished===true};
+}
+function load(){
+  try{const current=normalize(JSON.parse(localStorage.getItem(STORAGE_KEY)||'null'));if(current){state=current;return}
+      const previous=normalize(JSON.parse(localStorage.getItem(PREVIOUS_KEY)||'null'),true);if(previous){state=previous;save()}}
+  catch(e){}
+}
+function show(page){Object.entries(screens).forEach(([key,value])=>value.hidden=key!==page);window.scrollTo({top:0,behavior:'instant'});}
+function saveCurrent(){if(screens.session.hidden||!state.area)return;state.answers[state.index]=$('answer').value;save()}
+function renderQuestion(){
+  if(!validArea(state.area)||!validMode(state.mode))return;
+  show('session');
+  const m=DATA.modes[state.mode],q=questionsFor(),row=q[state.index];
+  $('session-path').textContent=tracks[state.area].label.toUpperCase()+' / '+m.short.toUpperCase();
+  $('speaker-title').textContent=m.role.toUpperCase()+' · '+m.tagline.toUpperCase();
+  $('session-index').textContent=String(state.index+1).padStart(2,'0');
+  $('progress-label').textContent=String(state.index+1).padStart(2,'0')+' / 05';
+  $('progress-fill').style.width=((state.index+1)*20)+'%';
+  $('progress-track').setAttribute('aria-valuenow',String(state.index+1));
+  $('question-kind').textContent=row[0];
+  $('question-text').textContent=row[1];
+  $('question-goal').textContent=row[2];
+  $('question-hint').textContent=row[3];
+  $('hint-details').open=false;
+  $('question-snippet').hidden=!row[4];
+  $('snippet-code').textContent=row[4]||'';
+  $('session-person').src=image(state.mode,'thinking');
+  $('session-person').alt='Pinguim '+m.label+' pensando na pergunta';
+  $('scene-role').textContent='Com o '+m.label;
+  $('coach-image').src=image('professor',state.mode==='professor'?'happy':'thinking');
+  $('answer').value=state.answers[state.index]||'';
+  $('words').textContent=String(wordCount($('answer').value));
+  $('previous').disabled=state.index===0;
+  $('next').innerHTML=state.index===4?'Concluir sessão <i class="ph-bold ph-check" aria-hidden="true"></i>':'Próxima pergunta <i class="ph-bold ph-arrow-right" aria-hidden="true"></i>';
+  const steps=$('steps');steps.replaceChildren();
+  q.forEach((question,i)=>{
+    const li=document.createElement('li'),btn=document.createElement('button');btn.type='button';btn.className='step-btn';
+    if(wordCount(state.answers[i]||'')>0)btn.classList.add('answered');
+    if(i===state.index)btn.setAttribute('aria-current','step');
+    btn.setAttribute('aria-label',`Ir para a pergunta ${i+1}: ${question[0]}`);
+    const count=document.createElement('span');count.className='step-num';const n=document.createElement('span');n.textContent=String(i+1);count.append(n);
+    const label=document.createElement('span');label.className='step-text';label.textContent=question[0];btn.append(count,label);
+    btn.addEventListener('click',()=>setStep(i));li.append(btn);steps.append(li);
+  });
+}
+function setStep(index){saveCurrent();state.index=Math.max(0,Math.min(4,index));state.finished=false;save();renderQuestion()}
+function start(){
+  const hasAnswers=Object.values(state.answers).some(a=>wordCount(a)>0);
+  if(state.area&&hasAnswers&&!confirm('Começar outra sessão? Seu rascunho atual será substituído. Baixe o resumo antes, se quiser guardá-lo.'))return;
+  state={area:draftSelection.area,mode:draftSelection.mode,index:0,answers:{},finished:false};save();renderQuestion();
+}
+function finish(){
+  saveCurrent();state.finished=true;save();
+  const q=questionsFor(),report=$('report-list');report.replaceChildren();let answered=0,totalWords=0;
+  q.forEach((row,i)=>{
+    const answer=(state.answers[i]||'').trim(),words=wordCount(answer);if(words)answered++;totalWords+=words;
+    const article=document.createElement('article');article.className='report-item';
+    const head=document.createElement('header'),n=document.createElement('span');n.textContent=`PERGUNTA ${i+1} · ${row[0]}`;const counter=document.createElement('span');counter.textContent=words+' palavras';head.append(n,counter);
+    const h=document.createElement('h3');h.lang='en';h.textContent=row[1];
+    const p=document.createElement('p');p.textContent=answer||'Não respondida';if(!answer)p.className='empty';article.append(head,h,p);report.append(article);
+  });
+  $('metric-answered').textContent=answered+'/5';$('metric-words').textContent=String(totalWords);$('metric-track').textContent=tracks[state.area].short;
+  $('summary-person').src=image(state.mode,'celebrating');$('summary-person').alt='Pinguim '+DATA.modes[state.mode].label+' celebrando';
+  show('summary');
+}
+function exportSummary(){
+  const q=questionsFor(),m=DATA.modes[state.mode],lines=['DEBUG ENGLISH | RESUMO DE PRÁTICA','Área: '+tracks[state.area].label,'Tipo: '+m.tagline,'MVP 0.1.1 · Sem correção automática',''];
+  q.forEach((row,i)=>lines.push((i+1)+'. '+row[1],'Resposta: '+((state.answers[i]||'').trim()||'(não respondida)'),'') );
+  lines.push('Este documento reúne as respostas que você escreveu. Não é uma avaliação de inglês.');
+  const blob=new Blob([lines.join('\n')],{type:'text/plain;charset=utf-8'}),url=URL.createObjectURL(blob),a=document.createElement('a');
+  a.href=url;a.download='debug-english-'+state.area+'-'+state.mode+'.txt';document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
+}
+function restart(){if(!confirm('Começar uma nova sessão? Suas respostas salvas neste navegador serão apagadas.'))return;state=initialState();clear();updateSetup();$('erase-setup').hidden=true;show('setup')}
+$('hero-person').src=image('recrutador','happy');
+document.querySelectorAll('[data-role-image]').forEach(el=>el.src=image(el.dataset.roleImage,'neutral'));
+document.querySelectorAll('[data-area]').forEach(b=>b.addEventListener('click',()=>{draftSelection.area=b.dataset.area;updateSetup()}));
+document.querySelectorAll('[data-mode]').forEach(b=>b.addEventListener('click',()=>{draftSelection.mode=b.dataset.mode;updateSetup()}));
+$('start').addEventListener('click',start);
+$('next').addEventListener('click',()=>state.index===4?finish():setStep(state.index+1));
+$('previous').addEventListener('click',()=>setStep(state.index-1));
+$('answer').addEventListener('input',()=>{state.answers[state.index]=$('answer').value;$('words').textContent=String(wordCount($('answer').value));save()});
+$('review').addEventListener('click',()=>{state.finished=false;save();renderQuestion()});
+$('download').addEventListener('click',exportSummary);
+$('change-track').addEventListener('click',()=>{saveCurrent();draftSelection={area:state.area,mode:state.mode};updateSetup();$('erase-setup').hidden=false;show('setup')});
+$('restart').addEventListener('click',restart);$('erase-setup').addEventListener('click',restart);
+load();
+if(state.area){draftSelection={area:state.area,mode:state.mode};updateSetup();state.finished?finish():renderQuestion()}
+else {updateSetup();show('setup')}
+})();
+</script>
+</body>
+</html>
