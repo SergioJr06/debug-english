@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Debug English | Pratique entrevistas em inglês para TI</title>
 <meta name="theme-color" content="#0E1621">
-<meta name="description" content="Simulações de entrevista, daily e code review em inglês, com feedback que lembra dos seus erros. Entre na lista de espera.">
+<meta name="description" content="Pratique entrevistas e conversas técnicas em inglês para TI com uma demonstração gratuita de cinco perguntas. Plataforma completa em desenvolvimento.">
 <style>
 :root{color-scheme:dark;--bg:#0E1621;--surface:#151F2D;--line:#263447;--text:#E6EDF5;--muted:#9AABBF;--ice:#6FA8FF;--amber:#F6B21B;--green:#4CC38A;--red:#FF7A76;
 --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;--sans:ui-sans-serif,system-ui,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
@@ -221,6 +221,12 @@ footer{color:var(--muted);font-size:.85rem;padding:0 0 28px;text-align:center}
 .waitlist-fallback a:hover{color:#a8d7ff}
 .waitlist-privacy{font-size:.78rem!important;margin:6px auto 0!important}
 @media(max-width:600px){.waitlist-embed{padding:10px 5px 5px;margin:18px -6px 12px}.waitlist-embed iframe{min-height:540px}}
+
+/* Acesso ao MVP gratuito sem alterar o CTA principal */
+.hero-links{display:flex;align-items:center;flex-wrap:wrap;gap:10px}
+.btn.btn-demo{background:rgba(111,168,255,.08);color:var(--ice);border:1px solid #4F77A5;box-shadow:none}
+.btn.btn-demo:hover{background:rgba(111,168,255,.17);box-shadow:0 8px 22px -12px rgba(111,168,255,.45)}
+@media(max-width:420px){.hero-links{align-items:stretch;flex-direction:column}.hero-links .btn{text-align:center}}
 </style>
 </head>
 <body>
@@ -238,8 +244,8 @@ footer{color:var(--muted);font-size:.85rem;padding:0 0 28px;text-align:center}
   <div>
     <span class="eyebrow rv">em breve · lista de espera</span>
     <h1 class="rv" style="--d:.1s">Encontre os <em>bugs</em> do seu inglês antes da entrevista.</h1>
-    <p class="lead rv" style="--d:.2s">Simulações de entrevista, daily e code review em inglês, com feedback que lembra dos seus erros e mostra a sua evolução.</p>
-    <div class="rv" style="--d:.3s"><a class="btn" data-form href="#lista">Entrar na lista de espera</a><p class="fine">Cadastro gratuito para receber novidades e convites para testes.</p></div>
+    <p class="lead rv" style="--d:.2s">Estamos construindo uma plataforma para praticar entrevistas, daily e code review em inglês. Enquanto isso, experimente nosso simulador gratuito de cinco perguntas.</p>
+    <div class="rv" style="--d:.3s"><div class="hero-links"><a class="btn" data-form href="#lista">Entrar na lista de espera</a><a class="btn btn-demo" href="./entrevista.html">Experimentar grátis</a></div><p class="fine">Cinco perguntas para praticar sem cadastro · sem IA e sem correção automática.</p></div>
   </div>
   <div class="mascot rv" style="--d:.2s"><span class="bubble" id="hero-bubble">Hello! Ready for your interview?</span><div class="wavebox" id="hero-penguin" data-voice="hero" role="button" tabindex="0" aria-label="Ouvir voz do pinguim"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="wa" role="img" aria-label="Pinguim acenando" >
 <ellipse cx="256" cy="480" rx="128" ry="15" fill="#000" opacity=".14"/>
