@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Debug English | Pratique entrevistas em inglês para TI</title>
+<meta name="theme-color" content="#0E1621">
+<meta name="description" content="Simulações de entrevista, daily e code review em inglês, com feedback que lembra dos seus erros. Entre na lista de espera.">
+<style>
+:root{color-scheme:dark;--bg:#0E1621;--surface:#151F2D;--line:#263447;--text:#E6EDF5;--muted:#9AABBF;--ice:#6FA8FF;--amber:#F6B21B;--green:#4CC38A;--red:#FF7A76;
+--mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;--sans:ui-sans-serif,system-ui,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+--ease-out:cubic-bezier(.22,1,.36,1)}
+@supports (interpolate-size: allow-keywords){:root{interpolate-size:allow-keywords}}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:68px}
+body{margin:0;background:var(--bg);color:var(--text);font-family:var(--sans);line-height:1.55;overflow-x:hidden;
+background-image:radial-gradient(circle at 50% -10%,rgba(111,168,255,.08),transparent 55%),radial-gradient(rgba(154,171,191,.07) 1px,transparent 1px);
+background-size:100% 100%,28px 28px}
+a{color:inherit}.wrap{max-width:1020px;margin:0 auto;padding:0 20px}
+section{margin-bottom:54px}
+#bar{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--ice),var(--amber));box-shadow:0 0 10px rgba(111,168,255,.5);z-index:30}
+.top{position:sticky;top:0;z-index:20;background:rgba(14,22,33,.78);backdrop-filter:blur(12px);border-bottom:1px solid transparent;transition:border-color .3s,background .3s}
+.top.sc{border-color:var(--line);background:rgba(14,22,33,.92)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;height:56px}
+.logo{font-family:var(--mono);font-weight:700;text-decoration:none;letter-spacing:-.02em}.logo b{color:var(--amber)}
+.cursor{display:inline-block;width:.55em;height:1.05em;background:var(--ice);vertical-align:-.15em;margin-left:3px;animation:blink 1.1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+nav{display:flex;gap:18px;align-items:center;font-size:.93rem}
+nav a:not(.btn){position:relative;text-decoration:none;color:var(--muted);padding:4px 0;transition:color .2s}
+nav a:not(.btn)::after{content:"";position:absolute;left:0;right:0;bottom:0;height:2px;background:var(--ice);transform:scaleX(0);transform-origin:left;transition:transform .28s var(--ease-out)}
+nav a:not(.btn):hover,nav a:not(.btn).act{color:var(--text)}
+nav a:not(.btn).act::after{transform:scaleX(1)}
+.btn{display:inline-block;background:var(--amber);color:#1A1405;font-weight:700;text-decoration:none;padding:12px 22px;border-radius:11px;box-shadow:0 6px 20px -6px rgba(246,178,27,.45);transition:transform .25s var(--ease-out),filter .2s,box-shadow .25s}
+.btn:hover{filter:brightness(1.07);transform:translateY(-2px);box-shadow:0 10px 26px -6px rgba(246,178,27,.6)}
+.btn:active{transform:translateY(0)}
+.btn:focus-visible,summary:focus-visible,nav a:focus-visible,.replay:focus-visible,[data-voice]:focus-visible{outline:3px solid var(--ice);outline-offset:3px}
+nav .btn{padding:7px 14px;color:#1A1405;box-shadow:none}
+.hero{display:grid;grid-template-columns:1.15fr .85fr;gap:24px;align-items:center;padding:24px 0 8px;margin-bottom:24px}
+.eyebrow{display:inline-block;font-family:var(--mono);font-size:.82rem;color:var(--amber);border:1px solid #5A4A1B;background:#2A2310;border-radius:999px;padding:2px 11px}
+h1{font-size:clamp(1.9rem,4.6vw,3.15rem);line-height:1.08;letter-spacing:-.02em;margin:12px 0 10px}
+h1 em{font-style:normal;color:var(--ice);text-shadow:0 0 28px rgba(111,168,255,.28)}
+.lead{color:var(--muted);font-size:1.06rem;max-width:52ch;margin:0 0 20px}.fine{color:var(--muted);font-size:.84rem;margin:8px 0 0}
+.mascot{position:relative;display:grid;place-items:center}
+.mascot::before{content:"";position:absolute;width:86%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 50% 42%,rgba(111,168,255,.18),rgba(30,51,80,.25) 45%,transparent 72%);animation:pulseGlow 5s ease-in-out infinite;pointer-events:none}
+@keyframes pulseGlow{50%{transform:scale(1.06);opacity:.85}}
+.wavebox{position:relative;width:min(300px,74vw);aspect-ratio:1;animation:float 4s ease-in-out infinite;will-change:transform;border-radius:50%}
+.wavebox svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.wa{animation:wa .9s steps(1) infinite}.wb{animation:wb .9s steps(1) infinite}
+@keyframes wa{0%{opacity:1}50%{opacity:0}100%{opacity:0}}@keyframes wb{0%{opacity:0}50%{opacity:1}100%{opacity:1}}
+@keyframes float{50%{transform:translateY(-8px)}}
+.bubble{position:absolute;top:2%;left:2%;z-index:2;background:var(--surface);border:1px solid #354963;border-radius:13px 13px 13px 4px;padding:6px 12px;font-size:.9rem;box-shadow:0 10px 24px rgba(0,0,0,.28);animation:popBubble .7s var(--ease-out) .45s both;will-change:transform;transition:border-color .25s,color .25s}
+.bubble.pop{animation:bubbleTalk .35s var(--ease-out)}
+@keyframes bubbleTalk{0%{transform:scale(.9)}55%{transform:scale(1.06)}100%{transform:scale(1)}}
+@keyframes popBubble{0%{opacity:0;transform:scale(.82) translateY(10px)}100%{opacity:1;transform:scale(1) translateY(0)}}
+
+/* Interação sonora nos pinguins */
+[data-voice]{cursor:pointer;user-select:none;-webkit-tap-highlight-color:transparent}
+.mc[data-voice]{position:relative}
+.say{position:absolute;top:8px;right:8px;z-index:3;background:#0A111A;border:1px solid var(--ice);color:var(--ice);font-family:var(--mono);font-size:.75rem;font-weight:700;padding:2px 9px;border-radius:999px;pointer-events:none;opacity:0;transform:translateY(4px) scale(.85);transition:opacity .2s ease,transform .25s var(--ease-out);box-shadow:0 6px 16px rgba(0,0,0,.4)}
+.say.on{opacity:1;transform:translateY(0) scale(1)}
+.cta .say{top:12px;right:auto;left:50%;transform:translate(-50%,4px) scale(.85);font-size:.82rem;padding:3px 11px}
+.cta .say.on{transform:translate(-50%,0) scale(1)}
+.boop .sk{animation:pengBoop .42s var(--ease-out)!important}
+.wavebox.boop{animation:pengBoop .42s var(--ease-out)!important}
+@keyframes pengBoop{0%{transform:scale(1)}30%{transform:scale(1.1,.9) translateY(4px)}65%{transform:scale(.95,1.06) translateY(-10px) rotate(-3deg)}100%{transform:scale(1) translateY(0) rotate(0)}}
+
+.stats{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 44px;padding:0;list-style:none}
+.stats li{font-family:var(--mono);font-size:.82rem;color:var(--muted);background:rgba(21,31,45,.65);border:1px solid var(--line);border-radius:999px;padding:5px 12px;transition:transform .3s var(--ease-out),border-color .3s}
+.stats li:hover{transform:translateY(-2px);border-color:#3B5272}
+.stats b{color:var(--amber)}
+.js .stats li{opacity:0;transform:translateY(14px);transition:opacity .5s var(--ease-out),transform .5s var(--ease-out),border-color .3s;transition-delay:calc(var(--i,0)*.09s)}
+.js .stats.in li{opacity:1;transform:none}
+.term{background:#0A111A;border:1px solid var(--line);border-radius:13px;overflow:hidden;box-shadow:0 18px 44px -16px rgba(0,0,0,.55)}
+.term-bar{display:flex;gap:7px;align-items:center;padding:8px 14px;background:var(--surface);border-bottom:1px solid var(--line);font-family:var(--mono);font-size:.8rem;color:var(--muted)}
+.dot{width:10px;height:10px;border-radius:50%;background:#3A4A60}
+.dot:nth-child(1){background:#FF5F56;opacity:.75}.dot:nth-child(2){background:#FFBD2E;opacity:.75}.dot:nth-child(3){background:#27C93F;opacity:.75}
+.replay{margin-left:auto;background:transparent;border:1px solid var(--line);color:var(--muted);font-family:var(--mono);font-size:.75rem;padding:2px 8px;border-radius:6px;cursor:pointer;transition:color .2s,border-color .2s,background .2s}
+.replay:hover{color:var(--text);border-color:#455E80;background:rgba(111,168,255,.08)}
+.term pre{margin:0;padding:14px 16px;overflow-x:auto;font-family:var(--mono);font-size:.89rem;line-height:1.68}
+.ln{display:block;min-height:1.68em}.p{color:var(--amber)}.you{color:var(--ice)}.bad{color:var(--red)}.ok{color:var(--green)}.mut{color:var(--muted)}
+.js .ln{opacity:0;transform:translateX(-10px);transition:opacity .42s var(--ease-out),transform .42s var(--ease-out);transition-delay:calc(var(--i)*.32s)}
+.js .term.in .ln{opacity:1;transform:none}
+h2{font-size:clamp(1.4rem,2.8vw,1.85rem);letter-spacing:-.01em;margin:0 0 6px}.sub{color:var(--muted);margin:0 0 18px;max-width:60ch;font-size:.98rem}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.grid4{grid-template-columns:repeat(4,1fr)}.grid2{grid-template-columns:repeat(2,1fr)}
+.card{position:relative;overflow:hidden;background:var(--surface);border:1px solid var(--line);border-radius:13px;padding:17px;transition:transform .3s var(--ease-out),border-color .3s,box-shadow .3s}
+.card::before{content:"";position:absolute;inset:0;background:radial-gradient(320px circle at var(--mx,50%) var(--my,50%),rgba(111,168,255,.09),transparent 70%);opacity:0;transition:opacity .35s;pointer-events:none}
+.card:hover::before{opacity:1}
+.card:hover{transform:translateY(-3px);border-color:#3B5272;box-shadow:0 14px 30px -14px rgba(0,0,0,.5)}
+.card h3{margin:0 0 4px;font-size:1.02rem}.card p{margin:0;color:var(--muted);font-size:.93rem}.tag{font-family:var(--mono);color:var(--amber);font-size:.8rem}
+.q{margin-top:10px!important;font-family:var(--mono);font-size:.82rem!important;color:var(--ice)!important;background:rgba(10,17,26,.55);padding:6px 10px;border-radius:7px;border-left:2px solid var(--ice)}
+.steps{position:relative;display:grid;gap:16px;padding-left:34px;max-width:640px}
+.steps::before{content:"";position:absolute;left:11px;top:6px;bottom:6px;width:2px;background:linear-gradient(var(--ice),var(--amber));transform-origin:top;transform:scaleY(0);transition:transform 1.3s var(--ease-out)}
+.steps.in::before{transform:scaleY(1)}
+.step{position:relative;opacity:0;transform:translateX(-12px);transition:opacity .55s var(--ease-out),transform .55s var(--ease-out);transition-delay:calc(var(--s,0)*.22s)}
+.steps.in .step{opacity:1;transform:none}
+.step::before{content:attr(data-n);position:absolute;left:-34px;top:0;width:24px;height:24px;border-radius:50%;background:var(--bg);border:2px solid var(--line);color:var(--muted);font:700 .78rem var(--mono);display:grid;place-items:center;transition:border-color .4s,color .4s,box-shadow .4s,transform .4s var(--ease-out);transition-delay:calc(var(--s,0)*.22s + .15s)}
+.steps.in .step::before{border-color:var(--ice);color:var(--ice);box-shadow:0 0 14px rgba(111,168,255,.35);transform:scale(1.06)}
+.step h3{margin:0 0 2px;font-size:1.02rem}.step p{margin:0;color:var(--muted);font-size:.94rem}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:13px;padding:18px 20px;max-width:720px;box-shadow:0 16px 36px -18px rgba(0,0,0,.5)}
+.panel-h{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;font-family:var(--mono);font-size:.82rem;color:var(--muted);margin-bottom:14px}
+.bar-row{margin:0 0 12px}.bar-row span{display:flex;justify-content:space-between;font-size:.9rem;margin-bottom:4px}
+.bar-row b{font-family:var(--mono);color:var(--text)}
+.track{height:9px;border-radius:99px;background:#0A111A;overflow:hidden}.fill{height:100%;width:0;border-radius:99px;background:linear-gradient(90deg,var(--ice),var(--green));transition:width 1.3s var(--ease-out);transition-delay:var(--d,0s)}
+.panel.in .fill{width:var(--w)}
+.chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:6px}
+.chip{font-family:var(--mono);font-size:.8rem;color:var(--red);border:1px solid #5B2E2E;background:#2A1515;border-radius:999px;padding:3px 11px;transition:transform .25s var(--ease-out),border-color .25s}
+.chip:hover{transform:translateY(-2px);border-color:var(--red)}
+.js .chip{opacity:0;transform:scale(.9);transition:opacity .4s var(--ease-out),transform .4s var(--ease-out);transition-delay:calc(.55s + var(--c,0)*.1s)}
+.js .panel.in .chip{opacity:1;transform:none}
+.sk{width:100%;max-width:128px;height:auto;display:block;margin:0 auto 6px;transition:transform .35s var(--ease-out)}
+.card:hover .sk{transform:translateY(-6px) rotate(-3deg) scale(1.03)}
+.mc{text-align:center;padding:14px 12px}
+details{background:var(--surface);border:1px solid var(--line);border-radius:11px;margin-bottom:8px;padding:0 16px;transition:border-color .25s,background .25s}
+details:hover{border-color:#384C68}
+details[open]{border-color:#3F587A;background:#182333}
+summary{cursor:pointer;padding:13px 0;font-weight:600;font-size:.97rem;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:12px}
+summary::-webkit-details-marker{display:none}summary::after{content:"+";color:var(--amber);font-family:var(--mono);font-size:1.1rem;transition:transform .3s var(--ease-out)}
+details[open] summary::after{transform:rotate(45deg)}
+details p{margin:0 0 13px;color:var(--muted);font-size:.93rem}
+details[open] p{animation:faqFade .35s var(--ease-out)}
+@keyframes faqFade{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+@supports (interpolate-size: allow-keywords){
+  details::details-content{transition:height .35s var(--ease-out),opacity .3s ease;height:0;opacity:0;overflow:clip}
+  details[open]::details-content{height:auto;opacity:1}
+}
+.cta{position:relative;overflow:hidden;text-align:center;background:radial-gradient(circle at 50% 0%,rgba(111,168,255,.12),transparent 65%),linear-gradient(180deg,var(--surface),#111B28);border:1px solid var(--line);border-radius:16px;padding:26px 20px 30px;margin-bottom:26px}
+.cta h2{margin-top:2px}
+.cta p{color:var(--muted);max-width:48ch;margin:0 auto 18px;font-size:.96rem}.big{max-width:130px;margin:0 auto 4px;display:block;animation:float 3.5s ease-in-out infinite;border-radius:50%}
+.cta.in .big rect{animation:confetti 2.4s ease-in-out infinite alternate}
+.cta.in .big rect:nth-of-type(even){animation-delay:.7s}
+@keyframes confetti{0%{opacity:.55;transform:translateY(0)}100%{opacity:1;transform:translateY(-7px)}}
+footer{color:var(--muted);font-size:.85rem;padding:0 0 28px;text-align:center}
+.js .rv{opacity:0;transform:translateY(20px);transition:opacity .65s var(--ease-out),transform .65s var(--ease-out);transition-delay:var(--d,0s)}.js .rv.in{opacity:1;transform:none}
+.js .rv-s{opacity:0;transform:translateY(18px) scale(.97);transition:opacity .6s var(--ease-out),transform .6s var(--ease-out),border-color .3s,box-shadow .3s;transition-delay:var(--d,0s)}.js .rv-s.in{opacity:1;transform:none}
+
+/* Navegação compacta para dispositivos móveis */
+.menu-toggle{display:none;border:1px solid var(--line);background:var(--surface);width:42px;height:40px;border-radius:10px;align-items:center;justify-content:center;flex-direction:column;gap:5px;cursor:pointer}
+.menu-toggle span{display:block;width:17px;height:2px;border-radius:2px;background:var(--text);transition:transform .25s var(--ease-out),opacity .2s}
+.top.menu-open .menu-toggle span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.top.menu-open .menu-toggle span:nth-child(2){opacity:0}
+.top.menu-open .menu-toggle span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+[hidden]{display:none!important}
+/* Mini experiência prática */
+.challenge-card{max-width:820px;background:linear-gradient(145deg,rgba(21,31,45,.98),rgba(13,22,34,.98));border:1px solid #30445e;border-radius:16px;padding:20px;box-shadow:0 20px 50px -28px rgba(0,0,0,.8);position:relative;overflow:hidden}
+.challenge-card::before{content:"";position:absolute;inset:-1px auto auto -1px;width:220px;height:180px;background:radial-gradient(circle,rgba(111,168,255,.12),transparent 70%);pointer-events:none}
+.challenge-tabs{position:relative;display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
+.challenge-tab{font:600 .84rem var(--sans);color:var(--muted);background:#0d1724;border:1px solid var(--line);border-radius:999px;padding:8px 13px;cursor:pointer;transition:background .25s,border-color .25s,color .25s,transform .25s var(--ease-out)}
+.challenge-tab:hover{transform:translateY(-2px);border-color:#496486;color:var(--text)}
+.challenge-tab.active{background:rgba(111,168,255,.13);border-color:var(--ice);color:#dceaff;box-shadow:0 0 18px rgba(111,168,255,.08)}
+.challenge-prompt{position:relative;border-left:3px solid var(--amber);padding:3px 0 3px 16px;margin:0 0 14px;min-height:116px;animation:promptIn .35s var(--ease-out)}
+.challenge-question{font-size:clamp(1.15rem,2.5vw,1.45rem);font-weight:650;line-height:1.35;margin:7px 0;color:var(--text)}
+.challenge-context{margin:0;color:var(--muted);font-size:.9rem}
+@keyframes promptIn{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:none}}
+.hint-toggle{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;border:1px solid var(--line);border-radius:9px;background:rgba(10,17,26,.5);color:var(--ice);padding:10px 12px;font:600 .9rem var(--sans);text-align:left;cursor:pointer;transition:border-color .2s,background .2s}
+.hint-toggle:hover{border-color:#496486;background:rgba(111,168,255,.06)}
+.hint-toggle span{font:1.2rem var(--mono);color:var(--amber);transition:transform .25s}
+.hint-toggle[aria-expanded="true"] span{transform:rotate(45deg)}
+.challenge-hint{display:grid;gap:4px;background:rgba(76,195,138,.07);border:1px solid rgba(76,195,138,.24);border-radius:9px;padding:12px 14px;margin-top:9px;color:var(--muted);font-size:.9rem;animation:faqFade .25s var(--ease-out)}
+.challenge-hint strong{color:var(--green)}
+.answer-label{display:block;margin:17px 0 7px;font-size:.9rem;font-weight:650}
+#practice-answer{display:block;width:100%;min-height:126px;resize:vertical;border:1px solid var(--line);border-radius:10px;background:#0A111A;color:var(--text);font: .94rem/1.6 var(--sans);padding:12px 14px;outline:none;transition:border-color .2s,box-shadow .2s}
+#practice-answer::placeholder{color:#64758b}
+#practice-answer:focus{border-color:var(--ice);box-shadow:0 0 0 3px rgba(111,168,255,.12)}
+.answer-meta{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:7px;color:var(--muted);font-size:.78rem}
+#word-count{font: .8rem var(--mono);color:var(--amber)}
+.challenge-actions{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:13px}
+.clear-answer{border:1px solid var(--line);background:transparent;border-radius:8px;color:var(--muted);padding:7px 11px;font:600 .82rem var(--sans);cursor:pointer;transition:color .2s,border-color .2s}
+.clear-answer:hover{color:var(--text);border-color:#496486}
+.tracks{display:flex;flex-wrap:wrap;gap:7px;margin:-5px 0 16px}
+.tracks .track-chip{font: .77rem var(--mono);color:#b8c9dc;background:rgba(111,168,255,.07);border:1px solid #2e435d;border-radius:999px;padding:5px 10px}
+/* Áreas e cenários agora indicam claramente o estado interativo */
+.track-chip{cursor:pointer;transition:background .2s,color .2s,border-color .2s,transform .2s}
+.track-chip:hover{border-color:var(--ice);color:var(--text);transform:translateY(-2px)}
+.track-chip.active{background:rgba(111,168,255,.20);color:#fff;border-color:var(--ice)}
+.selection-preview{margin:0 0 18px;background:linear-gradient(105deg,#122740,#101b2b 70%);border:1px solid #45698f;border-radius:13px;padding:16px 18px;box-shadow:0 10px 28px -20px rgba(111,168,255,.5)}
+.selection-preview-top,.selection-preview-bottom{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.selection-live{display:inline-flex;align-items:center;gap:7px;font:700 .76rem var(--mono);color:#a8d7ff}
+.live-dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 0 4px rgba(76,195,138,.12)}
+.selection-path{font:.75rem var(--mono);color:var(--muted)}
+.selection-preview-question{font:650 clamp(1.06rem,2vw,1.35rem)/1.38 var(--sans);margin:12px 0 14px;color:var(--text)}
+.selection-preview.flash .selection-preview-question{animation:promptIn .33s var(--ease-out)}
+.selection-preview-bottom{border-top:1px solid rgba(111,168,255,.16);padding-top:12px;color:var(--muted);font-size:.81rem}
+.selection-practice{color:#101823;background:var(--amber);padding:8px 13px;border-radius:8px;text-decoration:none;font-weight:750;white-space:nowrap;transition:transform .2s,filter .2s}
+.selection-practice:hover{transform:translateY(-2px);filter:brightness(1.08)}
+.selection-practice:focus-visible{outline:3px solid var(--ice);outline-offset:3px}
+.scenario-instruction{font-size:.83rem;color:var(--muted);margin:0 0 10px}
+.scenario-card.selected{border-color:var(--ice)!important;background:#18283b;box-shadow:inset 0 0 0 1px rgba(111,168,255,.15)}
+.scenario-card.selected .tag::after{content:"  ✓";color:var(--green)}
+.scenario-card .q{transition:border-color .2s,color .2s}
+@media(max-width:600px){.selection-preview{padding:14px}.selection-preview-bottom{align-items:stretch}.selection-practice{width:100%;text-align:center}}
+.scenario-card{cursor:pointer}
+.scenario-card:hover{border-color:var(--ice)}
+.scenario-card.selected{border-color:#496486}
+.track-chip:focus-visible,.scenario-card:focus-visible,.challenge-tab:focus-visible{outline:3px solid var(--ice);outline-offset:3px}
+#desafio{scroll-margin-top:88px}
+.form-status{margin:12px 0 0!important}
+.btn-pending{background:#35445a;color:#c5d0dd;box-shadow:none;cursor:default}
+.btn-pending:hover{filter:none;transform:none;box-shadow:none}
+
+@media(max-width:820px){
+  .hero{grid-template-columns:1fr;padding-top:10px;gap:16px}.mascot{order:-1}
+  .grid,.grid4,.grid2{grid-template-columns:1fr}.bubble{left:6%}
+  .top .wrap{position:relative}
+  .menu-toggle{display:flex}
+  .top nav{display:none;position:absolute;top:calc(100% + 8px);left:20px;right:20px;flex-direction:column;align-items:stretch;gap:8px;padding:13px;background:rgba(21,31,45,.98);border:1px solid var(--line);border-radius:13px;box-shadow:0 16px 34px rgba(0,0,0,.38)}
+  .top.menu-open nav{display:flex}
+  .top nav a:not(.btn){display:block;padding:8px 6px}
+  .top nav .btn{text-align:center;margin-top:3px;padding:10px 14px}
+  .challenge-card{padding:15px}.challenge-tabs{gap:6px}.challenge-tab{font-size:.78rem;padding:7px 10px}
+  .answer-meta{font-size:.74rem}
+}
+
+@media(max-width:1000px) and (min-width:821px){.grid4{grid-template-columns:repeat(2,1fr)}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation:none!important;transition:none!important}.js .rv,.js .rv-s,.js .ln,.js .stats li,.step,.js .chip{opacity:1!important;transform:none!important}.wb{opacity:0}.fill{width:var(--w)}.steps::before{transform:none}}
+
+/* Lista de espera incorporada: Tally gratuito, sem redirecionamento */
+.waitlist-embed{max-width:690px;margin:24px auto 12px;text-align:left;border:1px solid #344964;border-radius:14px;padding:15px 15px 8px;background:rgba(10,17,26,.45);min-height:430px}
+.waitlist-embed iframe{display:block;width:100%;border:0;background:transparent;min-height:430px}
+.waitlist-fallback{margin:8px auto 5px!important;font-size:.88rem!important}
+.waitlist-fallback a{color:var(--ice);text-underline-offset:3px}
+.waitlist-fallback a:hover{color:#a8d7ff}
+.waitlist-privacy{font-size:.78rem!important;margin:6px auto 0!important}
+@media(max-width:600px){.waitlist-embed{padding:10px 5px 5px;margin:18px -6px 12px}.waitlist-embed iframe{min-height:540px}}
+</style>
+</head>
+<body>
+<div id="bar" aria-hidden="true"></div>
+<header class="top" id="top"><div class="wrap">
+  <a class="logo" href="#"><b>$</b> debug_english<span class="cursor" aria-hidden="true"></span></a>
+  <button class="menu-toggle" id="menu-toggle" type="button" aria-controls="primary-nav" aria-expanded="false" aria-label="Abrir menu">
+    <span></span><span></span><span></span>
+  </button>
+  <nav id="primary-nav" aria-label="Principal"><a href="#como">Como funciona</a><a href="#cenarios">Cenários</a><a href="#mascote">Mascote</a><a href="#faq">Dúvidas</a><a class="btn" data-form href="#lista">Lista de espera</a></nav>
+</div></header>
+
+<main class="wrap">
+<section class="hero">
+  <div>
+    <span class="eyebrow rv">em breve · lista de espera</span>
+    <h1 class="rv" style="--d:.1s">Encontre os <em>bugs</em> do seu inglês antes da entrevista.</h1>
+    <p class="lead rv" style="--d:.2s">Simulações de entrevista, daily e code review em inglês, com feedback que lembra dos seus erros e mostra a sua evolução.</p>
+    <div class="rv" style="--d:.3s"><a class="btn" data-form href="#lista">Entrar na lista de espera</a><p class="fine">Cadastro gratuito para receber novidades e convites para testes.</p></div>
+  </div>
+  <div class="mascot rv" style="--d:.2s"><span class="bubble" id="hero-bubble">Hello! Ready for your interview?</span><div class="wavebox" id="hero-penguin" data-voice="hero" role="button" tabindex="0" aria-label="Ouvir voz do pinguim"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="wa" role="img" aria-label="Pinguim acenando" >
+<ellipse cx="256" cy="480" rx="128" ry="15" fill="#000" opacity=".14"/>
+<ellipse cx="202" cy="463" rx="44" ry="17" fill="#F6B21B"/>
+<ellipse cx="310" cy="463" rx="44" ry="17" fill="#F6B21B"/>
+<path d="M256 112 C346 112 392 188 392 292 C392 392 336 452 256 452 C176 452 120 392 120 292 C120 188 166 112 256 112 Z" fill="#2D2D33"/>
+<ellipse cx="196" cy="160" rx="34" ry="16" transform="rotate(-32 196 160)" fill="#464650" opacity=".55"/>
+<path d="M256 232 C318 232 350 288 350 350 C350 408 312 440 256 440 C200 440 162 408 162 350 C162 288 194 232 256 232 Z" fill="#F6F3EA"/>
+<path d="M334 336 C334 396 304 428 256 434 C298 420 318 390 326 336 Z" fill="#E6E1D2"/>
+
+<path transform="rotate(0 132 262)" d="M132 252 C94 272 80 342 102 394 C124 380 144 332 150 276 Z" fill="#3A3A43" stroke="#55555F" stroke-width="3" stroke-linejoin="round"/>
+<path transform="rotate(-145 380 262)" d="M380 252 C418 272 432 342 410 394 C388 380 368 332 362 276 Z" fill="#3A3A43" stroke="#55555F" stroke-width="3" stroke-linejoin="round"/>
+<ellipse cx="220" cy="190" rx="22" ry="26" fill="#FFFFFF"/><circle cx="224" cy="194" r="10" fill="#17171B"/><circle cx="228" cy="190" r="3.5" fill="#FFFFFF"/><ellipse cx="292" cy="190" rx="22" ry="26" fill="#FFFFFF"/><circle cx="288" cy="194" r="10" fill="#17171B"/><circle cx="292" cy="190" r="3.5" fill="#FFFFFF"/><path d="M226 216 Q256 198 286 216 Q274 246 256 252 Q238 246 226 216 Z" fill="#F6B21B"/><path d="M238 228 Q256 246 274 228" stroke="#D9830A" stroke-width="5" fill="none" stroke-linecap="round"/><ellipse cx="184" cy="228" rx="15" ry="9" fill="#F29A9A" opacity=".85"/><ellipse cx="328" cy="228" rx="15" ry="9" fill="#F29A9A" opacity=".85"/></svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="wb" aria-hidden="true">
+<ellipse cx="256" cy="480" rx="128" ry="15" fill="#000" opacity=".14"/>
+<ellipse cx="202" cy="463" rx="44" ry="17" fill="#F6B21B"/>
+<ellipse cx="310" cy="463" rx="44" ry="17" fill="#F6B21B"/>
+<path d="M256 112 C346 112 392 188 392 292 C392 392 336 452 256 452 C176 452 120 392 120 292 C120 188 166 112 256 112 Z" fill="#2D2D33"/>
+<ellipse cx="196" cy="160" rx="34" ry="16" transform="rotate(-32 196 160)" fill="#464650" opacity=".55"/>
+<path d="M256 232 C318 232 350 288 350 350 C350 408 312 440 256 440 C200 440 162 408 162 350 C162 288 194 232 256 232 Z" fill="#F6F3EA"/>
+<path d="M334 336 C334 396 304 428 256 434 C298 420 318 390 326 336 Z" fill="#E6E1D2"/>
+
+<path transform="rotate(0 132 262)" d="M132 252 C94 272 80 342 102 394 C124 380 144 332 150 276 Z" fill="#3A3A43" stroke="#55555F" stroke-width="3" stroke-linejoin="round"/>
+<path transform="rotate(-112 380 262)" d="M380 252 C418 272 432 342 410 394 C388 380 368 332 362 276 Z" fill="#3A3A43" stroke="#55555F" stroke-width="3" stroke-linejoin="round"/>
+<ellipse cx="220" cy="190" rx="22" ry="26" fill="#FFFFFF"/><circle cx="224" cy="194" r="10" fill="#17171B"/><circle cx="228" cy="190" r="3.5" fill="#FFFFFF"/><ellipse cx="292" cy="190" rx="22" ry="26" fill="#FFFFFF"/><circle cx="288" cy="194" r="10" fill="#17171B"/><circle cx="292" cy="190" r="3.5" fill="#FFFFFF"/><path d="M226 216 Q256 198 286 216 Q274 246 256 252 Q238 246 226 216 Z" fill="#F6B21B"/><path d="M238 228 Q256 246 274 228" stroke="#D9830A" stroke-width="5" fill="none" stroke-linecap="round"/><ellipse cx="184" cy="228" rx="15" ry="9" fill="#F29A9A" opacity=".85"/><ellipse cx="328" cy="228" rx="15" ry="9" fill="#F29A9A" opacity=".85"/></svg></div></div>
+</section>
+
+<ul class="stats rv">
+  <li style="--i:0"><b>4</b> cenários de trabalho</li>
+  <li style="--i:1"><b>A2 → C1</b> prática para não enferrujar</li>
+  <li style="--i:2"><b>voz</b> ou texto, você escolhe</li>
+  <li style="--i:3"><b>0</b> decoreba de regras soltas</li>
+</ul>
+
+
+
+<section aria-labelledby="problema">
+  <h2 class="rv" id="problema">O problema que ninguém ensina</h2>
+  <p class="sub rv">Você lê documentação em inglês todo dia. Mas falar numa call é outra habilidade.</p>
+  <div class="grid">
+    <div class="card rv-s"><h3>Sabe a tecnologia, trava na call</h3><p>O conhecimento técnico está lá. O que falta é treino de falar, explicar e responder sob pressão.</p></div>
+    <div class="card rv-s" style="--d:.12s"><h3>Gramática solta não prepara para a daily</h3><p>Decorar regras não ensina a reportar um impedimento ou defender uma decisão de arquitetura.</p></div>
+    <div class="card rv-s" style="--d:.24s"><h3>Sem feedback, o erro vira hábito</h3><p>Se ninguém aponta o que você repete, você repete para sempre. O sistema precisa lembrar por você.</p></div>
+  </div>
+</section>
+
+<section aria-labelledby="como-t" id="como">
+  <h2 class="rv" id="como-t">Como funciona</h2>
+  <p class="sub rv">Sessões curtas, de uns 15 minutos, que cabem antes do expediente.</p>
+  <div class="steps rv">
+    <div class="step" data-n="1" style="--s:0"><h3>Escolha o cenário</h3><p>Entrevista, daily, code review ou reunião técnica, no nível que você quer treinar.</p></div>
+    <div class="step" data-n="2" style="--s:1"><h3>Converse em inglês</h3><p>O pinguim assume o papel de recrutador, tech lead ou colega, e responde de verdade ao que você diz.</p></div>
+    <div class="step" data-n="3" style="--s:2"><h3>Receba os bugs</h3><p>No fim, um relatório mostra o que corrigir, com a versão melhorada de cada frase.</p></div>
+    <div class="step" data-n="4" style="--s:3"><h3>Treine o que se repete</h3><p>Seus erros recorrentes voltam nas próximas sessões, até sumirem.</p></div>
+  </div>
+</section>
+
+<section aria-labelledby="cen" id="cenarios">
+  <h2 class="rv" id="cen">Situações que você vai treinar</h2>
+  <p class="sub rv">Selecione sua área e um cenário. As perguntas mudam aqui mesmo, sem sair da seção.</p>
+  <div class="tracks rv" role="group" aria-label="Escolha sua área de TI">
+    <button type="button" class="track-chip active" data-track="software" aria-pressed="true">Software Development</button>
+    <button type="button" class="track-chip" data-track="cyber" aria-pressed="false">Cybersecurity</button>
+    <button type="button" class="track-chip" data-track="cloud" aria-pressed="false">Cloud &amp; DevOps</button>
+    <button type="button" class="track-chip" data-track="data" aria-pressed="false">Data</button>
+    <button type="button" class="track-chip" data-track="support" aria-pressed="false">IT Support &amp; Infrastructure</button>
+    <button type="button" class="track-chip" data-track="qa" aria-pressed="false">QA</button>
+  </div>
+  <div class="selection-preview" id="selection-preview" aria-label="Prévia da seleção">
+    <div class="selection-preview-top"><span class="selection-live"><span class="live-dot" aria-hidden="true"></span> Prévia instantânea</span><span class="selection-path" id="selection-path">Software Development / Entrevista</span></div>
+    <p class="selection-preview-question" id="selection-question">Walk me through a project you are proud of.</p>
+    <div class="selection-preview-bottom"><span id="selection-caption">Escolha outra área ou cenário para ver uma pergunta diferente.</span><a class="selection-practice" id="selection-practice" href="#desafio">Responder esta pergunta <span aria-hidden="true">↗</span></a></div>
+  </div>
+  <p class="scenario-instruction">Depois, escolha o tipo de situação:</p>
+  <div class="grid grid2">
+    <div class="card rv-s scenario-card" role="button" tabindex="0" data-scenario="interview" aria-pressed="true" aria-label="Praticar entrevista"><span class="tag">entrevista</span><h3>Comportamental e técnica</h3><p>Responda sobre conflitos, falhas e decisões, e explique seus projetos com clareza.</p><p class="q">“Walk me through a project you’re proud of.”</p></div>
+    <div class="card rv-s scenario-card" style="--d:.1s" role="button" tabindex="0" data-scenario="daily" aria-pressed="false" aria-label="Praticar daily"><span class="tag">daily</span><h3>Stand-up e impedimentos</h3><p>Reporte progresso, bloqueios e próximos passos de forma curta e direta.</p><p class="q">“What’s blocking you right now?”</p></div>
+    <div class="card rv-s scenario-card" style="--d:.2s" role="button" tabindex="0" data-scenario="review" aria-pressed="false" aria-label="Praticar code review"><span class="tag">code review</span><h3>Feedback em PRs</h3><p>Dê e receba críticas técnicas com educação e precisão.</p><p class="q">“Could we extract this into a helper function?”</p></div>
+    <div class="card rv-s scenario-card" style="--d:.3s" role="button" tabindex="0" data-scenario="meeting" aria-pressed="false" aria-label="Praticar reunião técnica"><span class="tag">reunião</span><h3>Discussão técnica</h3><p>Defenda uma abordagem, concorde, discorde e proponha alternativas.</p><p class="q">“I see your point, but have we considered caching?”</p></div>
+  </div>
+</section>
+
+<section class="challenge-section" id="desafio" aria-labelledby="challenge-title">
+  <h2 class="rv" id="challenge-title">Experimente uma pergunta em inglês</h2>
+  <p class="sub rv">Escreva sua resposta para a pergunta selecionada acima. Esta prévia não faz correção automática nem utiliza IA.</p>
+  <div class="challenge-card rv-s" id="quick-challenge">
+    <div class="challenge-tabs" role="group" aria-label="Escolha o tipo de pergunta">
+      <button class="challenge-tab active" type="button" data-question="interview" aria-pressed="true">Entrevista</button>
+      <button class="challenge-tab" type="button" data-question="daily" aria-pressed="false">Daily</button>
+      <button class="challenge-tab" type="button" data-question="review" aria-pressed="false">Code review</button>
+      <button class="challenge-tab" type="button" data-question="meeting" aria-pressed="false">Reunião técnica</button>
+    </div>
+    <div class="challenge-prompt" aria-live="polite" aria-atomic="true">
+      <span class="tag" id="question-type">ENTREVISTA / SOFTWARE DEVELOPMENT</span>
+      <p class="challenge-question" id="challenge-question">Walk me through a project you are proud of.</p>
+      <p class="challenge-context" id="challenge-context">O recrutador quer entender como você pensa, age e comunica resultados.</p>
+    </div>
+    <button class="hint-toggle" id="hint-toggle" type="button" aria-expanded="false" aria-controls="challenge-hint">Ver uma estrutura para responder <span aria-hidden="true">＋</span></button>
+    <div class="challenge-hint" id="challenge-hint" hidden>
+      <strong id="hint-heading">Use a estrutura STAR:</strong>
+      <span id="hint-copy">Situation: qual era o contexto? Task: qual era sua responsabilidade? Action: o que você fez? Result: qual foi o resultado?</span>
+    </div>
+    <label class="answer-label" for="practice-answer">Sua resposta em inglês</label>
+    <textarea id="practice-answer" rows="5" placeholder="Type your answer here..." spellcheck="true"></textarea>
+    <div class="answer-meta">
+      <span id="word-count" aria-live="polite">0 words</span>
+      <span>Rascunho local: não é enviado nem corrigido.</span>
+    </div>
+    <div class="challenge-actions">
+      <button class="clear-answer" id="clear-answer" type="button">Limpar resposta</button>
+      <span class="fine">Dica: tente responder em 4 a 8 frases.</span>
+    </div>
+  </div>
+</section>
+
+<section aria-labelledby="prog">
+  <h2 class="rv" id="prog">Veja o que melhorar, sessão por sessão</h2>
+  <p class="sub rv">Depois de cada simulação você recebe um relatório simples, com o que está bom e o que repete.</p>
+  <div class="panel rv-s">
+    <div class="panel-h"><span>relatório da sessão</span><span>exemplo ilustrativo</span></div>
+    <div class="bar-row"><span>Clareza <b class="cnt" data-to="78">78%</b></span><div class="track"><div class="fill" style="--w:78%"></div></div></div>
+    <div class="bar-row"><span>Gramática <b class="cnt" data-to="64">64%</b></span><div class="track"><div class="fill" style="--w:64%;--d:.15s"></div></div></div>
+    <div class="bar-row"><span>Vocabulário técnico <b class="cnt" data-to="71">71%</b></span><div class="track"><div class="fill" style="--w:71%;--d:.3s"></div></div></div>
+    <div class="bar-row"><span>Estrutura da resposta <b class="cnt" data-to="58">58%</b></span><div class="track"><div class="fill" style="--w:58%;--d:.45s"></div></div></div>
+    <div class="mut" style="color:var(--muted);font-size:.88rem;margin-top:12px">Bugs que mais se repetem:</div>
+    <div class="chips"><span class="chip" style="--c:0">passado simples ×3</span><span class="chip" style="--c:1">preposições ×2</span><span class="chip" style="--c:2">make / do ×2</span></div>
+  </div>
+</section>
+
+<section aria-labelledby="masc" id="mascote">
+  <h2 class="rv" id="masc">Conheça o pinguim e suas fantasias</h2>
+  <p class="sub rv">O mesmo mascote muda de papel conforme a situação — clique neles para ouvir cada voz.</p>
+  <div class="grid grid4">
+    <div class="card mc rv-s" data-voice="prof" role="button" tabindex="0" aria-label="Ouvir voz do Pinguim Professor"><span class="say" aria-hidden="true"></span><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="sk" role="img" aria-label="Pinguim professor" >
+<ellipse cx="256" cy="480" rx="128" ry="15" fill="#000" opacity=".14"/>
+<ellipse cx="202" cy="463" rx="44" ry="17" fill="#F6B21B"/>
+<ellipse cx="310" cy="463" rx="44" ry="17" fill="#F6B21B"/>
+<path d="M256 112 C346 112 392 188 392 292 C392 392 336 452 256 452 C176 452 120 392 120 292 C120 188 166 112 256 112 Z" fill="#2D2D33"/>
+<ellipse cx="196" cy="160" rx="34" ry="16" transform="rotate(-32 196 160)" fill="#464650" opacity=".55"/>
+<path d="M256 232 C318 232 350 288 350 350 C350 408 312 440 256 440 C200 440 162 408 162 350 C162 288 194 232 256 232 Z" fill="#F6F3EA"/>
+<path d="M334 336 C334 396 304 428 256 434 C298 420 318 390 326 336 Z" fill="#E6E1D2"/>
+
+<path transform="rotate(0 132 262)" d="M132 252 C94 272 80 342 102 394 C124 380 144 332 150 276 Z" fill="#3A3A43" stroke="#55555F" stroke-width="3" stroke-linejoin="round"/>
+<path transform="rotate(0 380 262)" d="M380 252 C418 272 432 342 410 394 C388 380 368 332 362 276 Z" fill="#3A3A43" stroke="#55555F" stroke-width="3" stroke-linejoin="round"/>
+<ellipse cx="220" cy="190" rx="22" ry="26" fill="#FFFFFF"/><circle cx="224" cy="194" r="10" fill="#17171B"/><circle cx="228" cy="190" r="3.5" fill="#FFFFFF"/><ellipse cx="292" cy="190" rx="22" ry="26" fill="#FFFFFF"/><circle cx="288" cy="194" r="10" fill="#17171B"/><circle cx="292" cy="190" r="3.5" fill="#FFFFFF"/><path d="M226 216 Q256 198 286 216 Q274 246 256 252 Q238 246 226 216 Z" fill="#F6B21B"/><path d="M240 230 Q256 236 272 230" stroke="#D9830A" stroke-width="4" fill="none" stroke-linecap="round"/>
+<path d="M206 122 L206 152 Q256 176 306 152 L306 122 Z" fill="#2B3A5E"/>
+<path d="M170 116 L256 80 L342 116 L256 152 Z" fill="#1F2A44"/>
+<path d="M256 116 L330 116 L330 156" stroke="#F6B21B" stroke-width="5" fill="none" stroke-linecap="round"/>
+<circle cx="330" cy="160" r="7" fill="#F6B21B"/>
+<circle cx="220" cy="190" r="31" fill="none" stroke="#8A5A2B" stroke-width="5"/>
+<circle cx="292" cy="190" r="31" fill="none" stroke="#8A5A2B" stroke-width="5"/>
+<path d="M250 186 Q256 180 262 186" stroke="#8A5A2B" stroke-width="5" fill="none"/>
+<path d="M256 270 L218 252 L218 288 Z" fill="#C0392B"/>
+<path d="M256 270 L294 252 L294 288 Z" fill="#C0392B"/>
+<circle cx="256" cy="270" r="9" fill="#962D22"/>
+</svg><h3>Professor</h3><p>Explica e corrige com paciência.</p></div>
+    <div class="card mc rv-s" style="--d:.1s" data-voice="rec" role="button" tabindex="0" aria-label="Ouvir voz do Pinguim Recrutador"><span class="say" aria-hidden="true"></span><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="sk" role="img" aria-label="Pinguim recrutador" >
+<ellipse cx="256" cy="480" rx="128" ry="15" fill="#000" opacity=".14"/>
+<ellipse cx="202" cy="463" rx="44" ry="17" fill="#F6B21B"/>
+<ellipse cx="310" cy="463" rx="44" ry="17" fill="#F6B21B"/>
+<path d="M256 112 C346 112 392 188 392 292 C392 392 336 452 256 452 C176 452 120 392 120 292 C120 188 166 112 256 112 Z" fill="#2D2D33"/>
+<ellipse cx="196" cy="160" rx="34" ry="16" transform="rotate(-32 196 160)" fill="#464650" opacity=".55"/>
+<path d="M256 232 C318 232 350 288 350 350 C350 408 312 440 256 440 C200 440 162 408 162 350 C162 288 194 232 256 232 Z" fill="#F6F3EA"/>
+<path d="M334 336 C334 396 304 428 256 434 C298 420 318 390 326 336 Z" fill="#E6E1D2"/>
+
+<path transform="rotate(0 132 262)" d="M132 252 C94 272 80 342 102 394 C124 380 144 332 150 276 Z" fill="#3A3A43" stroke="#55555F" stroke-width="3" stroke-linejoin="round"/>
+<path transform="rotate(0 380 262)" d="M380 252 C418 272 432 342 410 394 C388 380 368 332 362 276 Z" fill="#3A3A43" stroke="#55555F" stroke-width="3" stroke-linejoin="round"/>
+<ellipse cx="220" cy="190" rx="22" ry="26" fill="#FFFFFF"/><circle cx="224" cy="194" r="10" fill="#17171B"/><circle cx="228" cy="190" r="3.5" fill="#FFFFFF"/><ellipse cx="292" cy="190" rx="22" ry="26" fill="#FFFFFF"/><circle cx="288" cy="194" r="10" fill="#17171B"/><circle cx="292" cy="190" r="3.5" fill="#FFFFFF"/><path d="M226 216 Q256 198 286 216 Q274 246 256 252 Q238 246 226 216 Z" fill="#F6B21B"/><path d="M240 230 Q256 236 272 230" stroke="#D9830A" stroke-width="4" fill="none" stroke-linecap="round"/>
+<path d="M150 232 C140 90 372 90 362 232" stroke="#A8B0BD" stroke-width="9" fill="none" stroke-linecap="round"/>
+<rect x="128" y="218" width="30" height="50" rx="13" fill="#6B7280"/>
+<rect x="354" y="218" width="30" height="50" rx="13" fill="#6B7280"/>
+<path d="M370 262 Q378 306 306 270" stroke="#A8B0BD" stroke-width="5" fill="none" stroke-linecap="round"/>
+<circle cx="300" cy="268" r="8" fill="#333840"/>
+<path d="M226 256 L256 276 L240 290 Z" fill="#fff" stroke="#CFCABB" stroke-width="2"/>
+<path d="M286 256 L256 276 L272 290 Z" fill="#fff" stroke="#CFCABB" stroke-width="2"/>
+<path d="M246 272 L266 272 L274 340 L256 360 L238 340 Z" fill="#2E6FD9"/>
+<path d="M248 272 L264 272 L262 284 L250 284 Z" fill="#2457AD"/>
+</svg><h3>Recrutador</h3><p>Conduz a entrevista.</p></div>
+    <div class="card mc rv-s" style="--d:.2s" data-voice="nerd" role="button" tabindex="0" aria-label="Ouvir voz do Pinguim Nerd"><span class="say" aria-hidden="true"></span><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="sk" role="img" aria-label="Pinguim nerd" >
+<ellipse cx="256" cy="480" rx="128" ry="15" fill="#000" opacity=".14"/>
+<ellipse cx="202" cy="463" rx="44" ry="17" fill="#F6B21B"/>
+<ellipse cx="310" cy="463" rx="44" ry="17" fill="#F6B21B"/>
+<path d="M256 112 C346 112 392 188 392 292 C392 392 336 452 256 452 C176 452 120 392 120 292 C120 188 166 112 256 112 Z" fill="#2D2D33"/>
+<ellipse cx="196" cy="160" rx="34" ry="16" transform="rotate(-32 196 160)" fill="#464650" opacity=".55"/>
+<path d="M256 232 C318 232 350 288 350 350 C350 408 312 440 256 440 C200 440 162 408 162 350 C162 288 194 232 256 232 Z" fill="#F6F3EA"/>
+<path d="M334 336 C334 396 304 428 256 434 C298 420 318 390 326 336 Z" fill="#E6E1D2"/>
+
+<path transform="rotate(0 132 262)" d="M132 252 C94 272 80 342 102 394 C124 380 144 332 150 276 Z" fill="#3A3A43" stroke="#55555F" stroke-width="3" stroke-linejoin="round"/>
+<path transform="rotate(98 380 262)" d="M380 252 C418 272 432 342 410 394 C388 380 368 332 362 276 Z" fill="#3A3A43" stroke="#55555F" stroke-width="3" stroke-linejoin="round"/>
+<ellipse cx="220" cy="190" rx="22" ry="26" fill="#FFFFFF"/><circle cx="213" cy="184" r="10" fill="#17171B"/><circle cx="217" cy="180" r="3.5" fill="#FFFFFF"/><ellipse cx="292" cy="190" rx="22" ry="26" fill="#FFFFFF"/><circle cx="285" cy="184" r="10" fill="#17171B"/><circle cx="289" cy="180" r="3.5" fill="#FFFFFF"/><path d="M196 150 Q220 136 244 148" stroke="#E9E9F0" stroke-width="6" fill="none" stroke-linecap="round"/><path d="M272 162 L316 162" stroke="#E9E9F0" stroke-width="6" fill="none" stroke-linecap="round"/><path d="M226 216 Q256 198 286 216 Q274 246 256 252 Q238 246 226 216 Z" fill="#F6B21B"/><path d="M240 230 Q256 236 272 230" stroke="#D9830A" stroke-width="4" fill="none" stroke-linecap="round"/><path d="M232 66 Q232 40 258 40 Q284 40 284 62 Q284 80 262 88 L262 100" stroke="#5B7CFA" stroke-width="10" fill="none" stroke-linecap="round"/><circle cx="262" cy="118" r="7" fill="#5B7CFA"/>
+<rect x="188" y="162" width="64" height="54" rx="12" fill="#BFE3FF" opacity=".28" stroke="#111114" stroke-width="8"/>
+<rect x="260" y="162" width="64" height="54" rx="12" fill="#BFE3FF" opacity=".28" stroke="#111114" stroke-width="8"/>
+<path d="M252 186 L260 186" stroke="#111114" stroke-width="8"/>
+<rect x="246" y="178" width="20" height="13" rx="2" fill="#fff" stroke="#9AA0AA" stroke-width="2" transform="rotate(-8 256 184)"/>
+<rect x="282" y="286" width="46" height="58" rx="6" fill="#ECE8DA" stroke="#CFCABB" stroke-width="3"/>
+<rect x="290" y="268" width="6" height="26" rx="2" fill="#2E6FD9"/>
+<rect x="302" y="272" width="6" height="22" rx="2" fill="#C0392B"/>
+<rect x="314" y="270" width="6" height="24" rx="2" fill="#17171B"/>
+<path d="M244 112 Q236 88 258 82 Q252 98 262 108" stroke="#2D2D33" stroke-width="9" fill="none" stroke-linecap="round"/>
+</svg><h3>Nerd</h3><p>Cobra o vocabulário técnico.</p></div>
+    <div class="card mc rv-s" style="--d:.3s" data-voice="dev" role="button" tabindex="0" aria-label="Ouvir voz do Pinguim Dev"><span class="say" aria-hidden="true"></span><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="sk" role="img" aria-label="Pinguim dev" >
+<ellipse cx="256" cy="480" rx="128" ry="15" fill="#000" opacity=".14"/>
+<ellipse cx="202" cy="463" rx="44" ry="17" fill="#F6B21B"/>
+<ellipse cx="310" cy="463" rx="44" ry="17" fill="#F6B21B"/>
+<path d="M256 112 C346 112 392 188 392 292 C392 392 336 452 256 452 C176 452 120 392 120 292 C120 188 166 112 256 112 Z" fill="#2D2D33"/>
+<ellipse cx="196" cy="160" rx="34" ry="16" transform="rotate(-32 196 160)" fill="#464650" opacity=".55"/>
+<path d="M256 232 C318 232 350 288 350 350 C350 408 312 440 256 440 C200 440 162 408 162 350 C162 288 194 232 256 232 Z" fill="#F6F3EA"/>
+<path d="M334 336 C334 396 304 428 256 434 C298 420 318 390 326 336 Z" fill="#E6E1D2"/>
+
+<path transform="rotate(-12 132 262)" d="M132 252 C94 272 80 342 102 394 C124 380 144 332 150 276 Z" fill="#3A3A43" stroke="#55555F" stroke-width="3" stroke-linejoin="round"/>
+<path transform="rotate(12 380 262)" d="M380 252 C418 272 432 342 410 394 C388 380 368 332 362 276 Z" fill="#3A3A43" stroke="#55555F" stroke-width="3" stroke-linejoin="round"/>
+<path d="M198 196 Q220 164 242 196" stroke="#17171B" stroke-width="8" fill="none" stroke-linecap="round"/><path d="M270 196 Q292 164 314 196" stroke="#17171B" stroke-width="8" fill="none" stroke-linecap="round"/><ellipse cx="184" cy="228" rx="15" ry="9" fill="#F29A9A" opacity=".85"/><ellipse cx="328" cy="228" rx="15" ry="9" fill="#F29A9A" opacity=".85"/><path d="M226 216 Q256 198 286 216 Q274 246 256 252 Q238 246 226 216 Z" fill="#F6B21B"/><path d="M238 228 Q256 246 274 228" stroke="#D9830A" stroke-width="5" fill="none" stroke-linecap="round"/>
+<path d="M148 232 C140 84 372 84 364 232" stroke="#F25F5C" stroke-width="13" fill="none" stroke-linecap="round"/>
+<ellipse cx="144" cy="244" rx="21" ry="32" fill="#F25F5C"/>
+<ellipse cx="368" cy="244" rx="21" ry="32" fill="#F25F5C"/>
+<ellipse cx="150" cy="244" rx="10" ry="20" fill="#C94643"/>
+<ellipse cx="362" cy="244" rx="10" ry="20" fill="#C94643"/>
+<path d="M232 300 L212 320 L232 340" stroke="#3AA675" stroke-width="8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M280 300 L300 320 L280 340" stroke="#3AA675" stroke-width="8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M264 296 L248 344" stroke="#3AA675" stroke-width="8" fill="none" stroke-linecap="round"/>
+</svg><h3>Dev</h3><p>Acompanha o code review.</p></div>
+  </div>
+</section>
+
+<section aria-labelledby="faq-t" id="faq">
+  <h2 class="rv" id="faq-t">Dúvidas frequentes</h2>
+  <div class="rv">
+    <details><summary>Para qual nível é?</summary><p>Do <strong>A2 ao C1</strong>. O foco não é ensinar inglês do zero, mas desenvolver a prática em situações reais de trabalho: quem está no nível básico ganha vivência para entender a dinâmica e perder o medo da primeira entrevista, enquanto quem já tem nível avançado treina para manter o ritmo e não enferrujar.</p></details>
+    <details><summary>Preciso falar em voz alta?</summary><p>Você escolhe como quer treinar e pode exercitar as 4 habilidades do inglês — <strong>listening, reading, writing e speaking</strong>. Dá para ouvir o entrevistador, ler o contexto técnico e responder digitando ou falando no microfone (que é o ideal para simular uma call de verdade).</p></details>
+    <details><summary>Já está disponível?</summary><p>Ainda não. Estamos montando as primeiras turmas de teste, e quem estiver na lista será avisado primeiro.</p></details>
+    <details><summary>Quanto vai custar?</summary><p>O preço ainda não foi definido. Quem estiver na lista de espera receberá informações sobre valores e condições dos primeiros testes quando estiverem disponíveis.</p></details>
+    <details><summary>Como ficam os meus dados?</summary><p>Na lista de espera pedimos só o necessário e usamos apenas para avisar do lançamento. No produto, a ideia é não guardar o áudio das sessões, e você poderá pedir a exclusão dos seus dados, conforme a LGPD.</p></details>
+    <details><summary>Isso substitui um curso de inglês?</summary><p>Não. Ele funciona como um ambiente de treino prático para o trabalho — complementa o curso ou os estudos que você já faz, sem ficar preso em teoria solta.</p></details>
+  </div>
+</section>
+
+<section class="cta rv-s" id="lista">
+  <span class="say" aria-hidden="true"></span>
+  <div class="big" data-voice="party" role="button" tabindex="0" aria-label="Ouvir pinguim comemorando"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="sk" style="margin:0 auto" role="img" aria-label="Pinguim comemorando" >
+<ellipse cx="256" cy="480" rx="128" ry="15" fill="#000" opacity=".14"/>
+<ellipse cx="202" cy="463" rx="44" ry="17" fill="#F6B21B"/>
+<ellipse cx="310" cy="463" rx="44" ry="17" fill="#F6B21B"/>
+<path d="M256 112 C346 112 392 188 392 292 C392 392 336 452 256 452 C176 452 120 392 120 292 C120 188 166 112 256 112 Z" fill="#2D2D33"/>
+<ellipse cx="196" cy="160" rx="34" ry="16" transform="rotate(-32 196 160)" fill="#464650" opacity=".55"/>
+<path d="M256 232 C318 232 350 288 350 350 C350 408 312 440 256 440 C200 440 162 408 162 350 C162 288 194 232 256 232 Z" fill="#F6F3EA"/>
+<path d="M334 336 C334 396 304 428 256 434 C298 420 318 390 326 336 Z" fill="#E6E1D2"/>
+
+<path transform="rotate(140 132 262)" d="M132 252 C94 272 80 342 102 394 C124 380 144 332 150 276 Z" fill="#3A3A43" stroke="#55555F" stroke-width="3" stroke-linejoin="round"/>
+<path transform="rotate(-140 380 262)" d="M380 252 C418 272 432 342 410 394 C388 380 368 332 362 276 Z" fill="#3A3A43" stroke="#55555F" stroke-width="3" stroke-linejoin="round"/>
+<path d="M198 196 Q220 164 242 196" stroke="#17171B" stroke-width="8" fill="none" stroke-linecap="round"/><path d="M270 196 Q292 164 314 196" stroke="#17171B" stroke-width="8" fill="none" stroke-linecap="round"/><ellipse cx="184" cy="228" rx="15" ry="9" fill="#F29A9A" opacity=".85"/><ellipse cx="328" cy="228" rx="15" ry="9" fill="#F29A9A" opacity=".85"/><path d="M230 220 Q256 268 282 220 Z" fill="#D9830A"/><path d="M238 222 Q256 256 274 222 Z" fill="#8E2434"/><path d="M226 216 Q256 196 286 216 Q256 232 226 216 Z" fill="#F6B21B"/><rect x="70" y="90" width="14" height="8" rx="2" fill="#F25F5C" transform="rotate(25 70 90)"/><rect x="120" y="50" width="10" height="10" rx="2" fill="#3AA675" transform="rotate(0 120 50)"/><rect x="430" y="80" width="14" height="8" rx="2" fill="#5B7CFA" transform="rotate(-30 430 80)"/><rect x="390" y="40" width="10" height="10" rx="2" fill="#F6B21B" transform="rotate(0 390 40)"/><rect x="60" y="210" width="10" height="10" rx="2" fill="#5B7CFA" transform="rotate(0 60 210)"/><rect x="450" y="200" width="14" height="8" rx="2" fill="#F25F5C" transform="rotate(40 450 200)"/><rect x="256" y="30" width="12" height="8" rx="2" fill="#3AA675" transform="rotate(15 256 30)"/><rect x="170" y="66" width="8" height="8" rx="2" fill="#F6B21B" transform="rotate(0 170 66)"/><rect x="350" y="66" width="8" height="8" rx="2" fill="#F25F5C" transform="rotate(0 350 66)"/></svg></div>
+  <h2>Quer testar antes de todo mundo?</h2>
+  <p>Entre na lista de espera do Debug English para conhecer as novidades e participar dos primeiros testes da plataforma.</p>
+  <div class="waitlist-embed" aria-label="Cadastro na lista de espera do Debug English">
+    <iframe
+      data-tally-src="https://tally.so/embed/q5RKP7?alignLeft=1&amp;hideTitle=1&amp;transparentBackground=1&amp;dynamicHeight=1"
+      loading="lazy"
+      width="100%"
+      height="590"
+      frameborder="0"
+      marginheight="0"
+      marginwidth="0"
+      title="Formulário de inscrição — Debug English"
+    ></iframe>
+  </div>
+  <p class="waitlist-fallback">Não consegue visualizar o formulário? <a href="https://tally.so/r/q5RKP7" target="_blank" rel="noopener noreferrer">Abrir cadastro em outra aba</a>.</p>
+  <p class="fine waitlist-privacy">Seu cadastro é enviado pelo Tally. Não compartilhamos suas respostas publicamente.</p>
+</section>
+</main>
+<footer>Debug English está em desenvolvimento. Feito por dev, para devs.</footer>
+
+<script>
+(function(){
+  // Os botões da landing page direcionam à seção com o Tally incorporado.
+  // O formulário é gerenciado em https://tally.so/r/q5RKP7.
+  var root = document.documentElement;
+  var reduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  root.classList.add("js");
+
+  // Menu mobile acessível por toque, Enter, Espaço e Escape.
+  var menuToggle = document.getElementById("menu-toggle");
+  var siteHeader = document.getElementById("top");
+  var primaryNav = document.getElementById("primary-nav");
+  function closeMenu(){
+    if (!menuToggle || !siteHeader) return;
+    siteHeader.classList.remove("menu-open");
+    menuToggle.setAttribute("aria-expanded", "false");
+    menuToggle.setAttribute("aria-label", "Abrir menu");
+  }
+  if (menuToggle && siteHeader) {
+    menuToggle.addEventListener("click", function(){
+      var isOpen = siteHeader.classList.toggle("menu-open");
+      menuToggle.setAttribute("aria-expanded", String(isOpen));
+      menuToggle.setAttribute("aria-label", isOpen ? "Fechar menu" : "Abrir menu");
+    });
+    if (primaryNav) primaryNav.addEventListener("click", function(ev){
+      if (ev.target.closest("a")) closeMenu();
+    });
+    document.addEventListener("keydown", function(ev){ if (ev.key === "Escape") closeMenu(); });
+    document.addEventListener("click", function(ev){
+      if (!siteHeader.contains(ev.target)) closeMenu();
+    });
+  }
+
+  // Mini exercício de prática: alterna perguntas e mostra a contagem local de palavras.
+  // Prévia local: conteúdo fixo, sem análise ou envio da resposta.
+  var questionBank = {
+    software: {
+      interview: "Walk me through a project you are proud of.",
+      daily: "What did you implement yesterday, and what will you work on today?",
+      review: "How would you suggest improving the readability of this pull request?",
+      meeting: "Would you choose a monolith or microservices for this project, and why?"
+    },
+    cyber: {
+      interview: "How would you investigate a suspicious login alert?",
+      daily: "Which security alerts did you investigate yesterday, and what is your priority today?",
+      review: "How would you review this code for potential input-validation issues?",
+      meeting: "How would you explain the security risks of a new cloud integration to your team?"
+    },
+    cloud: {
+      interview: "Describe a time you improved the reliability of a deployment.",
+      daily: "What infrastructure changes are you working on, and are there any blockers?",
+      review: "What would you check before approving this infrastructure-as-code change?",
+      meeting: "How would you compare two deployment strategies for a critical service?"
+    },
+    data: {
+      interview: "Tell me about a data project and the business problem it solved.",
+      daily: "Which datasets did you work on yesterday, and what is next?",
+      review: "How would you give feedback on a query that is difficult to maintain?",
+      meeting: "How would you explain a data-quality issue to a nontechnical stakeholder?"
+    },
+    support: {
+      interview: "Tell me about a difficult technical issue you resolved for a user.",
+      daily: "Which incidents did you handle yesterday, and what remains open?",
+      review: "How would you suggest improvements to a troubleshooting script?",
+      meeting: "How would you prioritize two simultaneous high-impact incidents?"
+    },
+    qa: {
+      interview: "Describe a bug you found that others had missed.",
+      daily: "Which test cases did you complete yesterday, and what will you test today?",
+      review: "How would you suggest improving the coverage of these automated tests?",
+      meeting: "How would you discuss release risks when critical tests are failing?"
+    }
+  };
+  var trackLabels = {
+    software:"SOFTWARE DEVELOPMENT", cyber:"CYBERSECURITY", cloud:"CLOUD & DEVOPS",
+    data:"DATA", support:"IT SUPPORT", qa:"QA"
+  };
+  var scenarioData = {
+    interview: {label:"ENTREVISTA", context:"Responda como em uma entrevista real: dê contexto, explique seu papel e destaque o resultado.", heading:"Use a estrutura STAR:", hint:"Situation: qual era o contexto? Task: qual era sua responsabilidade? Action: o que você fez? Result: qual foi o resultado?"},
+    daily: {label:"DAILY", context:"Seja breve e específico sobre entregas, próximos passos e impedimentos.", heading:"Use três partes:", hint:"Yesterday: o que você concluiu? Today: qual é sua prioridade? Blockers: o que está dificultando o progresso?"},
+    review: {label:"CODE REVIEW", context:"Pratique um feedback técnico construtivo e explique o motivo da sugestão.", heading:"Estruture seu feedback:", hint:"Observation: o que você percebeu? Reason: por que importa? Suggestion: que alternativa você propõe?"},
+    meeting: {label:"REUNIÃO TÉCNICA", context:"Apresente sua opinião, considere os trade-offs e proponha um próximo passo.", heading:"Organize sua contribuição:", hint:"Position: sua recomendação. Trade-offs: benefícios e riscos. Next step: como a equipe pode validar a decisão?"}
+  };
+  var currentTrack = "software";
+  var currentScenario = "interview";
+  var questionButtons = document.querySelectorAll("[data-question]");
+  var trackButtons = document.querySelectorAll("[data-track]");
+  var scenarioCards = document.querySelectorAll("[data-scenario]");
+  var questionType = document.getElementById("question-type");
+  var questionText = document.getElementById("challenge-question");
+  var questionContext = document.getElementById("challenge-context");
+  var hintHeading = document.getElementById("hint-heading");
+  var hintCopy = document.getElementById("hint-copy");
+  var answerField = document.getElementById("practice-answer");
+  var wordCount = document.getElementById("word-count");
+  var hintToggle = document.getElementById("hint-toggle");
+  var hintBox = document.getElementById("challenge-hint");
+  function updateWordCount(){
+    if (!answerField || !wordCount) return;
+    var words = answerField.value.trim() ? answerField.value.trim().split(/\s+/).length : 0;
+    wordCount.textContent = words + (words === 1 ? " word" : " words");
+  }
+  function renderPractice(){
+    var data = scenarioData[currentScenario];
+    questionButtons.forEach(function(button){
+      var active = button.dataset.question === currentScenario;
+      button.classList.toggle("active", active);
+      button.setAttribute("aria-pressed", String(active));
+    });
+    trackButtons.forEach(function(button){
+      var active = button.dataset.track === currentTrack;
+      button.classList.toggle("active", active);
+      button.setAttribute("aria-pressed", String(active));
+    });
+    scenarioCards.forEach(function(card){
+      var selected = card.dataset.scenario === currentScenario;
+      card.classList.toggle("selected", selected);
+      card.setAttribute("aria-pressed", String(selected));
+      var q = card.querySelector(".q");
+      if (q) q.textContent = "“" + questionBank[currentTrack][card.dataset.scenario] + "”";
+    });
+    var preview = document.getElementById("selection-preview");
+    var previewQuestion = document.getElementById("selection-question");
+    var previewPath = document.getElementById("selection-path");
+    var previewCaption = document.getElementById("selection-caption");
+    if (previewQuestion && previewPath && previewCaption){
+      previewQuestion.textContent = questionBank[currentTrack][currentScenario];
+      previewPath.textContent = trackLabels[currentTrack] + " / " + scenarioData[currentScenario].label;
+      previewCaption.textContent = scenarioData[currentScenario].context;
+      if (preview && !reduced){
+        preview.classList.remove("flash");
+        void preview.offsetWidth;
+        preview.classList.add("flash");
+      }
+    }
+    questionType.textContent = data.label + " / " + trackLabels[currentTrack];
+    questionText.textContent = questionBank[currentTrack][currentScenario];
+    questionContext.textContent = data.context;
+    hintHeading.textContent = data.heading;
+    hintCopy.textContent = data.hint;
+    if (hintBox) hintBox.hidden = true;
+    if (hintToggle){
+      hintToggle.setAttribute("aria-expanded", "false");
+      hintToggle.querySelector("span").textContent = "＋";
+    }
+    var prompt = document.querySelector(".challenge-prompt");
+    if (prompt && !reduced){prompt.style.animation = "none";void prompt.offsetWidth;prompt.style.animation = "";}
+    if (answerField){answerField.value = ""; updateWordCount();}
+  }
+  questionButtons.forEach(function(button){
+    button.addEventListener("click",function(){currentScenario = button.dataset.question;renderPractice();});
+  });
+  trackButtons.forEach(function(button){
+    button.addEventListener("click",function(){
+      currentTrack = button.dataset.track;
+      renderPractice();
+    });
+  });
+  scenarioCards.forEach(function(card){
+    function choose(){
+      currentScenario = card.dataset.scenario;
+      renderPractice();
+      // A prévia está na mesma seção; só rola ao clicar em "Responder esta pergunta".
+    }
+    card.addEventListener("click",choose);
+    card.addEventListener("keydown",function(e){if(e.key==="Enter" || e.key===" "){e.preventDefault();choose();}});
+  });
+  renderPractice();
+  if (answerField) answerField.addEventListener("input", updateWordCount);
+  var clearAnswer = document.getElementById("clear-answer");
+  if (clearAnswer && answerField){
+    clearAnswer.addEventListener("click", function(){
+      answerField.value = "";
+      updateWordCount();
+      answerField.focus();
+    });
+  }
+  if (hintToggle && hintBox){
+    hintToggle.addEventListener("click", function(){
+      var expanded = hintToggle.getAttribute("aria-expanded") !== "true";
+      hintToggle.setAttribute("aria-expanded", String(expanded));
+      hintBox.hidden = !expanded;
+      hintToggle.querySelector("span").textContent = expanded ? "−" : "＋";
+    });
+  }
+
+  // --- Sintetizador de vozes dos pinguins (Web Audio API) ---
+  var AC = window.AudioContext || window.webkitAudioContext;
+  var ctx = null;
+
+  var VOWELS = {
+    m: [260, 750, 380],
+    a: [730, 1220, 1600],
+    o: [460, 860, 1100],
+    e: [500, 1750, 2100],
+    i: [340, 2200, 2500]
+  };
+
+  function syllable(o){
+    if (!ctx) return;
+    var now = ctx.currentTime + (o.t || 0);
+    var dur = o.d || 0.14;
+    var f0 = o.f0 || 260;
+    var f1 = o.f1 || f0;
+    var v = VOWELS[o.v || "o"] || VOWELS.o;
+
+    var osc = ctx.createOscillator();
+    osc.type = o.wave || "triangle";
+    osc.frequency.setValueAtTime(f0, now);
+    if (o.fm) osc.frequency.exponentialRampToValueAtTime(o.fm, now + dur * 0.45);
+    osc.frequency.exponentialRampToValueAtTime(Math.max(40, f1), now + dur);
+
+    var flt1 = ctx.createBiquadFilter();
+    flt1.type = "bandpass";
+    flt1.frequency.setValueAtTime(v[0], now);
+    flt1.Q.setValueAtTime(o.q || 3.2, now);
+
+    var flt2 = ctx.createBiquadFilter();
+    flt2.type = "bandpass";
+    flt2.frequency.setValueAtTime(v[1], now);
+    flt2.Q.setValueAtTime(4.5, now);
+
+    var warm = ctx.createBiquadFilter();
+    warm.type = "lowpass";
+    warm.frequency.setValueAtTime(v[2], now);
+
+    var env = ctx.createGain();
+    var peak = o.vol || 0.22;
+    env.gain.setValueAtTime(0.0001, now);
+    env.gain.linearRampToValueAtTime(peak, now + Math.min(0.025, dur * 0.22));
+    env.gain.setValueAtTime(peak * 0.85, now + dur * 0.72);
+    env.gain.exponentialRampToValueAtTime(0.0001, now + dur);
+
+    var g2 = ctx.createGain();
+    g2.gain.value = 0.45;
+
+    osc.connect(flt1);
+    osc.connect(flt2);
+    flt1.connect(warm);
+    flt2.connect(g2);
+    g2.connect(warm);
+    warm.connect(env);
+    env.connect(ctx.destination);
+
+    osc.start(now);
+    osc.stop(now + dur + 0.02);
+  }
+
+  var VOICES = {
+    hero: [
+      { txt: "Hello! Ready?", s: [{ t:0, d:.11, f0:310, f1:360, v:"e" }, { t:.11, d:.21, f0:340, fm:450, f1:390, v:"o" }] },
+      { txt: "Hi there!", s: [{ t:0, d:.12, f0:360, f1:460, v:"a" }, { t:.13, d:.16, f0:410, f1:340, v:"e" }] },
+      { txt: "Let's debug!", s: [{ t:0, d:.09, f0:330, f1:350, v:"e" }, { t:.10, d:.09, f0:370, f1:410, v:"i" }, { t:.20, d:.18, f0:420, f1:360, v:"a" }] },
+      { txt: "No panic!", s: [{ t:0, d:.12, f0:350, f1:320, v:"o" }, { t:.13, d:.10, f0:390, f1:430, v:"a" }, { t:.24, d:.13, f0:410, f1:330, v:"i" }] },
+      { txt: "Your turn!", s: [{ t:0, d:.13, f0:320, f1:380, v:"o" }, { t:.14, d:.21, f0:380, fm:470, f1:410, v:"a" }] }
+    ],
+    prof: [
+      { txt: "Hm...", s: [{ t:0, d:.34, f0:162, fm:142, f1:150, v:"m", q:4.5, vol:.28 }] },
+      { txt: "Aham!", s: [{ t:0, d:.11, f0:142, f1:155, v:"a", vol:.25 }, { t:.12, d:.22, f0:155, fm:208, f1:176, v:"m", q:4, vol:.28 }] },
+      { txt: "Ho-ho!", s: [{ t:0, d:.13, f0:188, f1:152, v:"o", vol:.26 }, { t:.15, d:.17, f0:175, f1:138, v:"o", vol:.26 }] },
+      { txt: "Indeed.", s: [{ t:0, d:.12, f0:168, f1:162, v:"i", vol:.24 }, { t:.13, d:.21, f0:158, f1:126, v:"e", vol:.25 }] },
+      { txt: "Interesting...", s: [{ t:0, d:.10, f0:160, f1:170, v:"i", vol:.24 }, { t:.11, d:.10, f0:172, f1:165, v:"e", vol:.24 }, { t:.22, d:.22, f0:165, fm:192, f1:145, v:"m", q:4.2, vol:.27 }] }
+    ],
+    rec: [
+      { txt: "Hello!", s: [{ t:0, d:.10, f0:255, f1:295, v:"e" }, { t:.11, d:.19, f0:290, fm:350, f1:305, v:"o" }] },
+      { txt: "Uh-huh!", s: [{ t:0, d:.10, f0:245, f1:260, v:"a" }, { t:.11, d:.17, f0:275, f1:335, v:"m", q:3.8 }] },
+      { txt: "Tell me more?", s: [{ t:0, d:.08, f0:270, f1:280, v:"e" }, { t:.09, d:.08, f0:285, f1:295, v:"i" }, { t:.18, d:.19, f0:280, f1:365, v:"o" }] },
+      { txt: "Good point!", s: [{ t:0, d:.10, f0:250, f1:275, v:"o" }, { t:.11, d:.20, f0:295, fm:340, f1:265, v:"o" }] },
+      { txt: "Go on...", s: [{ t:0, d:.13, f0:265, f1:285, v:"o" }, { t:.15, d:.22, f0:280, f1:330, v:"a" }] }
+    ],
+    nerd: [
+      { txt: "Aha!", s: [{ t:0, d:.09, f0:340, f1:380, v:"a", wave:"sawtooth", vol:.17 }, { t:.09, d:.19, f0:420, fm:530, f1:475, v:"a", wave:"sawtooth", vol:.18 }] },
+      { txt: "Hm?", s: [{ t:0, d:.20, f0:355, f1:505, v:"m", q:4.5, vol:.22 }] },
+      { txt: "Um, actually!", s: [{ t:0, d:.11, f0:340, f1:320, v:"m", vol:.2 }, { t:.14, d:.07, f0:410, f1:440, v:"a", wave:"sawtooth", vol:.16 }, { t:.22, d:.07, f0:450, f1:470, v:"o", wave:"sawtooth", vol:.16 }, { t:.30, d:.13, f0:430, f1:375, v:"i", wave:"sawtooth", vol:.16 }] },
+      { txt: "Ooh!", s: [{ t:0, d:.25, f0:360, fm:485, f1:430, v:"o", vol:.2 }] },
+      { txt: "Syntax!", s: [{ t:0, d:.10, f0:390, f1:440, v:"i", wave:"sawtooth", vol:.17 }, { t:.11, d:.17, f0:460, f1:360, v:"a", wave:"sawtooth", vol:.17 }] }
+    ],
+    dev: [
+      { txt: "Yo!", s: [{ t:0, d:.19, f0:295, f1:210, v:"o", wave:"sawtooth", vol:.17 }] },
+      { txt: "Nice!", s: [{ t:0, d:.20, f0:235, fm:325, f1:290, v:"a", vol:.21 }] },
+      { txt: "L-G-T-M!", s: [{ t:0, d:.07, f0:245, f1:250, v:"e", vol:.19 }, { t:.08, d:.07, f0:275, f1:280, v:"i", vol:.19 }, { t:.16, d:.07, f0:245, f1:250, v:"i", vol:.19 }, { t:.24, d:.12, f0:310, f1:340, v:"e", vol:.2 }] },
+      { txt: "Works!", s: [{ t:0, d:.18, f0:225, f1:285, v:"o", vol:.21 }] },
+      { txt: "Ship it!", s: [{ t:0, d:.09, f0:260, f1:300, v:"i", vol:.2 }, { t:.10, d:.14, f0:310, f1:240, v:"i", vol:.2 }] }
+    ],
+    party: [
+      { txt: "Woohoo!", s: [{ t:0, d:.13, f0:370, f1:520, v:"o" }, { t:.13, d:.24, f0:490, fm:620, f1:530, v:"o" }] },
+      { txt: "Yay!", s: [{ t:0, d:.09, f0:440, f1:554, v:"e" }, { t:.09, d:.22, f0:554, f1:659, v:"a" }] },
+      { txt: "Let's go!", s: [{ t:0, d:.11, f0:390, f1:440, v:"e" }, { t:.12, d:.21, f0:470, f1:585, v:"o" }] },
+      { txt: "Awesome!", s: [{ t:0, d:.12, f0:420, f1:510, v:"a" }, { t:.13, d:.18, f0:460, f1:390, v:"o" }] },
+      { txt: "Nailed it!", s: [{ t:0, d:.11, f0:450, f1:540, v:"e" }, { t:.12, d:.15, f0:520, f1:430, v:"i" }] }
+    ]
+  };
+
+  var lastVoiceIdx = {};
+  var heroBubble = document.getElementById("hero-bubble");
+  var heroTimer = null;
+
+  function playPenguin(el){
+    var key = el.getAttribute("data-voice");
+    var list = VOICES[key];
+    if (!list) return;
+
+    if (AC) {
+      if (!ctx) ctx = new AC();
+      if (ctx.state === "suspended") ctx.resume();
+    }
+
+    var prev = lastVoiceIdx[key];
+    var idx;
+    do {
+      idx = Math.floor(Math.random() * list.length);
+    } while (list.length > 1 && idx === prev);
+    lastVoiceIdx[key] = idx;
+
+    var item = list[idx];
+    item.s.forEach(syllable);
+
+    el.classList.remove("boop");
+    void el.offsetWidth;
+    el.classList.add("boop");
+
+    if (key === "hero" && heroBubble) {
+      heroBubble.textContent = item.txt;
+      heroBubble.classList.remove("pop");
+      void heroBubble.offsetWidth;
+      heroBubble.classList.add("pop");
+      clearTimeout(heroTimer);
+      heroTimer = setTimeout(function(){
+        heroBubble.textContent = "Hello! Ready for your interview?";
+      }, 2200);
+    } else {
+      var badge = el.querySelector(".say") || el.parentElement.querySelector(".say");
+      if (badge) {
+        badge.textContent = item.txt;
+        badge.classList.add("on");
+        clearTimeout(badge._t);
+        badge._t = setTimeout(function(){ badge.classList.remove("on"); }, 1400);
+      }
+    }
+  }
+
+  document.querySelectorAll("[data-voice]").forEach(function(el){
+    el.addEventListener("click", function(){ playPenguin(el); });
+    el.addEventListener("keydown", function(ev){
+      if (ev.key === "Enter" || ev.key === " "){
+        ev.preventDefault();
+        playPenguin(el);
+      }
+    });
+  });
+
+  // Contadores numéricos nas barras de progresso
+  function runCounters(panel){
+    if (reduced) return;
+    panel.querySelectorAll(".cnt").forEach(function(el, idx){
+      var target = parseInt(el.getAttribute("data-to"), 10) || 0;
+      var delay = idx * 140, dur = 1100, start = null;
+      el.textContent = "0%";
+      function tick(ts){
+        if (!start) start = ts;
+        var elapsed = ts - start - delay;
+        if (elapsed < 0){ requestAnimationFrame(tick); return; }
+        var p = Math.min(elapsed / dur, 1);
+        var eased = 1 - Math.pow(1 - p, 3);
+        el.textContent = Math.round(eased * target) + "%";
+        if (p < 1) requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+    });
+  }
+
+  // Revelação ao rolar a página
+  var items = document.querySelectorAll(".rv,.rv-s,.stats,.steps,.panel,.cta");
+  if (!("IntersectionObserver" in window) || reduced) {
+    items.forEach(function(e){ e.classList.add("in"); });
+  } else {
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if (e.isIntersecting){
+          e.target.classList.add("in");
+          if (e.target.classList.contains("panel")) runCounters(e.target);
+          io.unobserve(e.target);
+        }
+      });
+    }, {threshold:.14, rootMargin:"0px 0px -30px 0px"});
+    items.forEach(function(e){ io.observe(e); });
+  }
+
+  // Spotlight sutil nos cards
+  document.querySelectorAll(".card").forEach(function(card){
+    card.addEventListener("pointermove", function(ev){
+      var r = card.getBoundingClientRect();
+      card.style.setProperty("--mx", (ev.clientX - r.left) + "px");
+      card.style.setProperty("--my", (ev.clientY - r.top) + "px");
+    }, {passive:true});
+  });
+
+  // Barra de leitura, parallax no herói e scroll-spy no menu
+  var bar = document.getElementById("bar"), top = document.getElementById("top");
+  var penguin = document.getElementById("hero-penguin"), bubble = document.getElementById("hero-bubble");
+  var navLinks = Array.prototype.slice.call(document.querySelectorAll("nav a[href^='#']:not(.btn)"));
+  var sections = navLinks.map(function(a){ return document.querySelector(a.getAttribute("href")); }).filter(Boolean);
+  var ticking = false;
+
+  function updateScroll(){
+    var h = document.documentElement, y = h.scrollTop, max = h.scrollHeight - h.clientHeight;
+    bar.style.width = (max > 0 ? (y / max) * 100 : 0) + "%";
+    top.classList.toggle("sc", y > 8);
+
+    if (!reduced && penguin && bubble && y < 650) {
+      penguin.style.translate = "0 " + (y * 0.08).toFixed(1) + "px";
+      bubble.style.translate = "0 " + (y * -0.05).toFixed(1) + "px";
+    }
+
+    var current = "";
+    sections.forEach(function(sec){
+      if (y + 150 >= sec.offsetTop) current = "#" + sec.id;
+    });
+    navLinks.forEach(function(a){
+      a.classList.toggle("act", a.getAttribute("href") === current);
+    });
+    ticking = false;
+  }
+
+  addEventListener("scroll", function(){
+    if (!ticking){ requestAnimationFrame(updateScroll); ticking = true; }
+  }, {passive:true});
+  updateScroll();
+})();
+</script>
+<script async src="https://tally.so/widgets/embed.js"></script>
+</body>
+</html>
