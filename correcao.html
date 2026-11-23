@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#F5F1E8">
+<meta name="description" content="Teste de correção de inglês para profissionais de TI — Debug English.">
+<title>Correção com IA | Debug English</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+<style>
+:root { color-scheme:light; --bg:#F5F1E8; --paper:#fff; --ink:#181A17; --muted:#52564E; --line:#CFC7B4; --cobalt:#15469E; --tint:#E7EEF9; --orange:#D44B1E; --soft:#FBECE6; --green:#1B6B46; }
+* { box-sizing:border-box; } [hidden] { display:none!important; }
+html { scroll-behavior:smooth; }
+body { margin:0; background:var(--bg); color:var(--ink); font:400 16px/1.6 'IBM Plex Sans',system-ui,sans-serif; }
+h1,h2,h3,p { margin-top:0; } h1,h2,h3 { font-family:'Space Grotesk',sans-serif; line-height:1.16; }
+button,input,textarea,select { font:inherit; }
+a { color:var(--cobalt); } a:hover { text-decoration:none; }
+:focus-visible { outline:3px solid var(--cobalt);outline-offset:3px; }
+.wrap { max-width:1040px;margin:auto;padding:0 24px; }
+header { border-bottom:1px solid var(--line);background:rgba(245,241,232,.96); }
+header .wrap { display:flex;justify-content:space-between;align-items:center;gap:16px;min-height:68px; }
+.brand { color:var(--ink);font:700 17px 'JetBrains Mono',monospace;text-decoration:none;letter-spacing:-.05em; }
+.brand b { color:var(--orange); } .back { text-decoration:none;font-weight:600;font-size:14px; }
+main { padding:44px 0 70px!important; }
+.eyebrow { color:var(--cobalt);font:600 12px 'JetBrains Mono',monospace;letter-spacing:.09em;text-transform:uppercase; }
+.lead { max-width:730px;color:var(--muted);font-size:17px;margin-bottom:30px; }
+h1 { font-size:clamp(34px,5vw,56px);letter-spacing:-.055em;margin:12px 0 16px; }
+h1 em { color:var(--orange);font-style:normal; }
+.grid { display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:22px;align-items:start; }
+.panel { border:1.5px solid var(--ink);background:var(--paper);box-shadow:4px 4px 0 var(--ink);border-radius:12px;padding:24px; }
+.panel h2 { font-size:22px;letter-spacing:-.03em;margin:0 0 18px; }
+.field { display:block;margin:0 0 19px; }
+.field > span, .field > label { display:block;font-weight:700;font-size:14px;margin-bottom:7px; }
+.field small { color:var(--muted);display:block;margin-top:5px; }
+textarea,select,input[type=url],input[type=text] { width:100%;border:1.5px solid var(--line);border-radius:8px;padding:12px 13px;background:#fff;color:var(--ink); }
+textarea { display:block;resize:vertical;min-height:90px; } #answer { min-height:185px; }
+textarea:focus,select:focus,input:focus { border-color:var(--cobalt);outline:2px solid var(--tint);outline-offset:1px; }
+.two { display:grid;grid-template-columns:1fr 1fr;gap:13px; }
+button { cursor:pointer; } button:disabled { opacity:.6;cursor:not-allowed; }
+.primary { color:white;background:var(--orange);border:2px solid var(--ink);border-radius:7px;padding:13px 20px;box-shadow:3px 3px 0 var(--ink);font-weight:700; }
+.primary:hover:not(:disabled) { transform:translate(-1px,-1px);box-shadow:4px 4px 0 var(--ink); }
+.secondary { color:var(--cobalt);background:var(--tint);border:1px solid var(--cobalt);padding:8px 12px;border-radius:6px;font-weight:600; }
+.muted { color:var(--muted);font-size:13px; }
+.side-head { display:flex;align-items:center;gap:12px; }
+.penguin { display:grid;place-items:center;font-size:40px;width:65px;height:65px;border-radius:13px;background:var(--tint); }
+.pill { display:inline-flex;padding:4px 9px;border-radius:20px;border:1px solid #AABBD9;background:var(--tint);color:var(--cobalt);font:600 11px 'JetBrains Mono',monospace; }
+.steps { padding-left:19px;color:var(--muted);font-size:14px; }
+.steps li { margin-bottom:10px; }
+details { border-top:1px solid var(--line);padding-top:14px;margin-top:17px; }
+details summary { font-weight:700;cursor:pointer;color:var(--cobalt); }
+details .field { margin-top:14px; }
+.notice { background:var(--soft);border:1px solid #E6BBAA;border-radius:7px;padding:12px;font-size:13px;color:#71321D; }
+.status { margin:16px 0 0;min-height:22px;color:var(--muted);font-size:14px; }
+.status.error { color:#AE2920;font-weight:600; }
+.status.success { color:var(--green);font-weight:600; }
+#captcha { min-height:65px;margin:16px 0 0; }
+#results { margin-top:34px;scroll-margin-top:20px; }
+.result { background:#fff;border:1.5px solid var(--line);border-radius:10px;padding:21px;margin:12px 0 20px; }
+.result h3 { margin:0 0 12px;font-size:18px; }
+.result.corrected { background:#E5F3EC;border-color:#A5D2B7; }
+.result p { margin:0;white-space:pre-wrap;overflow-wrap:anywhere; }
+.item { border-bottom:1px solid var(--line);padding:12px 0; } .item:last-child { border:0; }
+.item span { font-size:12px;color:var(--muted);font-weight:600; }
+.item strong { display:block;margin:2px 0;font-size:14px;overflow-wrap:anywhere; }
+.item p { font-size:14px;color:var(--muted); }
+footer { padding:20px 0;border-top:1px solid var(--line);color:var(--muted);font-size:12px; }
+@media(max-width:800px) { .grid { grid-template-columns:1fr; } main{padding-top:27px!important;} .panel{padding:19px;} }
+@media(max-width:470px) { .two { grid-template-columns:1fr; } header .wrap{padding:12px 18px;} .wrap{padding:0 18px;} }
+@media(prefers-reduced-motion:reduce) { html {scroll-behavior:auto;} .primary{transition:none;} }
+</style>
+</head>
+<body>
+<header><div class="wrap"><a class="brand" href="./index.html"><b>$</b> debug_english_</a><a class="back" href="./entrevista.html">← Voltar à entrevista</a></div></header>
+<main class="wrap">
+  <div class="eyebrow">PROTÓTIPO · AI FEEDBACK 0.2</div>
+  <h1>Seu inglês, com <em>feedback útil.</em></h1>
+  <p class="lead">Digite uma resposta real de entrevista técnica e receba sugestões de gramática, vocabulário e conteúdo. Sem notas inventadas. Esta página só envia o texto quando você pedir a correção.</p>
+  <div class="grid">
+    <section class="panel" aria-labelledby="exercise-heading">
+      <h2 id="exercise-heading">Revisar uma resposta</h2>
+      <form id="exercise">
+        <div class="two">
+          <label class="field"><span>Área de TI</span><select id="area">
+            <option value="software">Software Development</option><option value="cyber">Cybersecurity</option>
+            <option value="cloud">Cloud & DevOps</option><option value="data">Dados / IA</option>
+            <option value="support">Suporte / Infra</option><option value="qa">QA / Testes</option>
+          </select></label>
+          <label class="field"><span>Tipo de treino</span><select id="mode">
+            <option value="recrutador">Entrevista de emprego</option><option value="nerd">Entrevista técnica</option>
+            <option value="dev">Code review</option><option value="professor">Prática guiada</option>
+          </select></label>
+        </div>
+        <label class="field"><span>Pergunta em inglês</span>
+          <textarea id="question" maxlength="360" required placeholder="Tell me about a difficult bug you solved. How did you approach it?"></textarea>
+          <small>Copie a pergunta que apareceu no simulador.</small></label>
+        <label class="field"><span>Sua resposta em inglês</span>
+          <textarea id="answer" maxlength="2500" required placeholder="I worked on a project where..."></textarea>
+          <small>Entre 12 e 2.500 caracteres. Evite dados pessoais e informações sigilosas do trabalho.</small></label>
+        <div class="notice">Ao pedir a correção, a pergunta e a resposta serão enviadas ao serviço de IA da Cloudflare. O texto não é salvo pelo nosso Worker, mas será processado pelo fornecedor. A IA pode cometer erros.</div>
+        <div id="captcha" aria-label="Verificação anti-bot"></div>
+        <button type="submit" id="send" class="primary">Analisar minha resposta →</button>
+        <p class="status" id="status" role="status" aria-live="polite">Configure a conexão de teste antes da primeira correção.</p>
+      </form>
+    </section>
+    <aside class="panel">
+      <div class="side-head"><span class="penguin" aria-hidden="true">🐧</span><div><span class="pill">PROFESSOR · BETA</span><h2 style="margin:5px 0 0;font-size:19px">Como funciona</h2></div></div>
+      <ol class="steps"><li>Responda a uma pergunta de TI em inglês.</li><li>Envie sua resposta para análise.</li><li>Confira a versão corrigida e os motivos de cada sugestão.</li><li>Reescreva e tente novamente.</li></ol>
+      <details id="connect-details">
+        <summary>Configurar conexão (teste)</summary>
+        <p class="muted">A URL é pública; a chave secreta do Turnstile nunca deve ser colocada aqui.</p>
+        <label class="field"><span>URL do Cloudflare Worker</span><input id="endpoint" type="url" placeholder="https://debug-english-feedback.seu-id.workers.dev" autocomplete="off"></label>
+        <label class="field"><span>Site key pública do Turnstile</span><input id="sitekey" type="text" placeholder="Cole a site key pública" autocomplete="off"></label>
+        <button class="secondary" id="save-config" type="button">Salvar conexão</button>
+        <p class="muted">As configurações públicas ficam apenas neste navegador. O segredo permanece na Cloudflare.</p>
+      </details>
+    </aside>
+  </div>
+  <section id="results" hidden aria-live="polite">
+    <div class="eyebrow">DEBUG ENGLISH / SUA REVISÃO</div>
+    <h2 style="margin:10px 0 0">Sugestões para melhorar</h2>
+    <div class="result corrected"><h3>Resposta sugerida em inglês</h3><p id="corrected"></p></div>
+    <div class="grid">
+      <div>
+        <div class="result"><h3>Pontos positivos</h3><div id="strengths"></div></div>
+        <div class="result"><h3>Correções explicadas</h3><div id="issues"></div></div>
+      </div>
+      <div>
+        <div class="result"><h3>Dica para a entrevista</h3><p id="interview-tip"></p></div>
+        <div class="result"><h3>Próximo passo</h3><p id="retry"></p></div>
+      </div>
+    </div>
+    <p class="muted">Correção gerada por IA. Avalie as sugestões criticamente — termos técnicos e escolhas de estilo podem ter mais de uma forma correta.</p>
+    <button class="secondary" type="button" id="try-again">Voltar e reescrever minha resposta</button>
+  </section>
+</main>
+<footer><div class="wrap">Debug English · Aprenda com cada resposta · Protótipo gratuito em validação</div></footer>
+<script>
+(() => {
+  "use strict";
+  const $ = id => document.getElementById(id);
+  const SETTINGS_KEY="debugEnglish.aiFeedbackSettings.v1";
+  const DRAFT_KEY="debugEnglish.pendingAiReview";
+  let widgetId=null, activeSiteKey="", token="", busy=false;
+  function message(value, error=false, success=false) {
+    $("status").textContent=value; $("status").className="status"+(error?" error":success?" success":"");
+  }
+  function validEndpoint(value) {
+    try {
+      const url=new URL(value);
+      return url.protocol==="https:" && (url.hostname.endsWith(".workers.dev") || url.hostname==="localhost")
+        && (url.pathname==="/" || url.pathname==="") && !url.search && !url.hash;
+    } catch { return false; }
+  }
+  function loadConfig() {
+    try {
+      const cfg=JSON.parse(localStorage.getItem(SETTINGS_KEY)||"null");
+      if(cfg && typeof cfg.endpoint==="string" && typeof cfg.sitekey==="string") {
+        $("endpoint").value=cfg.endpoint; $("sitekey").value=cfg.sitekey;
+      }
+    } catch {}
+  }
+  function addItem(target,first,second,third) {
+    const div=document.createElement("div");div.className="item";
+    if(first){const a=document.createElement("span");a.textContent=first;div.append(a);}
+    if(second){const b=document.createElement("strong");b.textContent=second;div.append(b);}
+    if(third){const c=document.createElement("p");c.textContent=third;div.append(c);}
+    $(target).append(div);
+  }
+  function resetWidget() {
+    token="";
+    if(window.turnstile && widgetId!==null) window.turnstile.reset(widgetId);
+  }
+  function renderFeedback(result) {
+    const f=result.feedback;
+    $("corrected").textContent=f.correctedAnswer;
+    $("strengths").replaceChildren();$("issues").replaceChildren();
+    if(f.strengths.length) f.strengths.forEach(x=>addItem("strengths","PONTO POSITIVO",x));
+    else addItem("strengths","OBSERVAÇÃO","Nenhum ponto específico identificado na resposta.");
+    if(f.issues.length) f.issues.forEach(x=>addItem("issues",x.original||"PONTO A REVISAR",x.suggestion,x.why));
+    else addItem("issues","REVISÃO","A IA não identificou correções pontuais. Confira a clareza e a relevância da resposta.");
+    $("interview-tip").textContent=f.interviewTip;
+    $("retry").textContent=f.retryPrompt;
+    $("results").hidden=false;
+    $("results").scrollIntoView({behavior:"smooth",block:"start"});
+  }
+  function loadTurnstile() {
+    if(window.turnstile) return Promise.resolve();
+    return new Promise((resolve,reject)=>{
+      const old=document.getElementById("turnstile-api");
+      if(old){old.addEventListener("load",resolve,{once:true});old.addEventListener("error",reject,{once:true});return;}
+      const s=document.createElement("script");s.id="turnstile-api";
+      s.src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";
+      s.async=true;s.onload=resolve;s.onerror=reject;document.head.append(s);
+    });
+  }
+  async function configure() {
+    const endpoint=$("endpoint").value.trim().replace(/\/$/,""),sitekey=$("sitekey").value.trim();
+    if(!validEndpoint(endpoint) || sitekey.length<5) {
+      message("Informe uma URL .workers.dev válida e uma site key pública.",true);return;
+    }
+    try {
+      if(widgetId!==null && window.turnstile){window.turnstile.remove(widgetId);widgetId=null;}
+      await loadTurnstile();
+      $("captcha").replaceChildren();
+      token="";activeSiteKey=sitekey;
+      widgetId=window.turnstile.render("#captcha",{
+        sitekey,
+        callback:value=>{token=value;message("Verificação pronta. Você pode solicitar a correção.");},
+        "expired-callback":()=>{token="";message("Verificação expirada. Faça novamente.");},
+        "error-callback":()=>{token="";message("Verificação indisponível; confira a site key.",true);}
+      });
+      localStorage.setItem(SETTINGS_KEY,JSON.stringify({endpoint,sitekey}));
+      $("connect-details").open=false;
+      message("Conexão configurada. Conclua a verificação para analisar a resposta.");
+    } catch { message("Não foi possível carregar o Turnstile. Confira sua conexão.",true); }
+  }
+  $("save-config").addEventListener("click",configure);
+  $("try-again").addEventListener("click",()=>{
+    $("results").hidden=true;$("answer").focus();$("answer").scrollIntoView({behavior:"smooth",block:"center"});
+  });
+  $("exercise").addEventListener("submit",async event=>{
+    event.preventDefault();
+    if(busy)return;
+    const endpoint=$("endpoint").value.trim().replace(/\/$/,"");
+    const question=$("question").value.trim(),answer=$("answer").value.trim();
+    if(!validEndpoint(endpoint)||activeSiteKey!==$("sitekey").value.trim()) {
+      message("Configure a conexão de teste antes de enviar.",true);$("connect-details").open=true;return;
+    }
+    if(question.length<12||answer.length<12){message("Escreva uma pergunta e uma resposta completas.",true);return;}
+    if(!token){message("Conclua a verificação anti-bot antes de enviar.",true);return;}
+    busy=true;$("send").disabled=true;$("results").hidden=true;message("Analisando sua resposta…");
+    try {
+      const response=await fetch(endpoint+"/api/feedback",{
+        method:"POST",headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({
+          area:$("area").value,mode:$("mode").value,question,answer,turnstileToken:token
+        })
+      });
+      let payload={};try{payload=await response.json();}catch{}
+      if(!response.ok)throw new Error(payload.error||"O serviço de correção está indisponível.");
+      if(!payload.feedback || typeof payload.feedback.correctedAnswer!=="string")
+        throw new Error("O serviço retornou um formato inesperado.");
+      renderFeedback(payload);
+      message("Correção recebida! Confira as sugestões e tente novamente.",false,true);
+    } catch(error) {
+      message(error instanceof TypeError?"Não consegui conectar ao Worker. Confira a URL e o CORS.":error.message,true);
+    } finally {
+      busy=false;$("send").disabled=false;resetWidget();
+    }
+  });
+  loadConfig();
+  try {
+    const pending=JSON.parse(sessionStorage.getItem(DRAFT_KEY)||"null");
+    if(pending && typeof pending==="object") {
+      if(typeof pending.question==="string")$("question").value=pending.question.slice(0,360);
+      if(typeof pending.answer==="string")$("answer").value=pending.answer.slice(0,2500);
+      if(["software","cyber","cloud","data","support","qa"].includes(pending.area))$("area").value=pending.area;
+      if(["recrutador","nerd","dev","professor"].includes(pending.mode))$("mode").value=pending.mode;
+      sessionStorage.removeItem(DRAFT_KEY);
+    }
+  } catch {}
+  if($("endpoint").value && $("sitekey").value)configure();
+  else $("connect-details").open=true;
+})();
+</script>
+</body>
+</html>
