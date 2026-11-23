@@ -509,13 +509,47 @@ h1 em {
 @media(max-width:520px){.voice-toolbar{padding:12px;gap:12px}.voice-actions{width:100%}.voice-actions button{flex:1}.voice-speed{flex:none}.voice-bars{margin-left:auto}}
 @media(prefers-reduced-motion:reduce){.scene.question-arriving .person,.scene.question-arriving #question-text,.scene.is-speaking .person img,.scene.is-writing .person img,.scene.is-speaking .voice-bars i,.summary-intro img,.summary-sparkles span{animation:none!important}}
 
+
+/* MVP 0.1.3 — mais interação sem simular avaliação de IA */
+.turn-script {
+  position:relative;display:inline-block;max-width:100%;margin:0 0 14px;
+  padding:10px 12px;background:var(--cobalt-tint);border:1px solid #AEC7EA;
+  border-radius:10px 10px 10px 3px;color:var(--cobalt);
+  font:600 .85rem/1.5 var(--sans);letter-spacing:-.005em;
+}
+.scene.question-arriving .turn-script {animation:guideLineIn .48s var(--ease) .08s both}
+@keyframes guideLineIn {from{transform:translateY(8px);opacity:0}to{transform:translateY(0);opacity:1}}
+.session-side .coach{display:none!important}
+.mentor-strip{display:grid;grid-template-columns:54px minmax(0,1fr) auto;align-items:center;gap:12px;background:var(--cobalt-tint);border:1px solid #ADC6E8;border-radius:11px;padding:12px;margin:0 0 17px;}
+.mentor-portrait{display:grid;place-items:center;width:54px;height:64px;background:#fff;border:1px solid #C5D5ED;border-radius:8px;overflow:hidden}
+.mentor-portrait img{width:48px;height:59px;object-fit:contain}
+.mentor-kicker{color:var(--cobalt);font:700 .68rem var(--mono);letter-spacing:.015em;display:flex;align-items:center;gap:5px}
+.mentor-message{margin:4px 0;font-size:.86rem;line-height:1.45;font-weight:600;color:var(--text)}
+.mentor-disclaimer{font-size:.69rem;color:var(--muted)}
+.mentor-next{background:#fff;color:var(--cobalt);border:1px solid #A4BFE3;border-radius:7px;padding:9px 10px;font:700 .75rem var(--sans);display:inline-flex;gap:6px;align-items:center;white-space:nowrap;cursor:pointer}
+.mentor-next:hover{background:#EDF3FC;border-color:var(--cobalt)}
+.mentor-strip.mentor-pulse .mentor-portrait img{animation:mentorReact .46s var(--ease)}
+.mentor-strip.mentor-pulse .mentor-message{animation:guideLineIn .32s var(--ease)}
+@keyframes mentorReact {0%{transform:scale(.92) rotate(-5deg)}65%{transform:scale(1.08) rotate(3deg)}100%{transform:scale(1) rotate(0)}}
+.scene.is-writing .person img{animation:characterListens 2.3s ease-in-out infinite}
+.session-toast{position:fixed;bottom:20px;right:20px;z-index:40;display:flex;align-items:center;gap:11px;min-width:255px;max-width:min(90vw,375px);background:#fff;border:1.5px solid var(--text);border-radius:12px;box-shadow:4px 4px 0 var(--text),0 12px 24px rgba(24,26,23,.12);padding:9px 13px;opacity:0;transform:translateY(18px);transition:transform .3s var(--ease),opacity .3s var(--ease);pointer-events:none}
+.session-toast.on{opacity:1;transform:translateY(0)}
+.session-toast img{width:43px;height:54px;object-fit:contain;flex:none}
+.session-toast div{display:grid;gap:2px;flex:1}.session-toast strong{font:700 .86rem var(--display)}.session-toast span{font-size:.72rem;color:var(--muted)}
+.session-toast>i{color:var(--forest);font-size:1.35rem}
+.closing-coach{background:var(--forest-tint);border:1px solid #A9D5BE;padding:14px 17px;display:flex;gap:14px;align-items:center;border-radius:11px;margin-bottom:20px}
+.closing-coach img{height:80px;width:65px;object-fit:contain;flex:none}
+.closing-coach strong{font:700 1rem var(--display)}.closing-coach p{margin:4px 0 0;font-size:.9rem;color:var(--text)}
+@media(max-width:760px){.mentor-strip{grid-template-columns:46px minmax(0,1fr)}.mentor-portrait{height:55px;width:46px}.mentor-portrait img{height:50px;width:42px}.mentor-next{grid-column:2;justify-self:start;padding:7px 9px}.session-toast{left:12px;right:12px;bottom:12px;max-width:none}.session-side{grid-row:2}}
+@media(prefers-reduced-motion:reduce){.session-toast{transition:none!important}.scene.question-arriving .turn-script,.mentor-strip.mentor-pulse .mentor-portrait img,.mentor-strip.mentor-pulse .mentor-message{animation:none!important}}
+
 </style>
 </head>
 <body>
 <header class="top"><div class="wrap top-inner">
   <a class="brand" href="./index.html"><b>$</b> debug_english<span aria-hidden="true">_</span></a>
   <div class="top-side">
-    <span class="top-note">MVP 0.1.2 · 100% gratuito</span>
+    <span class="top-note">MVP 0.1.3 · 100% gratuito</span>
     <a class="back" href="./index.html"><i class="ph-bold ph-arrow-left" aria-hidden="true"></i> Voltar ao site</a>
   </div>
 </div></header>
@@ -526,7 +560,7 @@ h1 em {
       <div>
         <span class="eyebrow"><i class="ph-bold ph-terminal" aria-hidden="true"></i> Sua sala de prática</span>
         <h1 id="setup-title">Treine para a sua <em>próxima oportunidade.</em></h1>
-        <p class="lead">Escolha seu personagem, ouça as perguntas em inglês e participe de uma sessão de cinco rodadas do universo de TI. Sem notas inventadas e sem cadastro.</p>
+        <p class="lead">Escolha sua área e personagem. Entre em uma sala guiada com cinco rodadas, dicas úteis e reações dos pinguins. Sem notas inventadas e sem cadastro.</p>
         <div class="hero-features">
           <span><i class="ph-duotone ph-list-numbers" aria-hidden="true"></i> 05 perguntas</span>
           <span><i class="ph-duotone ph-prohibit" aria-hidden="true"></i> Sem IA</span>
@@ -538,7 +572,7 @@ h1 em {
         <div class="art-copy">
           <span class="mini">SALA 01 / PREPARAÇÃO</span>
           <strong>Seu próximo passo começa aqui.</strong>
-          <p>Ouça o entrevistador, responda e acompanhe a sessão.</p>
+          <p>Receba uma pergunta, organize suas ideias e avance pelo treino.</p>
         </div>
         <img id="hero-person" alt="Pinguim entrevistador" />
         <span class="tiny-label">DEBUG ENGLISH LAB</span>
@@ -615,13 +649,14 @@ h1 em {
           <div class="scene-body">
             <div class="person"><img id="session-person" alt="Seu entrevistador"/></div>
             <div>
+              <p class="turn-script" id="turn-script" aria-live="polite">Welcome! Let’s begin with your experience.</p>
               <span class="role-label" id="question-kind">APRESENTAÇÃO</span>
               <h2 id="question-text" lang="en">Tell me about yourself.</h2>
               <p class="scene-goal" id="question-goal"></p>
               <pre class="snippet" id="question-snippet" hidden><code id="snippet-code"></code></pre>
             </div>
           </div>
-          <div class="voice-toolbar" aria-label="Controles de voz do entrevistador">
+          <div class="voice-toolbar" hidden aria-label="Recursos experimentais de voz indisponíveis nesta versão">
             <div class="voice-presence">
               <span class="voice-signal" aria-hidden="true"><i class="ph-duotone ph-waveform" style="font-size:1.18rem"></i></span>
               <div><strong id="voice-status" role="status" aria-live="polite">Pronto para conversar</strong><small id="voice-description">O pinguim vai ler a pergunta em inglês.</small></div>
@@ -634,7 +669,7 @@ h1 em {
             </div>
           </div>
           <div class="scene-foot">
-            <span><i class="dot"></i> Voz do navegador · sem IA</span>
+            <span><i class="dot"></i> Roteiro guiado · sem avaliação automática</span>
             <span id="scene-role">Com o Recrutador</span>
           </div>
         </section>
@@ -644,13 +679,22 @@ h1 em {
             <h3 id="notebook-title"><i class="ph-duotone ph-notebook" aria-hidden="true"></i> Seu caderno de respostas</h3>
             <span class="mini">RASCUNHO · SALVAMENTO LOCAL</span>
           </div>
-          <label for="answer">Agora é sua vez. Escreva ou tente responder falando:</label>
-          <textarea id="answer" maxlength="6000" spellcheck="true" autocomplete="off" placeholder="Try: I would start by..." aria-describedby="save-status dictation-privacy"></textarea>
-          <div class="dictation-tools">
+          <div class="mentor-strip" id="mentor-strip" aria-label="Orientação do Professor">
+            <div class="mentor-portrait"><img id="mentor-avatar" alt="Pinguim professor"/></div>
+            <div class="mentor-body">
+              <span class="mentor-kicker"><i class="ph-bold ph-lightbulb" aria-hidden="true"></i> PROFESSOR · GUIA DE RESPOSTA</span>
+              <p class="mentor-message" id="mentor-message" aria-live="polite"></p>
+              <span class="mentor-disclaimer">Dicas de estrutura, não correção do conteúdo.</span>
+            </div>
+            <button type="button" class="mentor-next" id="mentor-next" aria-label="Ver próxima orientação do Professor"><i class="ph-bold ph-arrow-clockwise" aria-hidden="true"></i> Outra dica</button>
+          </div>
+          <label for="answer">Sua vez: responda como falaria em uma entrevista.</label>
+          <textarea id="answer" maxlength="6000" spellcheck="true" autocomplete="off" placeholder="Try: I would start by..." aria-describedby="save-status"></textarea>
+          <div class="dictation-tools" hidden>
             <button class="dictation-button" id="dictation-button" type="button" aria-pressed="false"><i class="ph-bold ph-microphone" aria-hidden="true"></i><span id="dictation-label">Responder falando</span></button>
             <span class="dictation-status" id="dictation-status" role="status" aria-live="polite">Ou digite sua resposta normalmente.</span>
           </div>
-          <p class="dictation-notice" id="dictation-privacy">O ditado, quando disponível, usa o reconhecimento do seu navegador; o provedor do navegador pode processar o áudio. O Debug English não recebe gravações.</p>
+          <p class="dictation-notice" id="dictation-privacy" hidden>O ditado, quando disponível, usa o reconhecimento do seu navegador; o provedor do navegador pode processar o áudio. O Debug English não recebe gravações.</p>
           <div class="note-meta">
             <span><b id="words">0</b> palavras</span>
             <span id="save-status" role="status" aria-live="polite">Salvo apenas neste navegador</span>
@@ -717,6 +761,10 @@ h1 em {
       <div><strong>Resumo honesto:</strong> este arquivo reúne apenas o que você escreveu. Ainda não há análise automática de gramática, conteúdo ou fluência.</div>
     </div>
 
+    <div class="closing-coach" id="closing-coach">
+      <img id="closing-coach-avatar" alt="Pinguim professor"/>
+      <div><strong>Uma última dica do Professor</strong><p id="closing-coach-tip">Escolha uma resposta para reler e explicar em voz alta.</p></div>
+    </div>
     <div class="report-list" id="report-list"></div>
 
     <div class="summary-actions">
@@ -726,6 +774,11 @@ h1 em {
       <a class="secondary" href="./index.html" style="text-decoration:none"><i class="ph-bold ph-house" aria-hidden="true"></i> Voltar ao Debug English</a>
     </div>
   </section>
+<div class="session-toast" id="session-toast" hidden role="status" aria-live="polite" aria-atomic="true">
+  <img id="toast-avatar" alt="" aria-hidden="true"/>
+  <div><strong id="toast-title">Rascunho guardado</strong><span id="toast-description">Próxima rodada</span></div>
+  <i class="ph-bold ph-check-circle" aria-hidden="true"></i>
+</div>
 </main>
 
 <footer><div class="wrap">Debug English · Treino prático de inglês para tecnologia · MVP gratuito em desenvolvimento</div></footer>
@@ -826,7 +879,7 @@ function saveCurrent(){if(screens.session.hidden||!state.area)return;state.answe
 const speechAvailable=('speechSynthesis' in window && 'SpeechSynthesisUtterance' in window);
 const Recognizer=window.SpeechRecognition||window.webkitSpeechRecognition;
 const motionReduced=window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-let voiceEnabled=true, speakingToken=0, speechInProgress=false, recognition=null, recognitionToken=0;
+let voiceEnabled=false, speakingToken=0, speechInProgress=false, recognition=null, recognitionToken=0;
 const rolesSpeech={recrutador:{rate:.98,pitch:.93},nerd:{rate:1.03,pitch:1.07},dev:{rate:1.00,pitch:1.01},professor:{rate:.89,pitch:1.03}};
 function setVoiceUi(title,description){$('voice-status').textContent=title;$('voice-description').textContent=description;}
 function updateVoiceButtons(){
@@ -920,6 +973,46 @@ function toggleDictation(){
     rec.start();
   }catch(e){recognition=null;$('dictation-status').textContent='Não foi possível iniciar o microfone. Continue digitando.'}
 }
+const intros={
+  recrutador:['Welcome! Let’s start with your experience.','Next, tell me how you approach challenges.','Let’s explore how you make decisions.','Here is a situation you may face at work.','One last question before we wrap up.'],
+  nerd:['Technical round: explain your reasoning step by step.','Let’s go a little deeper into the details.','Think about the trade-offs of your approach.','Imagine you need to explain this to your team.','Final technical question: take your time.'],
+  dev:['Let’s look at how you approach code.','This time, explain what you would change.','Consider readability and maintainability.','How would you discuss this with your team?','One last review before we finish.'],
+  professor:['We’ll go step by step. There’s no rush.','Try connecting your answer to a real example.','Think about context, action and result.','Imagine explaining it to a colleague.','Last round: focus on being clear.']
+};
+function interviewerScript(mode,index){return (intros[mode]||intros.recrutador)[Math.max(0,Math.min(4,index))]}
+let mentorChoice=0,toastTimer=null,toastHideTimer=null;
+function mentorCues(){
+  const row=questionsFor()[state.index];
+  if(!row)return ['Comece pela ideia principal.','Explique seu raciocínio.','Conclua com um exemplo.'];
+  return ['Objetivo da rodada: '+row[2],
+    'Estrutura sugerida: '+row[3],
+    state.mode==='dev'?'Releia: você explicou o problema, a mudança e o impacto no código?':'Releia: você trouxe um contexto, uma ação ou escolha e um resultado ou justificativa?'];
+}
+function updateMentor(animate){
+  if(!state.area||screens.session.hidden)return;
+  const cues=mentorCues(),words=wordCount($('answer').value);
+  const autoStage=words>=30?2:words>=9?1:0;
+  const stage=mentorChoice?mentorChoice:autoStage;
+  const mentor=$('mentor-strip');
+  const message=cues[stage];
+  if($('mentor-message').textContent!==message){
+    $('mentor-message').textContent=message;
+    if(animate&&!motionReduced){mentor.classList.remove('mentor-pulse');void mentor.offsetWidth;mentor.classList.add('mentor-pulse')}
+  }
+  $('mentor-avatar').src=image('professor',words>=9?'happy':'thinking');
+  $('mentor-next').setAttribute('aria-label','Ver outra orientação do Professor');
+}
+function showCheckpoint(title,description){
+  const t=$('session-toast');
+  if(!t)return;
+  clearTimeout(toastTimer);clearTimeout(toastHideTimer);
+  $('toast-avatar').src=image(state.mode,'celebrating');
+  $('toast-title').textContent=title;
+  $('toast-description').textContent=description;
+  t.hidden=false;
+  requestAnimationFrame(()=>t.classList.add('on'));
+  toastTimer=setTimeout(()=>{t.classList.remove('on');toastHideTimer=setTimeout(()=>{t.hidden=true},320)},2000);
+}
 function nextQuestionEffects(autoSpeak=true){
   const scene=document.querySelector('.scene');
   scene?.classList.remove('is-writing','question-arriving');
@@ -927,7 +1020,7 @@ function nextQuestionEffects(autoSpeak=true){
   setVoiceUi('Nova pergunta','Ouça a pergunta e responda no seu ritmo.');
   if(voiceEnabled && speechAvailable && autoSpeak)sayQuestion();
   else if(!speechAvailable)updateVoiceButtons();
-  else setVoiceUi('Pronto para ouvir','Toque em “Ouvir de novo” para escutar a pergunta.');
+  else setVoiceUi('Treino em texto','A narração por voz fica para uma versão futura.');
 }
 function renderQuestion(autoSpeak=true){
   if(!validArea(state.area)||!validMode(state.mode))return;
@@ -941,6 +1034,7 @@ function renderQuestion(autoSpeak=true){
   $('progress-fill').style.width=((state.index+1)*20)+'%';
   $('progress-track').setAttribute('aria-valuenow',String(state.index+1));
   $('question-kind').textContent=row[0];
+  $('turn-script').textContent=interviewerScript(state.mode,state.index);
   $('question-text').textContent=row[1];
   $('question-goal').textContent=row[2];
   $('question-hint').textContent=row[3];
@@ -951,7 +1045,9 @@ function renderQuestion(autoSpeak=true){
   $('session-person').alt='Pinguim '+m.label+' pensando na pergunta';
   $('scene-role').textContent='Com o '+m.label;
   $('coach-image').src=image('professor',state.mode==='professor'?'happy':'thinking');
+  mentorChoice=0;
   $('answer').value=state.answers[state.index]||'';
+  updateMentor(true);
   $('words').textContent=String(wordCount($('answer').value));
   $('previous').disabled=state.index===0;
   $('next').innerHTML=state.index===4?'Concluir sessão <i class="ph-bold ph-check" aria-hidden="true"></i>':'Próxima pergunta <i class="ph-bold ph-arrow-right" aria-hidden="true"></i>';
@@ -971,7 +1067,7 @@ function setStep(index){saveCurrent();state.index=Math.max(0,Math.min(4,index));
 function start(){
   const hasAnswers=Object.values(state.answers).some(a=>wordCount(a)>0);
   if(state.area&&hasAnswers&&!confirm('Começar outra sessão? Seu rascunho atual será substituído. Baixe o resumo antes, se quiser guardá-lo.'))return;
-  state={area:draftSelection.area,mode:draftSelection.mode,index:0,answers:{},finished:false};save();renderQuestion();
+  state={area:draftSelection.area,mode:draftSelection.mode,index:0,answers:{},finished:false};save();renderQuestion();showCheckpoint('Sessão iniciada','Cinco rodadas, no seu ritmo.');
 }
 function finish(){
   stopVoice();stopDictation();
@@ -985,28 +1081,32 @@ function finish(){
     const p=document.createElement('p');p.textContent=answer||'Não respondida';if(!answer)p.className='empty';article.append(head,h,p);report.append(article);
   });
   $('metric-answered').textContent=answered+'/5';$('metric-words').textContent=String(totalWords);$('metric-track').textContent=tracks[state.area].short;
+  $('closing-coach-avatar').src=image('professor','happy');
+  $('closing-coach-tip').textContent=answered===0?'Você pode revisitar a sessão e começar com uma frase de cada pergunta.':`Você registrou ${answered} resposta${answered===1?'':'s'}. Escolha uma delas e pratique explicar suas ideias sem olhar para o texto.`;
   $('summary-person').src=image(state.mode,'celebrating');$('summary-person').alt='Pinguim '+DATA.modes[state.mode].label+' celebrando';
   show('summary');
   sayCongratulations();
 }
 function exportSummary(){
-  const q=questionsFor(),m=DATA.modes[state.mode],lines=['DEBUG ENGLISH | RESUMO DE PRÁTICA','Área: '+tracks[state.area].label,'Tipo: '+m.tagline,'MVP 0.1.2 · Voz nativa · Sem correção automática',''];
+  const q=questionsFor(),m=DATA.modes[state.mode],lines=['DEBUG ENGLISH | RESUMO DE PRÁTICA','Área: '+tracks[state.area].label,'Tipo: '+m.tagline,'MVP 0.1.3 · Sala guiada · Sem correção automática',''];
   q.forEach((row,i)=>lines.push((i+1)+'. '+row[1],'Resposta: '+((state.answers[i]||'').trim()||'(não respondida)'),'') );
   lines.push('Este documento reúne as respostas que você escreveu. Não é uma avaliação de inglês.');
   const blob=new Blob([lines.join('\n')],{type:'text/plain;charset=utf-8'}),url=URL.createObjectURL(blob),a=document.createElement('a');
   a.href=url;a.download='debug-english-'+state.area+'-'+state.mode+'.txt';document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
 }
-function restart(){if(!confirm('Começar uma nova sessão? Suas respostas salvas neste navegador serão apagadas.'))return;stopVoice();stopDictation();state=initialState();clear();updateSetup();$('erase-setup').hidden=true;show('setup')}
+function restart(){if(!confirm('Começar uma nova sessão? Suas respostas salvas neste navegador serão apagadas.'))return;stopVoice();stopDictation();clearTimeout(toastTimer);clearTimeout(toastHideTimer);$('session-toast').hidden=true;state=initialState();clear();updateSetup();$('erase-setup').hidden=true;show('setup')}
 $('hero-person').src=image('recrutador','happy');
 document.querySelectorAll('[data-role-image]').forEach(el=>el.src=image(el.dataset.roleImage,'neutral'));
 document.querySelectorAll('[data-area]').forEach(b=>b.addEventListener('click',()=>{draftSelection.area=b.dataset.area;updateSetup()}));
 document.querySelectorAll('[data-mode]').forEach(b=>b.addEventListener('click',()=>{draftSelection.mode=b.dataset.mode;updateSetup()}));
 $('start').addEventListener('click',start);
-$('next').addEventListener('click',()=>state.index===4?finish():setStep(state.index+1));
+$('next').addEventListener('click',()=>{const count=wordCount($('answer').value);if(state.index===4){finish();return}setStep(state.index+1);showCheckpoint(count>0?'Rascunho guardado':'Próxima rodada',`Pergunta ${state.index+1} de 5 · roteiro guiado`)});
 $('previous').addEventListener('click',()=>setStep(state.index-1));
+$('mentor-next').addEventListener('click',()=>{mentorChoice=(mentorChoice+1)%3;updateMentor(true)});
 $('answer').addEventListener('input',()=>{
   state.answers[state.index]=$('answer').value;$('words').textContent=String(wordCount($('answer').value));save();
-  if(!speechInProgress){document.querySelector('.scene')?.classList.add('is-writing');setCharacterMood(wordCount($('answer').value)>=14?'happy':'thinking');}
+  if(!speechInProgress){document.querySelector('.scene')?.classList.toggle('is-writing',wordCount($('answer').value)>0);setCharacterMood(wordCount($('answer').value)>=14?'happy':'thinking');}
+  updateMentor(false);
 });
 $('listen-question').addEventListener('click',()=>{if(!voiceEnabled){voiceEnabled=true;updateVoiceButtons()}sayQuestion()});
 $('mute-voice').addEventListener('click',()=>{voiceEnabled=!voiceEnabled;stopVoice();updateVoiceButtons();setVoiceUi(voiceEnabled?'Voz ligada':'Voz desligada',voiceEnabled?'Clique em “Ouvir de novo” para escutar agora.':'A pergunta continua disponível em texto.');});
