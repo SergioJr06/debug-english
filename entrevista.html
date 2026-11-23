@@ -543,13 +543,53 @@ h1 em {
 @media(max-width:760px){.mentor-strip{grid-template-columns:46px minmax(0,1fr)}.mentor-portrait{height:55px;width:46px}.mentor-portrait img{height:50px;width:42px}.mentor-next{grid-column:2;justify-self:start;padding:7px 9px}.session-toast{left:12px;right:12px;bottom:12px;max-width:none}.session-side{grid-row:2}}
 @media(prefers-reduced-motion:reduce){.session-toast{transition:none!important}.scene.question-arriving .turn-script,.mentor-strip.mentor-pulse .mentor-portrait img,.mentor-strip.mentor-pulse .mentor-message{animation:none!important}}
 
+
+/* MVP 0.1.4 — revisão guiada sem avaliação automática */
+.review-header{display:flex;align-items:center;gap:18px;margin-bottom:20px}
+.review-header img{height:102px;width:96px;object-fit:contain;background:var(--panel);border:1.5px solid var(--text);border-radius:12px;box-shadow:var(--shadow-hard);padding:5px;flex:none}
+.review-header h1{font-family:var(--display);font-size:clamp(1.75rem,4.5vw,2.7rem);margin:7px 0 5px}
+.review-header p{margin:0;color:var(--muted);max-width:65ch;font-size:.91rem}
+.review-counter{font:700 .77rem var(--mono);color:var(--cobalt);margin:0 0 9px}
+.review-steps{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
+.review-step{flex:1;min-width:72px;padding:9px 12px;border:1.5px solid var(--line);border-radius:9px;background:var(--panel);color:var(--muted);font:700 .76rem var(--mono);text-align:center}
+.review-step[aria-current="step"]{background:var(--cobalt-tint);color:var(--cobalt);border-color:var(--cobalt)}
+.review-step.complete{border-color:#99C7AC;background:var(--forest-tint);color:var(--forest)}
+.review-question-card{padding:22px;margin-bottom:16px}
+.review-question-card h2{font-family:var(--display);font-size:clamp(1.28rem,2.7vw,1.75rem);line-height:1.3;margin:7px 0}
+.review-purpose{border-left:3px solid var(--vermilion);color:var(--muted);padding:8px 0 8px 13px;margin:0 0 20px;font-size:.9rem}
+.review-compare{display:grid;grid-template-columns:1fr 1fr;gap:15px}
+.review-compare section{border:1px solid var(--line);border-radius:9px;background:#FCFBF8;padding:14px;min-width:0}
+.review-compare h3{font-family:var(--sans);font-size:.91rem;display:flex;align-items:center;gap:7px;margin:0 0 9px}
+.review-compare h3 i{color:var(--cobalt)}
+.review-original-text{white-space:pre-wrap;overflow-wrap:anywhere;font-size:.91rem;line-height:1.7;margin:0;color:var(--text);min-height:120px}
+.review-original-text.empty{color:var(--muted);font-style:italic}
+#review-rewrite{width:100%;min-height:140px;resize:vertical;border-radius:8px;border:1.5px solid var(--line);background:#FFFFFF;color:var(--text);padding:11px 12px;line-height:1.65;font-size:.92rem}
+#review-rewrite:focus{outline:2px solid var(--cobalt);outline-offset:1px}
+.review-compare small{display:block;margin-top:7px;color:var(--muted);font-size:.75rem}
+.review-mentor{padding:20px;margin-bottom:18px;background:var(--panel2)}
+.review-mentor-head{display:flex;gap:11px;align-items:center;margin-bottom:12px}
+.review-mentor-head img{height:58px;width:55px;object-fit:contain;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:4px}
+.review-mentor-head strong{font-family:var(--display);font-size:1.05rem;display:block}
+.review-mentor-head small{font-size:.76rem;color:var(--muted)}
+.review-guidance{background:var(--panel);border:1px solid var(--line);border-left:4px solid var(--cobalt);border-radius:8px;padding:12px 14px;margin:0 0 14px;font-size:.89rem}
+.review-guidance strong{color:var(--cobalt)}
+.review-checks{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}
+.review-check{display:flex;align-items:flex-start;gap:8px;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:12px;cursor:pointer;font-size:.84rem;line-height:1.45}
+.review-check:has(input:checked){background:var(--forest-tint);border-color:#8CC5A5}
+.review-check input{accent-color:var(--forest);width:16px;height:16px;flex:none;margin:2px 0 0}
+.review-check-status{font-size:.79rem;color:var(--muted);margin:11px 0 0}
+.review-footer{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-top:18px}
+.review-feedback{font-size:.82rem;color:var(--muted);margin-top:12px}
+.review-progress-info{margin:0 0 18px;border:1px solid #B7C8E1;background:var(--cobalt-tint);color:var(--cobalt);border-radius:9px;padding:12px 15px;font-weight:650;font-size:.86rem}
+.reviewed-label{display:block;color:var(--forest);font-weight:650;font-size:.82rem;margin-top:8px}
+@media(max-width:760px){.review-compare{grid-template-columns:1fr}.review-checks{grid-template-columns:1fr}.review-steps{gap:5px}.review-step{min-width:48px;padding:9px 7px}.review-question-card,.review-mentor{padding:16px}.review-header img{height:82px;width:77px}.review-footer .primary{flex:1}}
 </style>
 </head>
 <body>
 <header class="top"><div class="wrap top-inner">
   <a class="brand" href="./index.html"><b>$</b> debug_english<span aria-hidden="true">_</span></a>
   <div class="top-side">
-    <span class="top-note">MVP 0.1.3 · 100% gratuito</span>
+    <span class="top-note">MVP 0.1.4 · 100% gratuito</span>
     <a class="back" href="./index.html"><i class="ph-bold ph-arrow-left" aria-hidden="true"></i> Voltar ao site</a>
   </div>
 </div></header>
@@ -739,6 +779,53 @@ h1 em {
     </div>
   </section>
 
+
+  <section id="review-screen" hidden aria-labelledby="review-title">
+    <div class="review-header">
+      <img id="review-professor" alt="Pinguim Professor orientando a revisão"/>
+      <div>
+        <span class="eyebrow"><i class="ph-bold ph-book-open-text" aria-hidden="true"></i> SEGUNDA ETAPA · REVISÃO PESSOAL</span>
+        <h1 id="review-title">Uma resposta melhor, <em>passo a passo.</em></h1>
+        <p>Leia sua primeira versão, confira a estrutura sugerida e tente reescrever com mais clareza. Você decide o que melhorar: não há correção automática.</p>
+      </div>
+    </div>
+    <p class="review-counter" id="review-counter">PERGUNTA 01 DE 05</p>
+    <nav class="review-steps" id="review-steps" aria-label="Selecionar pergunta para revisar"></nav>
+    <article class="card review-question-card">
+      <span class="mini" id="review-kind">ENTREVISTA</span>
+      <h2 id="review-question" lang="en"></h2>
+      <p class="review-purpose" id="review-purpose"></p>
+      <div class="review-compare">
+        <section aria-labelledby="review-original-heading">
+          <h3 id="review-original-heading"><i class="ph-bold ph-note-pencil" aria-hidden="true"></i> Sua resposta original</h3>
+          <p id="review-original" class="review-original-text"></p>
+          <small>Versão inicial preservada enquanto você revisa.</small>
+        </section>
+        <section aria-labelledby="review-rewrite-heading">
+          <h3 id="review-rewrite-heading"><i class="ph-bold ph-sparkle" aria-hidden="true"></i> Sua segunda versão</h3>
+          <label class="mini" for="review-rewrite">Escreva de novo, no seu ritmo.</label>
+          <textarea id="review-rewrite" maxlength="6000" spellcheck="true" placeholder="Try improving the structure of your answer..."></textarea>
+          <small id="review-save" role="status" aria-live="polite">Rascunho de revisão salvo neste navegador.</small>
+        </section>
+      </div>
+    </article>
+    <section class="card review-mentor" aria-labelledby="review-mentor-heading">
+      <div class="review-mentor-head">
+        <img id="review-mentor-avatar" alt="Pinguim Professor"/>
+        <div><strong id="review-mentor-heading">O que o Professor sugere?</strong><small>Orientação baseada na pergunta, não no que você escreveu.</small></div>
+      </div>
+      <p class="review-guidance"><strong>Estrutura sugerida:</strong> <span id="review-hint"></span></p>
+      <div class="review-checks" id="review-checks" aria-label="Checklist de autoavaliação"></div>
+      <p class="review-check-status" id="review-check-status" aria-live="polite">Marque os pontos que você revisou.</p>
+    </section>
+    <div class="review-footer">
+      <button type="button" class="secondary" id="review-previous"><i class="ph-bold ph-arrow-left" aria-hidden="true"></i> Anterior</button>
+      <button type="button" class="secondary" id="review-to-summary"><i class="ph-bold ph-list-checks" aria-hidden="true"></i> Voltar ao resumo</button>
+      <button type="button" class="primary" id="review-next">Próxima revisão <i class="ph-bold ph-arrow-right" aria-hidden="true"></i></button>
+    </div>
+    <p class="review-feedback">Sua segunda versão e suas marcações ficam apenas neste navegador. Não fazemos avaliação automática de gramática, vocabulário ou fluência.</p>
+  </section>
+
   <section id="summary-screen" hidden aria-labelledby="summary-title">
     <div class="summary-intro">
       <img id="summary-person" alt="Personagem comemorando o fim do treino"/>
@@ -765,11 +852,12 @@ h1 em {
       <img id="closing-coach-avatar" alt="Pinguim professor"/>
       <div><strong>Uma última dica do Professor</strong><p id="closing-coach-tip">Escolha uma resposta para reler e explicar em voz alta.</p></div>
     </div>
+    <p class="review-progress-info" id="review-progress">0/5 respostas revisadas</p>
     <div class="report-list" id="report-list"></div>
 
     <div class="summary-actions">
-      <button class="primary" id="review" type="button"><i class="ph-bold ph-pencil-simple" aria-hidden="true"></i> Revisar minhas respostas</button>
-      <button class="secondary" id="download" type="button"><i class="ph-bold ph-download-simple" aria-hidden="true"></i> Baixar respostas (.txt)</button>
+      <button class="primary" id="review" type="button"><i class="ph-bold ph-pencil-simple" aria-hidden="true"></i> Fazer revisão guiada</button>
+      <button class="secondary" id="download" type="button"><i class="ph-bold ph-download-simple" aria-hidden="true"></i> Baixar respostas e revisões (.txt)</button>
       <button class="secondary" id="restart" type="button"><i class="ph-bold ph-arrow-counter-clockwise" aria-hidden="true"></i> Começar novo treino</button>
       <a class="secondary" href="./index.html" style="text-decoration:none"><i class="ph-bold ph-house" aria-hidden="true"></i> Voltar ao Debug English</a>
     </div>
@@ -837,8 +925,8 @@ const $ = (id) => document.getElementById(id);
 const validArea = (name) => Object.prototype.hasOwnProperty.call(tracks,name);
 const validMode = (name) => Object.prototype.hasOwnProperty.call(DATA.modes,name);
 const wordCount = (value) => (value.trim().match(/\S+/g)||[]).length;
-const screens = {setup:$('setup-screen'),session:$('session-screen'),summary:$('summary-screen')};
-const initialState = () => ({area:null,mode:null,index:0,answers:{},finished:false});
+const screens = {setup:$('setup-screen'),session:$('session-screen'),review:$('review-screen'),summary:$('summary-screen')};
+const initialState = () => ({area:null,mode:null,index:0,answers:{},finished:false,reviews:{},reviewIndex:0});
 let state = initialState();
 let draftSelection = {area:'cyber', mode:'recrutador'};
 function image(mode,mood='neutral') {return DATA.images[mode][mood]||DATA.images.recrutador.neutral;}
@@ -865,7 +953,12 @@ function clear(){try{localStorage.removeItem(STORAGE_KEY);}catch(e){}}
 function normalize(parsed,old=false){
   if(!parsed||!validArea(old?parsed.track:parsed.area)||!validMode(old?'recrutador':parsed.mode)||typeof parsed.answers!=='object'||!parsed.answers)return null;
   const answers={};for(let i=0;i<5;i++){const a=parsed.answers[i];if(typeof a==='string')answers[i]=a.slice(0,6000)}
-  return {area:old?parsed.track:parsed.area,mode:old?'recrutador':parsed.mode,index:Number.isInteger(parsed.index)?Math.max(0,Math.min(4,parsed.index)):0,answers,finished:parsed.finished===true};
+  const reviews={};
+  if(parsed.reviews&&typeof parsed.reviews==='object')for(let i=0;i<5;i++){
+    const item=parsed.reviews[i];
+    if(item&&typeof item==='object')reviews[i]={checks:Array.from({length:3},(_,j)=>item.checks?.[j]===true),revision:typeof item.revision==='string'?item.revision.slice(0,6000):''};
+  }
+  return {area:old?parsed.track:parsed.area,mode:old?'recrutador':parsed.mode,index:Number.isInteger(parsed.index)?Math.max(0,Math.min(4,parsed.index)):0,answers,finished:parsed.finished===true,reviews,reviewIndex:Number.isInteger(parsed.reviewIndex)?Math.max(0,Math.min(4,parsed.reviewIndex)):0};
 }
 function load(){
   try{const current=normalize(JSON.parse(localStorage.getItem(STORAGE_KEY)||'null'));if(current){state=current;return}
@@ -1067,8 +1160,65 @@ function setStep(index){saveCurrent();state.index=Math.max(0,Math.min(4,index));
 function start(){
   const hasAnswers=Object.values(state.answers).some(a=>wordCount(a)>0);
   if(state.area&&hasAnswers&&!confirm('Começar outra sessão? Seu rascunho atual será substituído. Baixe o resumo antes, se quiser guardá-lo.'))return;
-  state={area:draftSelection.area,mode:draftSelection.mode,index:0,answers:{},finished:false};save();renderQuestion();showCheckpoint('Sessão iniciada','Cinco rodadas, no seu ritmo.');
+  state={area:draftSelection.area,mode:draftSelection.mode,index:0,answers:{},finished:false,reviews:{},reviewIndex:0};save();renderQuestion();showCheckpoint('Sessão iniciada','Cinco rodadas, no seu ritmo.');
 }
+
+/* Revisão guiada — autoavaliação local, sem pontuação automática */
+const REVIEW_CHECKS={
+  recrutador:['Dei contexto e expliquei meu papel?','Usei um exemplo, uma decisão ou uma ação concreta?','Expliquei o resultado ou o que aprendi?'],
+  nerd:['Expliquei meu raciocínio em uma sequência clara?','Justifiquei as escolhas técnicas ou riscos?','Usei termos técnicos com significado e contexto?'],
+  dev:['Identifiquei claramente o problema no código?','Propus uma mudança e expliquei por quê?','Considerei impacto, testes e comunicação com o time?'],
+  professor:['Apresentei a ideia central logo no início?','Organizei minha resposta em passos ou exemplos?','Concluí com resultado, motivo ou próximo passo?']
+};
+function reviewItem(i){
+  if(!state.reviews||typeof state.reviews!=='object')state.reviews={};
+  if(!state.reviews[i])state.reviews[i]={checks:[false,false,false],revision:''};
+  return state.reviews[i];
+}
+function isReviewed(i){
+  const item=state.reviews&&state.reviews[i];
+  return Boolean(item && Array.isArray(item.checks) && item.checks.length===3 && item.checks.every(Boolean) && wordCount(item.revision||'')>0);
+}
+function updateReviewStatus(){
+  const item=reviewItem(state.reviewIndex),checked=item.checks.filter(Boolean).length;
+  $('review-check-status').textContent=checked+'/3 itens marcados · '+(wordCount(item.revision)>0?'segunda versão escrita':'escreva sua segunda versão')+' · '+(isReviewed(state.reviewIndex)?'revisão concluída':'em andamento');
+  $('review-steps').querySelectorAll('button').forEach((b,i)=>b.classList.toggle('complete',isReviewed(i)));
+}
+function showReview(index=0){
+  if(!state.area)return;
+  state.reviewIndex=Math.max(0,Math.min(4,index));save();show('review');
+  const i=state.reviewIndex,q=questionsFor()[i],item=reviewItem(i);
+  $('review-professor').src=image('professor','thinking');
+  $('review-mentor-avatar').src=image('professor',isReviewed(i)?'happy':'thinking');
+  $('review-counter').textContent='PERGUNTA '+String(i+1).padStart(2,'0')+' DE 05 · '+DATA.modes[state.mode].label.toUpperCase();
+  $('review-kind').textContent=q[0].toUpperCase();
+  $('review-question').textContent=q[1];
+  $('review-purpose').textContent='O objetivo da pergunta: '+q[2];
+  const original=(state.answers[i]||'').trim();
+  $('review-original').textContent=original||'Você ainda não escreveu uma resposta para esta pergunta.';
+  $('review-original').classList.toggle('empty',!original);
+  $('review-rewrite').value=item.revision;
+  $('review-hint').textContent=q[3];
+  $('review-previous').disabled=i===0;
+  $('review-next').innerHTML=i===4?'Concluir revisão <i class="ph-bold ph-check" aria-hidden="true"></i>':'Próxima revisão <i class="ph-bold ph-arrow-right" aria-hidden="true"></i>';
+  const rail=$('review-steps');rail.replaceChildren();
+  for(let j=0;j<5;j++){
+    const b=document.createElement('button');b.type='button';b.className='review-step';b.textContent='Pergunta '+(j+1);
+    b.setAttribute('aria-label','Revisar pergunta '+(j+1));
+    if(j===i)b.setAttribute('aria-current','step');
+    b.classList.toggle('complete',isReviewed(j));b.addEventListener('click',()=>showReview(j));rail.append(b);
+  }
+  const checks=$('review-checks');checks.replaceChildren();
+  REVIEW_CHECKS[state.mode].forEach((text,i)=>{
+    const label=document.createElement('label');label.className='review-check';
+    const input=document.createElement('input');input.type='checkbox';input.checked=item.checks[i]===true;
+    const span=document.createElement('span');span.textContent=text;
+    input.addEventListener('change',()=>{item.checks[i]=input.checked;save();updateReviewStatus();$('review-mentor-avatar').src=image('professor',isReviewed(state.reviewIndex)?'happy':'thinking')});
+    label.append(input,span);checks.append(label);
+  });
+  updateReviewStatus();
+}
+
 function finish(){
   stopVoice();stopDictation();
   saveCurrent();state.finished=true;save();
@@ -1078,9 +1228,12 @@ function finish(){
     const article=document.createElement('article');article.className='report-item';
     const head=document.createElement('header'),n=document.createElement('span');n.textContent=`PERGUNTA ${i+1} · ${row[0]}`;const counter=document.createElement('span');counter.textContent=words+' palavras';head.append(n,counter);
     const h=document.createElement('h3');h.lang='en';h.textContent=row[1];
-    const p=document.createElement('p');p.textContent=answer||'Não respondida';if(!answer)p.className='empty';article.append(head,h,p);report.append(article);
+    const p=document.createElement('p');p.textContent=answer||'Não respondida';if(!answer)p.className='empty';article.append(head,h,p);
+    const revision=(state.reviews?.[i]?.revision||'').trim();
+    if(revision){const t=document.createElement('strong');t.className='reviewed-label';t.textContent='Segunda versão (auto-revisão)';const revised=document.createElement('p');revised.textContent=revision;article.append(t,revised)}
+    report.append(article);
   });
-  $('metric-answered').textContent=answered+'/5';$('metric-words').textContent=String(totalWords);$('metric-track').textContent=tracks[state.area].short;
+  $('review-progress').textContent=[0,1,2,3,4].filter(isReviewed).length+'/5 respostas revisadas · autoavaliação sem nota';$('metric-answered').textContent=answered+'/5';$('metric-words').textContent=String(totalWords);$('metric-track').textContent=tracks[state.area].short;
   $('closing-coach-avatar').src=image('professor','happy');
   $('closing-coach-tip').textContent=answered===0?'Você pode revisitar a sessão e começar com uma frase de cada pergunta.':`Você registrou ${answered} resposta${answered===1?'':'s'}. Escolha uma delas e pratique explicar suas ideias sem olhar para o texto.`;
   $('summary-person').src=image(state.mode,'celebrating');$('summary-person').alt='Pinguim '+DATA.modes[state.mode].label+' celebrando';
@@ -1088,8 +1241,14 @@ function finish(){
   sayCongratulations();
 }
 function exportSummary(){
-  const q=questionsFor(),m=DATA.modes[state.mode],lines=['DEBUG ENGLISH | RESUMO DE PRÁTICA','Área: '+tracks[state.area].label,'Tipo: '+m.tagline,'MVP 0.1.3 · Sala guiada · Sem correção automática',''];
-  q.forEach((row,i)=>lines.push((i+1)+'. '+row[1],'Resposta: '+((state.answers[i]||'').trim()||'(não respondida)'),'') );
+  const q=questionsFor(),m=DATA.modes[state.mode],lines=['DEBUG ENGLISH | RESUMO DE PRÁTICA','Área: '+tracks[state.area].label,'Tipo: '+m.tagline,'MVP 0.1.4 · Revisão guiada · Sem correção automática',''];
+  q.forEach((row,i)=>{
+    lines.push((i+1)+'. '+row[1], 'Resposta original: '+((state.answers[i]||'').trim()||'(não respondida)'));
+    const review=state.reviews?.[i];
+    if(review?.revision?.trim())lines.push('Segunda versão (auto-revisão): '+review.revision.trim());
+    if(review)lines.push('Checklist de autoavaliação: '+review.checks.filter(Boolean).length+'/3 itens marcados');
+    lines.push('');
+  });
   lines.push('Este documento reúne as respostas que você escreveu. Não é uma avaliação de inglês.');
   const blob=new Blob([lines.join('\n')],{type:'text/plain;charset=utf-8'}),url=URL.createObjectURL(blob),a=document.createElement('a');
   a.href=url;a.download='debug-english-'+state.area+'-'+state.mode+'.txt';document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
@@ -1115,7 +1274,11 @@ $('dictation-button').addEventListener('click',toggleDictation);
 if(!Recognizer){$('dictation-button').disabled=true;$('dictation-label').textContent='Microfone indisponível';$('dictation-status').textContent='Ditado não suportado neste navegador. Digite normalmente.';}
 updateVoiceButtons();
 document.addEventListener('visibilitychange',()=>{if(document.hidden){stopVoice();stopDictation()}});
-$('review').addEventListener('click',()=>{state.finished=false;save();renderQuestion()});
+$('review').addEventListener('click',()=>showReview(state.reviewIndex||0));
+$('review-rewrite').addEventListener('input',()=>{reviewItem(state.reviewIndex).revision=$('review-rewrite').value;save();updateReviewStatus();$('review-mentor-avatar').src=image('professor',isReviewed(state.reviewIndex)?'happy':'thinking');});
+$('review-previous').addEventListener('click',()=>showReview(state.reviewIndex-1));
+$('review-next').addEventListener('click',()=>{if(state.reviewIndex===4)finish();else showReview(state.reviewIndex+1)});
+$('review-to-summary').addEventListener('click',finish);
 $('download').addEventListener('click',exportSummary);
 $('change-track').addEventListener('click',()=>{stopVoice();stopDictation();saveCurrent();draftSelection={area:state.area,mode:state.mode};updateSetup();$('erase-setup').hidden=false;show('setup')});
 $('restart').addEventListener('click',restart);$('erase-setup').addEventListener('click',restart);
