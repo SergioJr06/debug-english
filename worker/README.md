@@ -24,11 +24,11 @@ Fontes oficiais:
 
 ~~~bash
 npx wrangler@latest login
-npx wrangler@latest secret put TURNSTILE_SECRET
 npx wrangler@latest deploy
+npx wrangler@latest secret put TURNSTILE_SECRET
 ~~~
 
-No comando secret, insira a secret key privada no terminal quando solicitado. **Nunca cole a secret key no HTML, no GitHub, na URL ou na conversa.**
+O primeiro deploy ficará bloqueado para correção até adicionar o segredo. No comando secret, insira a secret key privada no terminal quando solicitado. **Nunca cole a secret key no HTML, no GitHub, na URL ou na conversa.**
 
 Ao publicar o Worker, será criada uma URL com formato https://debug-english-feedback.SEU-SUBDOMINIO.workers.dev. Abrir /health deve retornar status ok e configured true.
 
